@@ -1,4 +1,4 @@
-export type CreatePayment = {
+type ArcadierPaymentRequest = {
   /**
    * Unique identifier for the invoice
    */
@@ -28,9 +28,9 @@ const getTransactionDetailsURL = ({
   gateway,
   hashkey,
   paykey,
-}: Pick<CreatePayment, "gateway" | "invoiceno" | "hashkey"> & {
+}: Pick<ArcadierPaymentRequest, "gateway" | "invoiceno" | "hashkey"> & {
   paykey: string;
 }) =>
   `https://giggedbz.arcadier.io/user/checkout/order-details?gateway=${gateway}&invoiceNo=${invoiceno}&paykey=${paykey}&hashkey=${hashkey}`;
 
-export { getTransactionDetailsURL };
+export { getTransactionDetailsURL, ArcadierPaymentRequest };

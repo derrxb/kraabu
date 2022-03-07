@@ -69,7 +69,7 @@ const getAuthorization = async (
   return response.data as AuthorizationResponse;
 };
 
-type NewInvoiceData = {
+export type NewInvoiceData = {
   /**
    * Session Id for to authorize request.
    */

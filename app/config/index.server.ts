@@ -1,3 +1,6 @@
+import { createClient } from "@supabase/supabase-js";
+import "dotenv/config";
+
 const ekyash = {
   api: "https://mw-api-preprod.e-kyash.com/api/qrpos-app",
   headers: {
@@ -18,4 +21,9 @@ const ekyash = {
   },
 };
 
-export { ekyash };
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl as string, supabaseAnonKey as string);
+
+export { ekyash, supabase };
