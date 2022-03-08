@@ -53,6 +53,14 @@ class Payment {
   isValid() {
     return this.currency.amount > 0;
   }
+
+  isPending() {
+    return this.status === PaymentStatus.Pending;
+  }
+
+  canMarkInProgress() {
+    return this.isPending();
+  }
 }
 
 export default Payment;

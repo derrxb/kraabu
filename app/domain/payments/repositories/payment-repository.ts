@@ -18,16 +18,6 @@ export default class PaymentRepository {
   }
 
   static async createPending(data: Payment) {
-    console.log({
-      additionalData: data.additionalData,
-      amount: data.currency.amount,
-      currency: data.currency.type,
-      description: data.description,
-      invoice: data.invoice,
-      status: data.status,
-      user: data.user,
-    });
-
     const result = await supabase.from("payments").insert([
       {
         additionalData: data.additionalData,
@@ -39,6 +29,24 @@ export default class PaymentRepository {
         user: data.user,
       },
     ]);
+
+    return this.rebuildEntity(result.body?.[0]);
+  }
+
+  static async getPaymentByInvoice(invoice: string): Promise<Payment> {
+    const result = await supabase
+      .from("payments")
+      .select("*")
+      .eq("invoice", invoice);
+
+    return this.rebuildEntity(result.body?.[0]);
+  }
+
+  static async setPaymentQrCodeUrl(payment: Payment, qrCodeUrl: string) {
+    const result = await supabase
+      .from("payments")
+      .upsert({ additionalData: { qrCodeUrl } })
+      .eq("invoice", payment.invoice);
 
     return this.rebuildEntity(result.body?.[0]);
   }

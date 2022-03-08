@@ -85,8 +85,8 @@ export type NewInvoiceData = {
   /**
    * Currency in ISO 4217 format.
    */
-  currency: number;
-  description: number;
+  currency: string;
+  description: string;
   /**
    * Phone number of the customer that will pay the request
    */

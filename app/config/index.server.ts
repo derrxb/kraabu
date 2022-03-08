@@ -3,6 +3,10 @@ import "dotenv/config";
 
 const ekyash = {
   api: "https://mw-api-preprod.e-kyash.com/api/qrpos-app",
+  routes: {
+    base: "https://mw-api-preprod.e-kyash.com/api/qrpos-app",
+    orderDetails: "https://giggedbz.arcadier.io/user/checkout/order-details",
+  },
   headers: {
     "Content-Type": "application/json",
     "Accept-Language": "en",

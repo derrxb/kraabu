@@ -1,4 +1,6 @@
+import axios from "axios";
 import { nanoid } from "nanoid";
+import { ekyash } from "~/config/index.server";
 import Payment, { PaymentStatus } from "../entities/payment";
 import { ArcadierPaymentRequest } from "../library/arcadier-api";
 
@@ -18,12 +20,16 @@ class ArcadierPaymentMapper {
    * @param data
    * @returns Payment with the order details from arcadier
    */
-  find(
+  async find(
     data: Pick<ArcadierPaymentRequest, "gateway" | "hashkey" | "invoiceno"> & {
       paymentKey: string;
     }
   ) {
-    return this.buildEntity({} as any);
+    const response = await axios.get(
+      `${ekyash.routes.orderDetails}?gateway=${data.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${data.hashkey}`
+    );
+
+    return null;
   }
 
   private buildEntity(data: ArcadierPaymentRequest): Payment {
