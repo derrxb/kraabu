@@ -12,7 +12,14 @@ const getJWTToken = async () => {
   );
 
   const data = enc.Base64.stringify(
-    enc.Utf8.parse(JSON.stringify({ mobile: ekyash.data.phone }))
+    enc.Utf8.parse(
+      JSON.stringify({
+        mobile: ekyash.data.phone,
+        sid: ekyash.credentials.SID,
+        pushkey: "",
+        pinHash: ekyash.credentials.pinEncoded,
+      })
+    )
   );
 
   const signature = enc.Base64.stringify(
@@ -67,8 +74,10 @@ const getAuthorization = async (
   const response = await axios.post(
     `${ekyash.api}/authorization`,
     {
-      ...data,
+      pushkey: "",
       sid: String(data.sid),
+      pinHash:
+        "cd801fc54c8da4ee690cf00ed34f6bebcd801fc54c8da4ee690cf00ed34f6beb",
     },
     {
       headers: {
@@ -77,6 +86,8 @@ const getAuthorization = async (
       },
     }
   );
+
+  console.log(response);
 
   return response.data as AuthorizationResponse;
 };
