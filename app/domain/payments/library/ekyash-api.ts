@@ -1,5 +1,5 @@
 import axios from "axios";
-import { enc, HmacSHA256 } from "crypto-js";
+import { enc, HmacSHA256, SHA256 } from "crypto-js";
 import { ekyash } from "~/config/index.server";
 
 /**
@@ -26,9 +26,9 @@ type AuthorizationData = {
   /**
    * Merchant ID provided by Ekyash
    */
-  Sid: number;
+  sid: number;
   /**
-   * pinHash, provided by Ekyash:hash('sha256', md5('pin'))
+   * pinHash, provided by Ekyash: hash('sha256', md5('pin'))
    */
   pinHash: string;
   /**
@@ -62,9 +62,23 @@ type AuthorizationResponse = {
 const getAuthorization = async (
   data: AuthorizationData
 ): Promise<AuthorizationResponse> => {
-  const response = await axios.post(`${ekyash.api}/authorization`, {
-    ...data,
-  });
+  const jwt = await getJWTToken();
+
+  console.log(enc.Base64.stringify(SHA256(data.pinHash)));
+
+  const response = await axios.post(
+    `${ekyash.api}/authorization`,
+    {
+      ...data,
+      sid: String(data.sid),
+    },
+    {
+      headers: {
+        ...ekyash.headers,
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
 
   return response.data as AuthorizationResponse;
 };
@@ -159,9 +173,20 @@ type NewInvoiceResponse = {
 const createNewInvoice = async (
   data: NewInvoiceData
 ): Promise<NewInvoiceResponse> => {
-  const response = await axios.post(`${ekyash.api}/create-new-invoice`, {
-    ...data,
-  });
+  const jwt = await getJWTToken();
+
+  const response = await axios.post(
+    `${ekyash.api}/create-new-invoice`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        ...ekyash.headers,
+        Authorization: `Bearer ${jwt}`,
+      },
+    }
+  );
 
   return response.data as NewInvoiceResponse;
 };

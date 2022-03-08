@@ -3,6 +3,10 @@ import Payment from "../entities/payment";
 
 export default class PaymentRepository {
   static async rebuildEntity(data: any) {
+    if (!data || typeof data === "undefined") {
+      return null;
+    }
+
     return new Payment({
       additionalData: data?.additionalData,
       currency: {
@@ -33,7 +37,7 @@ export default class PaymentRepository {
     return this.rebuildEntity(result.body?.[0]);
   }
 
-  static async getPaymentByInvoice(invoice: string): Promise<Payment> {
+  static async getPaymentByInvoice(invoice: string) {
     const result = await supabase
       .from("payments")
       .select("*")
