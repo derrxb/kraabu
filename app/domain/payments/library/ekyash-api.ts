@@ -1,5 +1,5 @@
 import axios from "axios";
-import { enc, HmacSHA256, SHA256 } from "crypto-js";
+import { enc, HmacSHA256 } from "crypto-js";
 import { ekyash } from "~/config/index.server";
 
 /**
@@ -63,8 +63,6 @@ const getAuthorization = async (
   data: AuthorizationData
 ): Promise<AuthorizationResponse> => {
   const jwt = await getJWTToken();
-
-  console.log(enc.Base64.stringify(SHA256(data.pinHash)));
 
   const response = await axios.post(
     `${ekyash.api}/authorization`,
