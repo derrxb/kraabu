@@ -1,6 +1,8 @@
 import { json, LoaderFunction, useLoaderData } from "remix";
+import gigged from "~/assets/images/gigged-logo.png";
 import KrabuuHeader from "~/components/krabuu-header";
 import PaymentAmount from "~/components/payment-amount";
+import VendorHeader from "~/components/vendor-header";
 import Payment from "~/domain/payments/entities/payment";
 import RequestEkyashPaymentQrCode from "~/domain/payments/services/request-ekyash-payment-qr-code";
 
@@ -29,11 +31,15 @@ export default function Index() {
   return (
     <div className="h-full w-full flex items-center justify-center text-gray-800">
       <div className="my-auto leading-relaxed">
-        <KrabuuHeader />
-
-        <div className="flex flex-col border-[1px] container shadow-md rounded p-4 w-[560px] min-h-[480px]">
-          <h1 className="text-xl font-medium pb-2 text-gray-900">
-            GiggedBz is requesting payment for your order with EKyash.
+        <VendorHeader
+          name="GiggedBz"
+          logo={gigged}
+          url="http://gigged.bz"
+          description="Make life easier by hiring a Gigger to help"
+        />
+        <div className="flex flex-col border-[1px] container shadow-sm rounded p-4 w-[600px] min-h-[480px]">
+          <h1 className="text-2xl font-medium pb-2 text-gray-900 text-center">
+            Giggedbz is requesting payment for your order with E-Kyash.
           </h1>
 
           <PaymentAmount
@@ -42,24 +48,29 @@ export default function Index() {
             invoice={data.payment.invoice}
           />
 
-          <span className="text-medium text-base pb-4 text-gray-500">
-            Please scan the QR code to make payment with your EKyash app.
-          </span>
+          <hr className="border-2 rounded-full mb-4 w-40 self-center" />
 
           {data.payment.additionalData?.qrCodeUrl ? (
             <img
               src={data.payment.additionalData?.qrCodeUrl as string}
               alt="payment qr code"
+              className="w-40 self-center pb-4"
             />
           ) : (
-            <div className="w-full py-2 px-4 bg-red-200 rounded-md">
+            <div className="w-full py-2 px-4 bg-red-200 rounded-md pb-4">
               <span className="text-red-700">
                 Oh, no! Something unexpected happened. Don't worry, your wallet
                 has not been charged.
               </span>
             </div>
           )}
+
+          <span className="text-medium text-base pb-4 text-gray-500 text-center">
+            Please scan the QR code above to make payment with your E-Kyash app.
+          </span>
         </div>
+
+        <KrabuuHeader />
       </div>
     </div>
   );

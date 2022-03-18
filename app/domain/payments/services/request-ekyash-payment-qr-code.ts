@@ -20,23 +20,24 @@ export default class RequestEkyashPaymentQrCode {
       throw new Error("Payment with the given invoice does not exist.");
     }
 
+    if (pendingPayment.additionalData?.qrCodeUrl) {
+      console.log("Active URL currently exists...");
+      return pendingPayment;
+    }
+
     const session = await getAuthorization({
       sid: ekyash.credentials.SID,
       pinHash: ekyash.credentials["Pin Hash"],
-      pushKey: "",
+      pushKey: "{{pushkey}}",
     });
-
-    console.log(session);
 
     const paymentResponse = await createNewInvoice({
       amount: pendingPayment.currency.amount,
       description: pendingPayment.description,
       currency: "BZD",
       orderId: pendingPayment.invoice,
-      session: session.Session,
+      session: session.session,
     });
-
-    console.log(paymentResponse);
 
     const inProgressPayment = await PaymentRepository.setPaymentQrCodeUrl(
       pendingPayment,

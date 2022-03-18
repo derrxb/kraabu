@@ -41,14 +41,14 @@ type AuthorizationData = {
   /**
    * always provided as an empty string
    */
-  pushKey: "";
+  pushKey: string;
 };
 
 type AuthorizationResponse = {
   /**
    * This session ID that should be used for subsequent requests.
    */
-  Session: string;
+  session: string;
   firstName?: string;
   lastName?: string;
   /**
@@ -76,8 +76,7 @@ const getAuthorization = async (
     {
       pushkey: "",
       sid: String(data.sid),
-      pinHash:
-        "cd801fc54c8da4ee690cf00ed34f6bebcd801fc54c8da4ee690cf00ed34f6beb",
+      pinHash: ekyash.credentials["Pin Hash"],
     },
     {
       headers: {
@@ -86,8 +85,6 @@ const getAuthorization = async (
       },
     }
   );
-
-  console.log(response);
 
   return response.data as AuthorizationResponse;
 };

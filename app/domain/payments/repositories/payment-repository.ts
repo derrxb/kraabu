@@ -49,8 +49,10 @@ export default class PaymentRepository {
   static async setPaymentQrCodeUrl(payment: Payment, qrCodeUrl: string) {
     const result = await supabase
       .from("payments")
-      .upsert({ additionalData: { qrCodeUrl } })
+      .update({ additionalData: { qrCodeUrl } })
       .eq("invoice", payment.invoice);
+
+    console.log("DB: ", result);
 
     return this.rebuildEntity(result.body?.[0]);
   }

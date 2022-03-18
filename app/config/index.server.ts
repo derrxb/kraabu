@@ -19,7 +19,8 @@ const ekyash = {
   },
   credentials: {
     SID: 2324518403,
-    "Pin Hash": "cd801fc54c8da4ee690cf00ed34f6beb",
+    "Pin Hash":
+      "8d4fd24a970f49292076bf74df011e9f8d0e7850273666fcf4db458f1ee2d461",
     pinEncoded:
       "44c80bbde592aed7e2138b67ec71e94a5a22d39bc36d66c3373c1ea33013d396",
   },
