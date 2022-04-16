@@ -23,6 +23,7 @@ export const meta: MetaFunction = () => {
 /**
  * This URL's loader function is responsible for loading a
  * pending payment request and its QR payment code.
+ * NOTE: We need this to get values as query strings because we don't control how arcadier calls this endpoint.
  * @returns The page data
  */
 export const loader: LoaderFunction = async ({ request }) => {
