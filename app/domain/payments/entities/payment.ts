@@ -61,6 +61,15 @@ class Payment {
   canMarkInProgress() {
     return this.isPending();
   }
+
+  json() {
+    return {
+      invoice: this.invoice,
+      description: this.description,
+      status: this.status,
+      currency: this.currency,
+    };
+  }
 }
 
 export default Payment;

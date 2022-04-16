@@ -14,7 +14,7 @@ export let links: LinksFunction = () => {
 };
 
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: "Krabuu | Accept Payments in Belize Online" };
 };
 
 export default function App() {

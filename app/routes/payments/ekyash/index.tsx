@@ -49,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
     const payment = await new CompletePendingEkyashPayment(request).call();
 
     return redirect(
-      `https://giggedbz.arcadier.io/user/checkout/current-status?invoiceNo=${payment.invoice}`
+      `https://giggedbz.arcadier.io/user/checkout/current-status?invoiceNo=${payment?.invoice}`
     );
   } catch (e) {
     return json(
