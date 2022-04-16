@@ -10,13 +10,13 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center">
-      <div className="flex flex-col text-left px-4">
-        <h1 className="font-bold text-6xl tracking-widest text-indigo-600">
+    <div className="flex h-full w-full flex-col items-center justify-center">
+      <div className="flex flex-col px-4 text-left">
+        <h1 className="text-6xl font-bold tracking-widest text-indigo-600">
           Krabuu Checkout
         </h1>
 
-        <h2 className="font-bold text-3xl text-gray-600 tracking-wide">
+        <h2 className="text-3xl font-bold tracking-wide text-gray-600">
           Online Payments in Belize made simple
         </h2>
       </div>

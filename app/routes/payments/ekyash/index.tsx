@@ -90,8 +90,8 @@ export default function Index() {
   }, [paymentStatus]);
 
   return (
-    <div className="h-full w-full flex md:flex-row text-gray-800">
-      <div className="flex flex-col md:w-1/2 md:px-32 h-full px-4 md:py-10 bg-slate-100">
+    <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
+      <div className="flex h-full flex-col bg-slate-100 px-12 md:w-1/2 md:px-32 md:py-10">
         <div className="pb-8">
           <VendorHeader
             name="GiggedBz"
@@ -101,7 +101,7 @@ export default function Index() {
           />
         </div>
 
-        <span className="text-sm uppercase text-gray-500 mb-2">
+        <span className="mb-2 text-sm uppercase text-gray-500">
           Order Details
         </span>
 
@@ -110,7 +110,7 @@ export default function Index() {
         </h2>
 
         <div className="flex flex-row items-end ">
-          <span className="text-2xl font-bold text-indigo-500 mr-2">
+          <span className="mr-2 text-2xl font-bold text-indigo-500">
             ${data.payment.currency.amount}
           </span>
 
@@ -119,7 +119,7 @@ export default function Index() {
           </span>
         </div>
 
-        <div className="w-[300px] rounded-lg bg-white py-8 justify-center my-auto">
+        <div className="my-auto w-[300px] justify-center rounded-lg bg-white py-8">
           <img src={PayOnline} className="w-[280px]" />
         </div>
 
@@ -128,12 +128,12 @@ export default function Index() {
         </div>
       </div>
 
-      <div className="flex flex-col h-full md:w-1/2 my-auto leading-relaxed md:px-32 md:py-20 md:pt-36">
-        <h1 className="font-bold text-3xl pb-2 text-gray-800 pt-5">
+      <div className="my-auto flex h-full flex-col leading-relaxed md:w-1/2 md:px-32 md:py-20 md:pt-36">
+        <h1 className="pb-2 pt-5 text-3xl font-bold text-gray-800">
           Confirm your order by completing payment with your EKyash App.
         </h1>
 
-        <span className="text-medium text-base pb-16 text-gray-500">
+        <span className="text-medium pb-16 text-base text-gray-500">
           Scan the QR code to complete payment with your E-Kyash app.
         </span>
 
@@ -141,10 +141,10 @@ export default function Index() {
           <img
             src={data.payment.additionalData?.qrCodeUrl as string}
             alt="payment qr code"
-            className="w-72 h-72 -m-[14px] self-center"
+            className="-m-[14px] h-72 w-72 self-center"
           />
         ) : (
-          <div className="w-full py-2 px-4 bg-red-200 rounded-md pb-4">
+          <div className="w-full rounded-md bg-red-200 py-2 px-4 pb-4">
             <span className="text-red-700">
               Oh, no! Something unexpected happened. Don't worry, your wallet
               has not been charged.
