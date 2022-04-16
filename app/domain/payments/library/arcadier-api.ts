@@ -1,4 +1,10 @@
-type ArcadierPaymentRequest = {
+enum ArcadierRoutes {
+  TransactionStatus = "https://giggedbz.arcadier.io/user/checkout/transaction-status",
+  OrderStatus = "https://giggedbz.arcadier.io/user/checkout/current-status",
+  OrderDetails = "https://giggedbz.arcadier.io/user/checkout/order-details",
+}
+
+export type ArcadierPaymentRequest = {
   /**
    * Unique identifier for the invoice
    */
@@ -31,6 +37,6 @@ const getTransactionDetailsURL = ({
 }: Pick<ArcadierPaymentRequest, "gateway" | "invoiceno" | "hashkey"> & {
   paykey: string;
 }) =>
-  `https://giggedbz.arcadier.io/user/checkout/order-details?gateway=${gateway}&invoiceNo=${invoiceno}&paykey=${paykey}&hashkey=${hashkey}`;
+  `${ArcadierRoutes.OrderDetails}?gateway=${gateway}&invoiceNo=${invoiceno}&paykey=${paykey}&hashkey=${hashkey}`;
 
-export { getTransactionDetailsURL, ArcadierPaymentRequest };
+export { getTransactionDetailsURL, ArcadierRoutes };

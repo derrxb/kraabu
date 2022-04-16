@@ -1,12 +1,31 @@
-import { json, LoaderFunction, useLoaderData } from "remix";
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+} from "remix";
 import gigged from "~/assets/images/gigged-logo.png";
 import KrabuuHeader from "~/components/krabuu-header";
 import PaymentAmount from "~/components/payment-amount";
 import VendorHeader from "~/components/vendor-header";
 import Payment from "~/domain/payments/entities/payment";
+import CompletePendingEkyashPayment from "~/domain/payments/services/complete-pending-ekyash-payment";
 import RequestEkyashPaymentQrCode from "~/domain/payments/services/request-ekyash-payment-qr-code";
 
-export let loader: LoaderFunction = async ({ request }) => {
+export const meta: MetaFunction = () => {
+  return {
+    title: "GiggedBZ Payment Request |  Krabuu - Easily Pay online in Belize",
+  };
+};
+
+/**
+ * This URL's loader function is responsible for loading a
+ * pending payment request and its QR payment code.
+ * @returns The page data
+ */
+export const loader: LoaderFunction = async ({ request }) => {
   const searchParams = new URL(request.url).searchParams;
   const invoiceNo = searchParams.get("invoiceNo");
   const paymentKey = searchParams.get("paykey");
@@ -25,6 +44,23 @@ export let loader: LoaderFunction = async ({ request }) => {
   });
 };
 
+export const action: ActionFunction = async ({ request }) => {
+  try {
+    const payment = await new CompletePendingEkyashPayment(request).call();
+
+    return redirect(
+      `https://giggedbz.arcadier.io/user/checkout/current-status?invoiceNo=${payment.invoice}`
+    );
+  } catch (e) {
+    return json(
+      {
+        message: "There was an error with completing your payment.",
+      },
+      404
+    );
+  }
+};
+
 export default function Index() {
   const data = useLoaderData() as { payment: Payment };
 
@@ -37,6 +73,7 @@ export default function Index() {
           url="http://gigged.bz"
           description="Make life easier by hiring a Gigger to help"
         />
+
         <div className="flex flex-col border-[1px] container shadow-sm rounded p-4 w-[600px] min-h-[480px]">
           <h1 className="text-2xl font-medium pb-2 text-gray-900 text-center">
             Giggedbz is requesting payment for your order with E-Kyash.
