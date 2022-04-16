@@ -1,10 +1,10 @@
 import type { ArcadierPaymentRequest } from "~/domain/payments/library/arcadier-api";
-import createPendingEkyashPaymentSchema from "~/requests/create-pending-ekyash-payment";
-import Payment from "../entities/payment";
-import ArcadierPaymentMapper from "../mappers/arcadier-payment-mapper";
-import PaymentRepository from "../repositories/payment-repository";
+import createdPendingGiggedPaymentSchema from "~/requests/create-pending-gigged-payment";
+import Payment from "../../entities/payment";
+import ArcadierPaymentMapper from "../../mappers/arcadier-payment-mapper";
+import PaymentRepository from "../../repositories/payment-repository";
 
-export default class CreatePendingEkyashPayment {
+export default class CreatePendingGiggedPayment {
   private request: Request;
   private payment: ArcadierPaymentRequest | null;
 
@@ -16,7 +16,7 @@ export default class CreatePendingEkyashPayment {
   async verifyPaymentParams() {
     const body = await this.request.json();
 
-    this.payment = await createPendingEkyashPaymentSchema.validateAsync({
+    this.payment = await createdPendingGiggedPaymentSchema.validateAsync({
       ...body,
       total: Number(body.total).toString(), // ensure string
     });
@@ -26,7 +26,7 @@ export default class CreatePendingEkyashPayment {
     await this.verifyPaymentParams();
 
     if (!this.payment) {
-      throw new Error("No data from arcadier received.");
+      throw new Error("No data from GiggedBz received.");
     }
 
     const pendingPayment = new ArcadierPaymentMapper().getPending(this.payment);

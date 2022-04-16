@@ -1,6 +1,6 @@
 import joi from "joi";
 
-const createPendingEkyashPaymentSchema = joi.object({
+const createdPendingGiggedPaymentSchema = joi.object({
   invoiceno: joi.string().required(),
   currency: joi.string().required(),
   total: joi.string().required(),
@@ -8,4 +8,4 @@ const createPendingEkyashPaymentSchema = joi.object({
   gateway: joi.string().required(),
 });
 
-export default createPendingEkyashPaymentSchema;
+export default createdPendingGiggedPaymentSchema;
