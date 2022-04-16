@@ -7,12 +7,12 @@ type Props = {
 
 export default function VendorHeader({ name, logo, description, url }: Props) {
   return (
-    <div className="flex flex-col pt-4 mb-4">
+    <div className="mb-4 flex flex-col pt-4">
       <a href={url} target="_blank" rel="noreferrer" className="w-fit">
-        <img src={logo} alt={`${name} logo`} className="w-36 h-auto mb-1" />
+        <img src={logo} alt={`${name} logo`} className="mb-1 h-auto w-36" />
       </a>
 
-      <span className="text-gray-600 font-medium text-[10px]">
+      <span className="text-[10px] font-medium text-gray-600">
         {description}
       </span>
     </div>

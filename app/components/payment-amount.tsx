@@ -5,9 +5,9 @@ type Props = {
 
 export default function PaymentAmount({ amount, type }: Props) {
   return (
-    <div className="w-full flex flex-col items-center mb-4">
-      <div className="flex flex-row items-end mr-2">
-        <span className="text-4xl font-bold text-indigo-500 mr-2">
+    <div className="mb-4 flex w-full flex-col items-center">
+      <div className="mr-2 flex flex-row items-end">
+        <span className="mr-2 text-4xl font-bold text-indigo-500">
           ${amount}
         </span>
 
