@@ -101,6 +101,8 @@ export default function Index() {
           />
         </div>
 
+        <img src={PayOnline} className="mb-8 w-[280px]" />
+
         <span className="mb-2 text-sm uppercase text-gray-500">
           Order Details
         </span>
@@ -117,10 +119,6 @@ export default function Index() {
           <span className="text-xl font-medium text-indigo-400">
             {data.payment.currency.type}
           </span>
-        </div>
-
-        <div className="my-auto w-[300px] justify-center rounded-lg bg-white py-8">
-          <img src={PayOnline} className="w-[280px]" />
         </div>
 
         <div className="mt-auto">
