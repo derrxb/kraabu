@@ -52,8 +52,6 @@ export default class PaymentRepository {
       .update({ additionalData: { qrCodeUrl } })
       .eq("invoice", payment.invoice);
 
-    console.log("DB: ", result);
-
     return this.rebuildEntity(result.body?.[0]);
   }
 }

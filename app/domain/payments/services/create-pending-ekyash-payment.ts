@@ -18,6 +18,7 @@ export default class CreatePendingEkyashPayment {
 
     this.payment = await createPendingEkyashPaymentSchema.validateAsync({
       ...body,
+      total: Number(body.total).toString(), // ensure string
     });
   }
 
@@ -31,6 +32,6 @@ export default class CreatePendingEkyashPayment {
     const pendingPayment = new ArcadierPaymentMapper().getPending(this.payment);
     const payment = await PaymentRepository.createPending(pendingPayment);
 
-    return payment;
+    return payment as Payment;
   }
 }
