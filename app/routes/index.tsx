@@ -2,7 +2,7 @@ import { MetaFunction } from "remix";
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Krabuu | Online Payments in Belize made simple",
+    title: "Krabuu | Online Payments made simple",
     description:
       "Connecting your website to Belize's various E-Wallets have never been easier.",
   };
@@ -15,6 +15,7 @@ export default function Index() {
         <h1 className="font-bold text-6xl tracking-widest text-indigo-600">
           Krabuu Checkout
         </h1>
+
         <h2 className="font-bold text-3xl text-gray-600 tracking-wide">
           Online Payments in Belize made simple
         </h2>
