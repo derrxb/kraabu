@@ -1,17 +1,17 @@
+import axios from "axios";
+import React from "react";
 import {
-  ActionFunction,
   json,
   LoaderFunction,
   MetaFunction,
-  redirect,
   useLoaderData,
+  useSubmit,
 } from "remix";
 import gigged from "~/assets/images/gigged-logo.png";
 import KrabuuHeader from "~/components/krabuu-header";
 import PaymentAmount from "~/components/payment-amount";
 import VendorHeader from "~/components/vendor-header";
-import Payment from "~/domain/payments/entities/payment";
-import CompletePendingEkyashPayment from "~/domain/payments/services/complete-pending-ekyash-payment";
+import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
 import RequestEkyashPaymentQrCode from "~/domain/payments/services/request-ekyash-payment-qr-code";
 
 export const meta: MetaFunction = () => {
@@ -45,25 +45,50 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-export const action: ActionFunction = async ({ request }) => {
-  try {
-    const payment = await new CompletePendingEkyashPayment(request).call();
-
-    return redirect(
-      `https://giggedbz.arcadier.io/user/checkout/current-status?invoiceNo=${payment?.invoice}`
-    );
-  } catch (e) {
-    return json(
-      {
-        message: "There was an error with completing your payment.",
-      },
-      404
-    );
-  }
+const setIntervalAsync = (
+  timer: NodeJS.Timeout | null,
+  fn: any,
+  ms: number
+) => {
+  fn().then(() => {
+    timer = setTimeout(() => setIntervalAsync(timer, fn, ms), ms);
+  });
 };
 
 export default function Index() {
   const data = useLoaderData() as { payment: Payment };
+  const [paymentStatus, setPaymentStatus] =
+    React.useState<PaymentStatus | null>(null);
+
+  const submit = useSubmit();
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    setIntervalAsync(
+      timer,
+      async () => {
+        const result = await axios.get(
+          `/payments/ekyash/${data.payment.invoice}/status`
+        );
+
+        if (result.data?.status === PaymentStatus.Completed) {
+          // setPaymentStatus(PaymentStatus.Completed);
+          submit(null, {
+            method: "post",
+            action: `/payments/ekyash/${data.payment.invoice}/completed`,
+          });
+          return;
+        }
+      },
+      1500
+    );
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [paymentStatus]);
 
   return (
     <div className="h-full w-full flex items-center justify-center text-gray-800">

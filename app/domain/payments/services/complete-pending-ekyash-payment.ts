@@ -1,23 +1,24 @@
+import { Params } from "react-router";
 import Failure from "~/lib/failure";
 import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";
 import Payment from "../entities/payment";
 import PaymentRepository from "../repositories/payment-repository";
 
 export default class CompletePendingEkyashPayment {
-  private request: Request;
+  private params: Params;
   private payment: Payment | null;
   private invoice: string | null = null;
 
-  constructor(request: Request) {
-    this.request = request;
+  constructor(params: Params) {
+    this.params = params;
     this.payment = null;
   }
 
   async verifyPaymentParams() {
-    const body = await this.request.json();
+    const { id } = this.params;
     const { invoiceNo } =
       await completePendingEkyashPaymentSchema.validateAsync({
-        invoiceNo: body?.invoiceNo,
+        invoiceNo: id,
       });
 
     this.invoice = invoiceNo;

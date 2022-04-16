@@ -1,7 +1,7 @@
 export const enum PaymentStatus {
   Pending,
   InProgress,
-  completed,
+  Completed,
 }
 
 type Props = {
