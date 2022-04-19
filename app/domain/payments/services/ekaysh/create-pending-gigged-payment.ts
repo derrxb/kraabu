@@ -29,7 +29,10 @@ export default class CreatePendingGiggedPayment {
       throw new Error("No data from GiggedBz received.");
     }
 
-    const pendingPayment = new ArcadierPaymentMapper().getPending(this.payment);
+    const pendingPayment = new ArcadierPaymentMapper().getInitialPayment(
+      this.payment
+    );
+
     const payment = await PaymentRepository.createPending(pendingPayment);
 
     return payment as Payment;

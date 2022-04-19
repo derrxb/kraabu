@@ -4,6 +4,23 @@ export const enum PaymentStatus {
   Completed,
 }
 
+type ArcadierGiggedIntegrationAdditionalData = {
+  gateway?: string;
+  hashkey?: string;
+  paymentKey?: string;
+  payer?: {
+    name: string;
+    email: string;
+  };
+  order?: {
+    id: string;
+    name: string;
+    quantity: number;
+    description: string;
+    price: number;
+  };
+};
+
 type Props = {
   status: PaymentStatus;
   user: string;
@@ -15,9 +32,7 @@ type Props = {
   description: string;
   createdAt?: any;
   invoice: string;
-  additionalData: {
-    [key: string]: string | number;
-  };
+  additionalData: ArcadierGiggedIntegrationAdditionalData;
 };
 
 class Payment {
