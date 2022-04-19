@@ -12,7 +12,7 @@ import PayOnline from "~/assets/images/undraw-pay-online.svg";
 import KrabuuHeader from "~/components/krabuu-header";
 import VendorHeader from "~/components/vendor-header";
 import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
-import RequestEkyashPaymentQrCode from "~/domain/payments/services/request-ekyash-payment-qr-code";
+import GetGiggedBzPayment from "~/domain/payments/services/ekaysh/get-gigged-bz-payment";
 
 export const meta: MetaFunction = () => {
   return {
@@ -28,17 +28,7 @@ export const meta: MetaFunction = () => {
  */
 export const loader: LoaderFunction = async ({ request }) => {
   const searchParams = new URL(request.url).searchParams;
-  const invoiceNo = searchParams.get("invoiceNo");
-  const paymentKey = searchParams.get("paykey");
-
-  if (!invoiceNo || !paymentKey) {
-    return json({ message: "no payment with this invoice no" }, 404);
-  }
-
-  const payment = await new RequestEkyashPaymentQrCode(
-    invoiceNo,
-    paymentKey
-  ).call();
+  const payment = await new GetGiggedBzPayment(searchParams).call();
 
   return json({
     payment: payment,

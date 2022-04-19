@@ -5,6 +5,7 @@ export const enum PaymentStatus {
 }
 
 type ArcadierGiggedIntegrationAdditionalData = {
+  qrCodeUrl?: string;
   gateway?: string;
   hashkey?: string;
   paymentKey?: string;
@@ -71,6 +72,10 @@ class Payment {
 
   isPending() {
     return this.status === PaymentStatus.Pending;
+  }
+
+  canBePaid() {
+    return !!this.additionalData.qrCodeUrl && !this.additionalData.paymentKey;
   }
 
   canMarkInProgress() {
