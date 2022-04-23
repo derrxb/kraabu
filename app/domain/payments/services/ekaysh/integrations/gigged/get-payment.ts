@@ -1,8 +1,5 @@
 import { ekyash } from "~/config/index.server";
-import {
-  createNewInvoice,
-  getAuthorization,
-} from "~/domain/payments/library/ekyash-api";
+import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 import getGiggedBzPaymentSchema from "~/requests/get-gigged-bz-payment";
@@ -44,20 +41,12 @@ export default class GetPayment {
       return payment;
     }
 
-    const session = await getAuthorization({
-      sid: ekyash.credentials.SID,
-      pinHash: ekyash.credentials["Pin Hash"],
-      pushKey: "{{pushkey}}",
-    });
+    const ekyashMapper = new EKyashMapper(
+      ekyash.credentials.SID,
+      ekyash.credentials["Pin Hash"]
+    );
 
-    const paymentResponse = await createNewInvoice({
-      amount: payment.currency.amount,
-      description: payment.description,
-      currency: "BZD",
-      orderId: payment.invoice,
-      session: session.session,
-    });
-
+    const paymentResponse = await ekyashMapper.createInvoice(payment);
     const inProgressPayment = await PaymentRepository.setPaymentQrCodeUrl(
       payment,
       paymentResponse.qrUrl
