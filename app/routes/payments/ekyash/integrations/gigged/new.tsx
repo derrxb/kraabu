@@ -1,5 +1,5 @@
 import { ActionFunction, json } from "remix";
-import CreatePendingGiggedPayment from "~/domain/payments/services/ekaysh/create-pending-gigged-payment";
+import CreatePendingGiggedPayment from "~/domain/payments/services/ekaysh/integrations/gigged/create-pending-gigged-payment";
 import { HTTP_CODE } from "~/representers/http-reponse-representer";
 
 export const action: ActionFunction = async ({ request }) => {

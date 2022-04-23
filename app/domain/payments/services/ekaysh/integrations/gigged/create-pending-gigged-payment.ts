@@ -1,8 +1,8 @@
+import Payment from "~/domain/payments/entities/payment";
 import type { ArcadierPaymentRequest } from "~/domain/payments/library/arcadier-api";
+import ArcadierPaymentMapper from "~/domain/payments/mappers/arcadier-payment-mapper";
+import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import createdPendingGiggedPaymentSchema from "~/requests/create-pending-gigged-payment";
-import Payment from "../../entities/payment";
-import ArcadierPaymentMapper from "../../mappers/arcadier-payment-mapper";
-import PaymentRepository from "../../repositories/payment-repository";
 
 export default class CreatePendingGiggedPayment {
   private request: Request;

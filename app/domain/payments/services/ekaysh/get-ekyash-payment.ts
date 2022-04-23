@@ -1,7 +1,7 @@
 import { Params } from "react-router";
+import Payment from "~/domain/payments/entities/payment";
+import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
-import Payment from "../entities/payment";
-import PaymentRepository from "../repositories/payment-repository";
 
 export default class GetEKyashPayment {
   private params: Params;

@@ -1,11 +1,11 @@
+import Payment from "~/domain/payments/entities/payment";
+import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";
-import Payment from "../entities/payment";
 import {
   CompletedPaymentCallbackData,
   TransactionStatus,
-} from "../library/ekyash-api";
-import PaymentRepository from "../repositories/payment-repository";
+} from "../../library/ekyash-api";
 
 /**
  * This uses the data obtained from EKyash to mark a payment as completed

@@ -1,5 +1,5 @@
 import { json, LoaderFunction } from "remix";
-import GetEKyashPayment from "~/domain/payments/services/get-ekyash-payment";
+import GetEKyashPayment from "~/domain/payments/services/ekaysh/get-ekyash-payment";
 import { HTTP_CODE } from "~/representers/http-reponse-representer";
 
 export const loader: LoaderFunction = async ({ params }) => {
