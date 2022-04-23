@@ -1,12 +1,12 @@
 import Payment from "~/domain/payments/entities/payment";
-import type { ArcadierPaymentRequest } from "~/domain/payments/library/arcadier-api";
-import ArcadierPaymentMapper from "~/domain/payments/mappers/arcadier-payment-mapper";
+import type { GiggedOrderHandshake } from "~/domain/payments/library/gigged-api";
+import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import createdPendingGiggedPaymentSchema from "~/requests/create-pending-gigged-payment";
 
 export default class CreatePayment {
   private request: Request;
-  private payment: ArcadierPaymentRequest | null;
+  private payment: GiggedOrderHandshake | null;
 
   constructor(request: Request) {
     this.request = request;
@@ -29,9 +29,7 @@ export default class CreatePayment {
       throw new Error("No data from GiggedBz received.");
     }
 
-    const pendingPayment = new ArcadierPaymentMapper().getInitialPayment(
-      this.payment
-    );
+    const pendingPayment = new GiggedMapper().getInitialPayment(this.payment);
 
     const payment = await PaymentRepository.createPending(pendingPayment);
 

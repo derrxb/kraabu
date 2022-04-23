@@ -5,7 +5,7 @@ export const enum PaymentStatus {
   Failure,
 }
 
-type ArcadierGiggedIntegrationAdditionalData = {
+type GiggedOrderDetails = {
   qrCodeUrl?: string;
   gateway?: string;
   hashkey?: string;
@@ -34,7 +34,7 @@ type Props = {
   description: string;
   createdAt?: any;
   invoice: string;
-  additionalData: ArcadierGiggedIntegrationAdditionalData;
+  additionalData: GiggedOrderDetails;
 };
 
 class Payment {

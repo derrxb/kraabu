@@ -1,10 +1,10 @@
-enum ArcadierRoutes {
+export enum GiggedRoutes {
   TransactionStatus = "https://giggedbz.arcadier.io/user/checkout/transaction-status",
   OrderStatus = "https://giggedbz.arcadier.io/user/checkout/current-status",
   OrderDetails = "https://giggedbz.arcadier.io/user/checkout/order-details",
 }
 
-export type ArcadierPaymentRequest = {
+export type GiggedOrderHandshake = {
   /**
    * Unique identifier for the invoice
    */
@@ -28,15 +28,3 @@ export type ArcadierPaymentRequest = {
 };
 
 export type CreatePaymentResponse = string;
-
-const getTransactionDetailsURL = ({
-  invoiceno,
-  gateway,
-  hashkey,
-  paykey,
-}: Pick<ArcadierPaymentRequest, "gateway" | "invoiceno" | "hashkey"> & {
-  paykey: string;
-}) =>
-  `${ArcadierRoutes.OrderDetails}?gateway=${gateway}&invoiceNo=${invoiceno}&paykey=${paykey}&hashkey=${hashkey}`;
-
-export { getTransactionDetailsURL, ArcadierRoutes };

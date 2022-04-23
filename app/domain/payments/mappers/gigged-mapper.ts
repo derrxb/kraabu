@@ -1,10 +1,7 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
 import Payment, { PaymentStatus } from "../entities/payment";
-import {
-  ArcadierPaymentRequest,
-  ArcadierRoutes,
-} from "../library/arcadier-api";
+import { GiggedOrderHandshake, GiggedRoutes } from "../library/gigged-api";
 
 type OrderItem = {
   Id: string;
@@ -37,8 +34,8 @@ type OrderDetails = {
   Payer: Payer;
 };
 
-class ArcadierPaymentMapper {
-  getInitialPayment(data: ArcadierPaymentRequest) {
+class GiggedMapper {
+  getInitialPayment(data: GiggedOrderHandshake) {
     return this.buildInitialEntity(data);
   }
 
@@ -48,10 +45,10 @@ class ArcadierPaymentMapper {
    * @returns The initial payment data send by arcadier
    */
   async findOrderWithPaymentKey(
-    data: ArcadierPaymentRequest & { paymentKey: string }
+    data: GiggedOrderHandshake & { paymentKey: string }
   ) {
     const response = await axios.get(
-      `${ArcadierRoutes.OrderStatus}?gateway=${data.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${data.hashkey}`
+      `${GiggedRoutes.OrderStatus}?gateway=${data.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${data.hashkey}`
     );
 
     const order = response.data as OrderDetails;
@@ -59,7 +56,7 @@ class ArcadierPaymentMapper {
     return this.buildEntity(order);
   }
 
-  private buildInitialEntity(data: ArcadierPaymentRequest): Payment {
+  private buildInitialEntity(data: GiggedOrderHandshake): Payment {
     return new Payment({
       user: "giggedBz",
       status: PaymentStatus.Pending,
@@ -114,4 +111,4 @@ class ArcadierPaymentMapper {
   }
 }
 
-export default ArcadierPaymentMapper;
+export default GiggedMapper;
