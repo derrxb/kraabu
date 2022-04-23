@@ -5,11 +5,15 @@
     "**/*.tsx"
   ],
   "compilerOptions": {
+    "types": [
+      "vitest/globals"
+    ],
     "lib": [
       "DOM",
       "DOM.Iterable",
       "ES2019"
     ],
+    "module": "CommonJS",
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -17,6 +21,7 @@
     "resolveJsonModule": true,
     "target": "ES2019",
     "strict": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
