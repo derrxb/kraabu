@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   json,
   LoaderFunction,
@@ -12,6 +12,7 @@ import PayOnline from "~/assets/images/undraw-pay-online.svg";
 import KrabuuHeader from "~/components/krabuu-header";
 import VendorHeader from "~/components/vendor-header";
 import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
+import { setIntervalAsync } from "~/domain/payments/library/async-internval";
 import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
 
 export const meta: MetaFunction = () => {
@@ -35,23 +36,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-const setIntervalAsync = (
-  timer: NodeJS.Timeout | null,
-  fn: any,
-  ms: number
-) => {
-  fn().then(() => {
-    timer = setTimeout(() => setIntervalAsync(timer, fn, ms), ms);
-  });
-};
-
 export default function Index() {
   const data = useLoaderData() as { payment: Payment };
-  const [paymentStatus, setPaymentStatus] =
-    React.useState<PaymentStatus | null>(null);
-
   const submit = useSubmit();
-  React.useEffect(() => {
+  useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
     setIntervalAsync(
@@ -77,7 +65,7 @@ export default function Index() {
         clearTimeout(timer);
       }
     };
-  }, [paymentStatus]);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
