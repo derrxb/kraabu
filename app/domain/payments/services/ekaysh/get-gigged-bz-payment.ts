@@ -50,8 +50,6 @@ export default class GetGiggedBzPayment {
       pushKey: "{{pushkey}}",
     });
 
-    console.log(session);
-
     const paymentResponse = await createNewInvoice({
       amount: payment.currency.amount,
       description: payment.description,

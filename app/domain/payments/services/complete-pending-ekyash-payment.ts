@@ -1,27 +1,38 @@
-import { Params } from "react-router";
 import Failure from "~/lib/failure";
 import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";
 import Payment from "../entities/payment";
+import {
+  CompletedPaymentCallbackData,
+  TransactionStatus,
+} from "../library/ekyash-api";
 import PaymentRepository from "../repositories/payment-repository";
 
+/**
+ * This uses the data obtained from EKyash to mark a payment as completed
+ * using the callback options provided by EKyash.
+ */
 export default class CompletePendingEkyashPayment {
-  private params: Params;
+  private request: Request;
   private payment: Payment | null;
   private invoice: string | null = null;
+  private paymentStatus: CompletedPaymentCallbackData | null;
 
-  constructor(params: Params) {
-    this.params = params;
+  constructor(request: Request) {
+    this.request = request;
     this.payment = null;
+    this.paymentStatus = null;
   }
 
   async verifyPaymentParams() {
-    const { id } = this.params;
-    const { invoiceNo } =
+    const body = await this.request.json();
+    const validatedParams =
       await completePendingEkyashPaymentSchema.validateAsync({
-        invoiceNo: id,
+        ...body,
       });
 
-    this.invoice = invoiceNo;
+    this.paymentStatus = {
+      ...validatedParams,
+    };
   }
 
   async setPayment() {
@@ -35,9 +46,28 @@ export default class CompletePendingEkyashPayment {
     }
   }
 
+  async setPaymentAsAcceptedOrRejected() {
+    switch (this.paymentStatus?.statusPay) {
+      case TransactionStatus.Pending:
+        return;
+      case TransactionStatus.Accepted:
+        await PaymentRepository.setPaymentAsCompleted(this.payment as Payment);
+        break;
+      case TransactionStatus.Declined:
+        await PaymentRepository.setPaymentAsRejected(this.payment as Payment);
+        break;
+      default:
+        throw new Failure(
+          "bad_request",
+          "Could not complete this request as an unknown `statusPay` was provided."
+        );
+    }
+  }
+
   async call() {
     await this.verifyPaymentParams();
     await this.setPayment();
+    await this.setPaymentAsAcceptedOrRejected();
 
     return this.payment;
   }

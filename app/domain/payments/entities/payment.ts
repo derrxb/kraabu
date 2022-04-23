@@ -2,6 +2,7 @@ export const enum PaymentStatus {
   Pending,
   InProgress,
   Completed,
+  Failure,
 }
 
 type ArcadierGiggedIntegrationAdditionalData = {

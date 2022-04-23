@@ -227,4 +227,18 @@ const uploadInvoiceImage = async (data: UploadInvoiceImageData) => {
   return response.data as UploadInvoiceImageResponse;
 };
 
+export enum TransactionStatus {
+  Pending,
+  Declined,
+  Accepted,
+}
+
+export type CompletedPaymentCallbackData = {
+  orderId: string;
+  invoiceId: string;
+  transactionID: string;
+  statusPay: TransactionStatus;
+  hash: string;
+};
+
 export { getJWTToken, getAuthorization, createNewInvoice, uploadInvoiceImage };

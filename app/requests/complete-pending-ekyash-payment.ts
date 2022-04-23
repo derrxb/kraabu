@@ -1,7 +1,11 @@
 import joi from "joi";
 
 const completePendingEkyashPaymentSchema = joi.object({
-  invoiceNo: joi.string().required(),
+  orderId: joi.string().required(),
+  invoiceId: joi.string().required(),
+  transactionId: joi.string().required(),
+  statusPay: joi.number().required(),
+  hash: joi.string().required(),
 });
 
 export default completePendingEkyashPaymentSchema;

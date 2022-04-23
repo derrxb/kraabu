@@ -1,5 +1,6 @@
 import { supabase } from "~/config/index.server";
-import Payment from "../entities/payment";
+import { Tables } from ".";
+import Payment, { PaymentStatus } from "../entities/payment";
 
 export default class PaymentRepository {
   static async rebuildEntity(data: any) {
@@ -22,7 +23,7 @@ export default class PaymentRepository {
   }
 
   static async createPending(data: Payment) {
-    const result = await supabase.from("payments").insert([
+    const result = await supabase.from(Tables.Payments).insert([
       {
         additionalData: data.additionalData,
         amount: data.currency.amount,
@@ -39,7 +40,7 @@ export default class PaymentRepository {
 
   static async getPaymentByInvoice(invoice: string) {
     const result = await supabase
-      .from("payments")
+      .from(Tables.Payments)
       .select("*")
       .eq("invoice", invoice);
 
@@ -48,8 +49,32 @@ export default class PaymentRepository {
 
   static async setPaymentQrCodeUrl(payment: Payment, qrCodeUrl: string) {
     const result = await supabase
-      .from("payments")
-      .update({ additionalData: { qrCodeUrl } })
+      .from(Tables.Payments)
+      .update({
+        additionalData: { qrCodeUrl, ...(payment.additionalData || {}) },
+      })
+      .eq("invoice", payment.invoice);
+
+    return this.rebuildEntity(result.body?.[0]);
+  }
+
+  static async setPaymentAsCompleted(payment: Payment) {
+    const result = await supabase
+      .from(Tables.Payments)
+      .update({
+        status: PaymentStatus.Completed,
+      } as Partial<Payment>)
+      .eq("invoice", payment.invoice);
+
+    return this.rebuildEntity(result.body?.[0]);
+  }
+
+  static async setPaymentAsRejected(payment: Payment) {
+    const result = await supabase
+      .from(Tables.Payments)
+      .update({
+        status: PaymentStatus.Failure,
+      } as Partial<Payment>)
       .eq("invoice", payment.invoice);
 
     return this.rebuildEntity(result.body?.[0]);
