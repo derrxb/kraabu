@@ -1,10 +1,10 @@
 import { ActionFunction, json } from "remix";
-import CompletePendingEkyashPayment from "~/domain/payments/services/ekaysh/complete-pending-ekyash-payment";
-import { HTTP_CODE } from "~/representers/http-reponse-representer";
+import CompletePayment from "~/domain/payments/services/ekaysh/complete-payment";
+import { HTTP_CODE } from "~/representers/http-response-representer";
 
 export const action: ActionFunction = async ({ request }) => {
   try {
-    await new CompletePendingEkyashPayment(request).call();
+    await new CompletePayment(request).call();
   } catch (e) {
     return json(
       { message: "Something unexpected happened" },

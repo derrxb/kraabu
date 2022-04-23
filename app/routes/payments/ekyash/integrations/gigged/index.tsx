@@ -12,7 +12,7 @@ import PayOnline from "~/assets/images/undraw-pay-online.svg";
 import KrabuuHeader from "~/components/krabuu-header";
 import VendorHeader from "~/components/vendor-header";
 import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
-import GetGiggedBzPayment from "~/domain/payments/services/ekaysh/get-gigged-bz-payment";
+import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
 
 export const meta: MetaFunction = () => {
   return {
@@ -28,7 +28,7 @@ export const meta: MetaFunction = () => {
  */
 export const loader: LoaderFunction = async ({ request }) => {
   const searchParams = new URL(request.url).searchParams;
-  const payment = await new GetGiggedBzPayment(searchParams).call();
+  const payment = await new GetPayment(searchParams).call();
 
   return json({
     payment: payment,

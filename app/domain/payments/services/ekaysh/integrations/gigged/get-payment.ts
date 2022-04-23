@@ -7,7 +7,7 @@ import PaymentRepository from "~/domain/payments/repositories/payment-repository
 import Failure from "~/lib/failure";
 import getGiggedBzPaymentSchema from "~/requests/get-gigged-bz-payment";
 
-export default class GetGiggedBzPayment {
+export default class GetPayment {
   private params: URLSearchParams;
   private invoiceNo?: string;
   private paymentKey?: string;

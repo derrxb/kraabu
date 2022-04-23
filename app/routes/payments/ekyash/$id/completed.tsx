@@ -7,7 +7,6 @@ export const action: ActionFunction = async ({ params }) => {
     //   `https://giggedbz.arcadier.io/user/checkout/current-status?invoiceNo=${payment?.invoice}`
     // );
   } catch (e) {
-    console.log(e);
     return json(
       {
         message: "There was an error with completing your payment.",

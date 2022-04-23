@@ -1,10 +1,10 @@
 import { json, LoaderFunction } from "remix";
-import GetEKyashPayment from "~/domain/payments/services/ekaysh/get-ekyash-payment";
-import { HTTP_CODE } from "~/representers/http-reponse-representer";
+import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
+import { HTTP_CODE } from "~/representers/http-response-representer";
 
 export const loader: LoaderFunction = async ({ params }) => {
   try {
-    const payment = await new GetEKyashPayment(params).call();
+    const payment = await new GetPayment(params).call();
 
     return json(payment.json(), HTTP_CODE.ok);
   } catch (e) {

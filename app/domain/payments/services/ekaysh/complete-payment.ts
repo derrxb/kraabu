@@ -11,7 +11,7 @@ import {
  * This uses the data obtained from EKyash to mark a payment as completed
  * using the callback options provided by EKyash.
  */
-export default class CompletePendingEkyashPayment {
+export default class CompletePayment {
   private request: Request;
   private payment: Payment | null;
   private invoice: string | null = null;

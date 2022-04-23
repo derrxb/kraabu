@@ -4,7 +4,7 @@ import ArcadierPaymentMapper from "~/domain/payments/mappers/arcadier-payment-ma
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import createdPendingGiggedPaymentSchema from "~/requests/create-pending-gigged-payment";
 
-export default class CreatePendingGiggedPayment {
+export default class CreatePayment {
   private request: Request;
   private payment: ArcadierPaymentRequest | null;
 

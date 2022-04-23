@@ -3,7 +3,7 @@ import Payment from "~/domain/payments/entities/payment";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 
-export default class GetEKyashPayment {
+export default class GetPayment {
   private params: Params;
 
   constructor(params: Params) {
