@@ -10,3 +10,5 @@ build
 build
 app/styles
 build/index.js
+coverage/
+coverage
