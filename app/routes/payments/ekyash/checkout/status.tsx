@@ -2,6 +2,10 @@ import { ActionFunction, json } from "remix";
 import CompletePayment from "~/domain/payments/services/ekaysh/complete-payment";
 import { HTTP_CODE } from "~/representers/http-response-representer";
 
+/**
+ * This route is called by EKyash and it marks a payment as completed.
+ * TODO: Do we move these to API an api folder to be explicit that we're dealing with an API.
+ */
 export const action: ActionFunction = async ({ request }) => {
   try {
     await new CompletePayment(request).call();

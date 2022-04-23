@@ -14,6 +14,7 @@ import VendorHeader from "~/components/vendor-header";
 import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
 import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
+import { OrderItemList } from "~/ui/molecules/order-items";
 
 export const meta: MetaFunction = () => {
   return {
@@ -81,23 +82,18 @@ export default function Index() {
 
         <img src={PayOnline} className="mb-8 w-[280px]" />
 
-        <span className="mb-2 text-sm uppercase text-gray-500">
-          Order Details
-        </span>
-
-        <h2 className="text-lg font-medium text-gray-800">
-          Custom 10 pages website development
-        </h2>
-
-        <div className="flex flex-row items-end ">
-          <span className="mr-2 text-2xl font-bold text-indigo-500">
-            ${data.payment.currency.amount}
-          </span>
-
-          <span className="text-xl font-medium text-indigo-400">
-            {data.payment.currency.type}
-          </span>
-        </div>
+        <OrderItemList
+          items={[
+            {
+              name: data.payment.additionalData.order?.name || "Untitled Item",
+              currency: {
+                amount: data.payment.additionalData.order?.price || 0,
+                type: data.payment.currency.type,
+              },
+              quantity: data.payment.additionalData.order?.quantity || 0,
+            },
+          ]}
+        />
 
         <div className="mt-auto">
           <KrabuuHeader />
