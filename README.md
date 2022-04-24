@@ -1,6 +1,6 @@
-# Welcome to Remix!
+# Welcome to Krabuu!
 
-- [Remix Docs](https://remix.run/docs)
+- [Krabuu Docs](https://krabuu.com)
 
 ## Development
 
