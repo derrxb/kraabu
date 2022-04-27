@@ -1,3 +1,5 @@
+import Failure from "~/lib/failure";
+
 export const enum PaymentStatus {
   Pending,
   InProgress,
@@ -81,6 +83,21 @@ class Payment {
 
   canMarkInProgress() {
     return this.isPending();
+  }
+
+  hasQrCode() {
+    return this.additionalData.qrCodeUrl;
+  }
+
+  hasOrderDetails() {
+    switch (this.user) {
+      case "giggedBz":
+        if (!this.additionalData.order) {
+          return false;
+        }
+      default:
+        throw new Failure("cannot_process", "Unsupported user");
+    }
   }
 
   json() {

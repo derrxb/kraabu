@@ -35,6 +35,14 @@ type OrderDetails = {
 };
 
 class GiggedMapper {
+  private gateway: string;
+  private hashkey: string;
+
+  constructor(gateway: string, hashkey: string) {
+    this.gateway = gateway;
+    this.hashkey = hashkey;
+  }
+
   getInitialPayment(data: GiggedOrderHandshake) {
     return this.buildInitialEntity(data);
   }
@@ -45,10 +53,12 @@ class GiggedMapper {
    * @returns The initial payment data send by arcadier
    */
   async findOrderWithPaymentKey(
-    data: GiggedOrderHandshake & { paymentKey: string }
+    data: Pick<GiggedOrderHandshake, "invoiceno"> & {
+      paymentKey: string;
+    }
   ) {
     const response = await axios.get(
-      `${GiggedRoutes.OrderStatus}?gateway=${data.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${data.hashkey}`
+      `${GiggedRoutes.OrderStatus}?gateway=${this.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${this.hashkey}`
     );
 
     const order = response.data as OrderDetails;

@@ -29,8 +29,10 @@ export default class CreatePayment {
       throw new Error("No data from GiggedBz received.");
     }
 
-    const pendingPayment = new GiggedMapper().getInitialPayment(this.payment);
-
+    const pendingPayment = new GiggedMapper(
+      this.payment.gateway,
+      this.payment.hashkey
+    ).getInitialPayment(this.payment);
     const payment = await PaymentRepository.createPending(pendingPayment);
 
     return payment as Payment;

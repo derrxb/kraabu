@@ -1,5 +1,7 @@
 import { ekyash } from "~/config/index.server";
+import Payment from "~/domain/payments/entities/payment";
 import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
+import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 import getGiggedBzPaymentSchema from "~/requests/get-gigged-bz-payment";
@@ -14,20 +16,18 @@ export default class GetPayment {
   }
 
   async verifyParams() {
-    const result = await getGiggedBzPaymentSchema.validateAsync({
+    const { invoiceNo, paykey } = await getGiggedBzPaymentSchema.validateAsync({
       invoiceNo: this.params.get("invoiceNo"),
-      paymentKey: this.params.get("paykey"),
+      paykey: this.params.get("paykey"),
     });
 
-    this.invoiceNo = result.invoiceNo;
-    this.paymentKey = result.paymentKey;
+    this.invoiceNo = invoiceNo;
+    this.paymentKey = paykey;
   }
 
-  async call() {
-    await this.verifyParams();
-
+  async getPendingPayment() {
     const payment = await PaymentRepository.getPaymentByInvoice(
-      this.invoiceNo as string // This won't run without invoiceNo being present.
+      this.invoiceNo as string
     );
 
     if (!payment) {
@@ -37,28 +37,65 @@ export default class GetPayment {
       );
     }
 
-    if (payment.canBePaid()) {
-      return payment;
-    }
+    return payment;
+  }
 
+  async getPaymentWithOrderDetails(payment: Payment) {
+    const paymentWithOrderDetails = await new GiggedMapper(
+      payment.additionalData.gateway as string,
+      payment.additionalData.hashkey as string
+    ).findOrderWithPaymentKey({
+      invoiceno: this.invoiceNo as string,
+      paymentKey: this.paymentKey as string,
+    });
+
+    return new Payment({
+      ...payment,
+      additionalData: {
+        ...payment.additionalData,
+        ...paymentWithOrderDetails.additionalData,
+      },
+    });
+  }
+
+  async getPaymentWithPayQrCode(payment: Payment) {
     const ekyashMapper = new EKyashMapper(
       ekyash.credentials.SID,
       ekyash.credentials["Pin Hash"]
     );
 
-    const paymentResponse = await ekyashMapper.createInvoice(payment);
-    const inProgressPayment = await PaymentRepository.setPaymentQrCodeUrl(
-      payment,
-      paymentResponse.qrUrl
+    const invoice = await ekyashMapper.createInvoice(payment);
+
+    const nextPayment = new Payment({
+      ...payment,
+      additionalData: {
+        ...payment.additionalData,
+        qrCodeUrl: invoice.qrUrl,
+      },
+    });
+
+    await PaymentRepository.setPaymentQrCodeUrl(
+      nextPayment,
+      nextPayment.additionalData.qrCodeUrl as string
     );
 
-    if (!inProgressPayment) {
-      throw new Failure(
-        "cannot_process",
-        "Something unexpected happened with this payment."
-      );
+    return nextPayment;
+  }
+
+  async call() {
+    let payment;
+
+    await this.verifyParams();
+    payment = await this.getPendingPayment();
+
+    if (payment.canBePaid()) return payment;
+    if (!payment.hasOrderDetails()) {
+      payment = await this.getPaymentWithOrderDetails(payment);
+    }
+    if (!payment.hasQrCode()) {
+      payment = await this.getPaymentWithPayQrCode(payment);
     }
 
-    return inProgressPayment;
+    return payment;
   }
 }
