@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { OrderItem, OrderItemProps } from ".";
+import type { OrderItemProps } from ".";
+import { OrderItem } from ".";
 
 export default {
   title: "Molecules/OrderItem",
@@ -28,6 +29,7 @@ export const QuantityMultiple = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 QuantityMultiple.args = {
   name: "Test Item one",
+  description: "Test Item Description",
   currency: {
     amount: 100,
     type: "BZD",
@@ -39,6 +41,7 @@ export const FreeItem = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 FreeItem.args = {
   name: "Test Item one",
+  description: "Test Item Description",
   currency: {
     amount: 0,
     type: "BZD",

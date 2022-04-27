@@ -1,14 +1,10 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import {
-  json,
-  LoaderFunction,
-  MetaFunction,
-  useLoaderData,
-  useSubmit,
-} from "remix";
+import type { LoaderFunction, MetaFunction } from "remix";
+import { json, useLoaderData, useSubmit } from "remix";
 import gigged from "~/assets/images/gigged-logo.png";
-import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
+import type Payment from "~/domain/payments/entities/payment";
+import { PaymentStatus } from "~/domain/payments/entities/payment";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
 import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
 import { PaymentPayCode } from "~/ui/molecules/payment-pay-code";

@@ -1,6 +1,12 @@
+import { setupServer } from "msw/node";
 import { renderToString } from "react-dom/server";
 import type { EntryContext } from "remix";
 import { RemixServer } from "remix";
+import { handlers } from "../mocks/handlers";
+
+const mswServer = setupServer(...handlers);
+
+mswServer.listen({ onUnhandledRequest: "bypass" });
 
 export default function handleRequest(
   request: Request,

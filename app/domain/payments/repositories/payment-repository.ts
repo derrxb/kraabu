@@ -58,6 +58,17 @@ export default class PaymentRepository {
     return this.rebuildEntity(result.body?.[0]);
   }
 
+  static async setPaymentAdditionalData(payment: Payment) {
+    const result = await supabase
+      .from(Tables.Payments)
+      .update({
+        additionalData: payment.additionalData,
+      })
+      .eq("invoice", payment.invoice);
+
+    return this.rebuildEntity(result.body?.[0]);
+  }
+
   static async setPaymentAsCompleted(payment: Payment) {
     const result = await supabase
       .from(Tables.Payments)

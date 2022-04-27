@@ -49,13 +49,17 @@ export default class GetPayment {
       paymentKey: this.paymentKey as string,
     });
 
-    return new Payment({
+    const nextPayment = new Payment({
       ...payment,
       additionalData: {
         ...payment.additionalData,
         ...paymentWithOrderDetails.additionalData,
       },
     });
+
+    await PaymentRepository.setPaymentAdditionalData(nextPayment);
+
+    return nextPayment;
   }
 
   async getPaymentWithPayQrCode(payment: Payment) {

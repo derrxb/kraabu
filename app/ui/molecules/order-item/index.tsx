@@ -1,17 +1,20 @@
-import Payment from "~/domain/payments/entities/payment";
+import { truncate } from "lodash";
+import type Payment from "~/domain/payments/entities/payment";
 
 export type OrderItemProps = {
   name: string;
+  description: string;
   quantity: number;
   currency: Payment["currency"];
 };
 
-export const OrderItem = ({ name, currency, quantity }: OrderItemProps) => {
+export const OrderItem = ({ name, currency, quantity,description }: OrderItemProps) => {
   return (
-    <article className="flex h-fit w-full max-w-md flex-col">
+    <article className="flex h-fit w-full max-w-lg flex-col">
       <h2 className="text-lg text-gray-800">{name}</h2>
+      <h2 className="text-gray-500 text-sm">{truncate(description || "", {length: 72 })}</h2>
 
-      <div className="flex flex-row items-baseline justify-between">
+      <div className="flex flex-row items-baseline justify-between pt-2">
         <div className="flex flex-row items-end text-lg text-indigo-500">
           {currency.amount > 0 ? (
             <>

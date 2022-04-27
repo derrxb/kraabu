@@ -1,7 +1,8 @@
-import Payment from "~/domain/payments/entities/payment";
+import type Payment from "~/domain/payments/entities/payment";
 import { OrderItemList } from "../order-items";
 import { OrderStatus } from "../order-status";
-import { VendorHeader, VendorHeaderProps } from "../vendor-header";
+import type { VendorHeaderProps } from "../vendor-header";
+import { VendorHeader } from "../vendor-header";
 
 export type PaymentPayDetailsProps = {
   payment: Payment;
@@ -26,6 +27,7 @@ export const PaymentPayDetails = ({
         items={[
           {
             name: payment.additionalData.order?.name || "Untitled Item",
+            description: payment.additionalData.order?.description || "",
             currency: {
               amount: payment.additionalData.order?.price || 0,
               type: payment.currency.type,

@@ -1,4 +1,5 @@
-import { OrderItem, OrderItemProps } from "../order-item";
+import type { OrderItemProps } from "../order-item";
+import { OrderItem } from "../order-item";
 
 export type OrderItemListProps = {
   items: Array<OrderItemProps>;
@@ -14,7 +15,7 @@ export const OrderItemList = ({ items }: OrderItemListProps) => {
       {items.length === 0 ? (
         <span className="text-gray-500">No items available...</span>
       ) : (
-        <ul className="list-none space-y-2">
+        <ul className="list-none space-y-4">
           {items.map((item) => (
             <li key={item.name + item.quantity + item.currency.amount}>
               <OrderItem {...item} />

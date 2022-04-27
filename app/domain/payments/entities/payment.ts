@@ -95,6 +95,7 @@ class Payment {
         if (!this.additionalData.order) {
           return false;
         }
+        return true;
       default:
         throw new Failure("cannot_process", "Unsupported user");
     }

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
 import Payment, { PaymentStatus } from "../entities/payment";
-import { GiggedOrderHandshake, GiggedRoutes } from "../library/gigged-api";
+import type { GiggedOrderHandshake } from "../library/gigged-api";
+import { GiggedRoutes } from "../library/gigged-api";
 
 type OrderItem = {
   Id: string;
@@ -57,13 +58,18 @@ class GiggedMapper {
       paymentKey: string;
     }
   ) {
-    const response = await axios.get(
-      `${GiggedRoutes.OrderStatus}?gateway=${this.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${this.hashkey}`
-    );
+    try {
+      const response = await axios.get(
+        `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${this.hashkey}`
+      );
 
-    const order = response.data as OrderDetails;
+      const order = response.data as OrderDetails;
 
-    return this.buildEntity(order);
+      return this.buildEntity(order);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   private buildInitialEntity(data: GiggedOrderHandshake): Payment {
@@ -86,7 +92,7 @@ class GiggedMapper {
 
   private buildEntity(data: OrderDetails): Payment {
     // Get all the totals from PayeesInfo and adds them up.
-    const total = data.PayeeInfos.map((item) => item.Total).reduce(
+    const total = data?.PayeeInfos?.map((item) => item.Total).reduce(
       (prev, curr) => prev + curr,
       0
     );
