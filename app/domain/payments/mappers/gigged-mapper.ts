@@ -1,6 +1,10 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
-import Payment, { PaymentStatus } from "../entities/payment";
+import Failure from "~/lib/failure";
+import Payment, {
+  GiggedOrderDetails,
+  PaymentStatus,
+} from "../entities/payment";
 import type { GiggedOrderHandshake } from "../library/gigged-api";
 import { GiggedRoutes } from "../library/gigged-api";
 
@@ -69,6 +73,31 @@ class GiggedMapper {
     } catch (e) {
       console.log(e);
       throw e;
+    }
+  }
+
+  async updateOrderStatus(
+    data: Pick<Payment, "invoice" | "status"> &
+      Pick<GiggedOrderDetails, "gateway" | "hashkey" | "paymentKey">
+  ) {
+    try {
+      await axios.post(`${GiggedRoutes.TransactionStatus}`, {
+        invoiceno: data.invoice,
+        hashkey: data.hashkey,
+        gateway: data.gateway,
+        paykey: data.paymentKey,
+        status:
+          data.status === PaymentStatus.Completed
+            ? "success"
+            : data.status === PaymentStatus.Failure
+            ? "error"
+            : "",
+      });
+    } catch (e) {
+      throw new Failure(
+        "bad_request",
+        "Could not update GiggedBz's order status."
+      );
     }
   }
 

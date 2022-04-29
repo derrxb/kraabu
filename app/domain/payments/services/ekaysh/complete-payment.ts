@@ -6,6 +6,7 @@ import {
   CompletedPaymentCallbackData,
   TransactionStatus,
 } from "../../library/ekyash-api";
+import GiggedMapper from "../../mappers/gigged-mapper";
 
 /**
  * This uses the data obtained from EKyash to mark a payment as completed
@@ -46,7 +47,7 @@ export default class CompletePayment {
     }
   }
 
-  async setPaymentAsAcceptedOrRejected() {
+  async setKrabuuPaymentAsAcceptedOrRejected() {
     switch (this.paymentStatus?.statusPay) {
       case TransactionStatus.Pending:
         return;
@@ -64,10 +65,31 @@ export default class CompletePayment {
     }
   }
 
+  async setGiggedPaymentAsAcceptedOrRejected() {
+    if (typeof this.payment?.status === "undefined") {
+      throw new Failure(
+        "cannot_process",
+        "The payment is missing the status field."
+      );
+    }
+
+    await new GiggedMapper(
+      this.payment?.additionalData.gateway as string,
+      this.payment?.additionalData.hashkey as string
+    ).updateOrderStatus({
+      invoice: this.payment?.invoice as string,
+      status: this.payment?.status,
+      gateway: this.payment?.additionalData.gateway,
+      hashkey: this.payment?.additionalData.hashkey,
+      paymentKey: this.payment?.additionalData.paymentKey,
+    });
+  }
+
   async call() {
     await this.verifyPaymentParams();
     await this.setPayment();
-    await this.setPaymentAsAcceptedOrRejected();
+    await this.setGiggedPaymentAsAcceptedOrRejected();
+    await this.setKrabuuPaymentAsAcceptedOrRejected();
 
     return this.payment;
   }

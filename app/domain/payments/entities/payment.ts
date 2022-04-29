@@ -7,7 +7,7 @@ export const enum PaymentStatus {
   Failure,
 }
 
-type GiggedOrderDetails = {
+export type GiggedOrderDetails = {
   qrCodeUrl?: string;
   gateway?: string;
   hashkey?: string;
