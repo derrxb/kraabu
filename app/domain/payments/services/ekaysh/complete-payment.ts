@@ -76,13 +76,7 @@ export default class CompletePayment {
     await new GiggedMapper(
       this.payment?.additionalData.gateway as string,
       this.payment?.additionalData.hashkey as string
-    ).updateOrderStatus({
-      invoice: this.payment?.invoice as string,
-      status: this.payment?.status,
-      gateway: this.payment?.additionalData.gateway,
-      hashkey: this.payment?.additionalData.hashkey,
-      paymentKey: this.payment?.additionalData.paymentKey,
-    });
+    ).updateOrderStatus(this.payment);
   }
 
   async call() {
