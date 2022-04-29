@@ -1,10 +1,7 @@
 import axios from "axios";
 import { nanoid } from "nanoid";
 import Failure from "~/lib/failure";
-import Payment, {
-  GiggedOrderDetails,
-  PaymentStatus,
-} from "../entities/payment";
+import Payment, { PaymentStatus } from "../entities/payment";
 import type { GiggedOrderHandshake } from "../library/gigged-api";
 import { GiggedRoutes } from "../library/gigged-api";
 
@@ -76,16 +73,13 @@ class GiggedMapper {
     }
   }
 
-  async updateOrderStatus(
-    data: Pick<Payment, "invoice" | "status"> &
-      Pick<GiggedOrderDetails, "gateway" | "hashkey" | "paymentKey">
-  ) {
+  async updateOrderStatus(data: Payment) {
     try {
       await axios.post(`${GiggedRoutes.TransactionStatus}`, {
         invoiceno: data.invoice,
-        hashkey: data.hashkey,
-        gateway: data.gateway,
-        paykey: data.paymentKey,
+        hashkey: data.additionalData.hashkey,
+        gateway: data.additionalData.hashkey,
+        paykey: data.additionalData.paymentKey,
         status:
           data.status === PaymentStatus.Completed
             ? "success"
