@@ -5,13 +5,15 @@
     "**/*.tsx"
   ],
   "compilerOptions": {
+    "sourceMap": true,
     "types": [
       "vitest/globals"
     ],
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ES2019"
+      "ES2019",
+      "ESNext",
     ],
     "module": "CommonJS",
     "isolatedModules": true,

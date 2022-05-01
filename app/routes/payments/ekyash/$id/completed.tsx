@@ -5,7 +5,9 @@ import {
   redirect,
   useLoaderData,
 } from "remix";
-import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
+import PaymentEntity, {
+  PaymentStatus,
+} from "~/domain/payments/entities/payment";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 import { PaymentPayDetails } from "~/ui/molecules/payment-pay-details";
 import { PaymentSuccess } from "~/ui/molecules/payment-success";
@@ -44,7 +46,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function Completed() {
-  const data = useLoaderData() as { payment: Payment };
+  const data = useLoaderData() as { payment: PaymentEntity };
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">

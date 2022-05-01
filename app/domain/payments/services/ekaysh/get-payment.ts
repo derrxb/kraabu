@@ -1,5 +1,5 @@
 import { Params } from "react-router";
-import Payment from "~/domain/payments/entities/payment";
+import PaymentEntity from "~/domain/payments/entities/payment";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 
@@ -10,7 +10,7 @@ export default class GetPayment {
     this.params = params;
   }
 
-  async call(): Promise<Payment> {
+  async call(): Promise<PaymentEntity> {
     const { id } = this.params;
 
     if (!id) {

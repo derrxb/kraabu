@@ -1,4 +1,4 @@
-import Payment from "~/domain/payments/entities/payment";
+import PaymentEntity from "~/domain/payments/entities/payment";
 import type { GiggedOrderHandshake } from "~/domain/payments/library/gigged-api";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
@@ -24,7 +24,7 @@ export default class CreatePayment {
     });
   }
 
-  async call(): Promise<Payment> {
+  async call(): Promise<PaymentEntity> {
     await this.verifyPaymentParams();
 
     if (!this.payment) {
@@ -48,6 +48,6 @@ export default class CreatePayment {
     ).getInitialPayment(this.payment, supplier);
     const payment = await PaymentRepository.createPending(pendingPayment);
 
-    return payment as Payment;
+    return payment as PaymentEntity;
   }
 }

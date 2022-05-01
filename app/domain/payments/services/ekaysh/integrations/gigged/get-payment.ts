@@ -1,5 +1,5 @@
-import { EKyash } from "~/domain/payments/entities/ekyash";
-import Payment from "~/domain/payments/entities/payment";
+import { EKyashEntity } from "~/domain/payments/entities/ekyash";
+import PaymentEntity from "~/domain/payments/entities/payment";
 import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
@@ -40,7 +40,7 @@ export default class GetPayment {
     return payment;
   }
 
-  async getPaymentWithOrderDetails(payment: Payment) {
+  async getPaymentWithOrderDetails(payment: PaymentEntity) {
     const paymentWithOrderDetails = await new GiggedMapper(
       payment.additionalData.gateway as string,
       payment.additionalData.hashkey as string
@@ -52,7 +52,7 @@ export default class GetPayment {
       payment.supplier
     );
 
-    const nextPayment = new Payment({
+    const nextPayment = new PaymentEntity({
       ...payment,
       additionalData: {
         ...payment.additionalData,
@@ -65,12 +65,14 @@ export default class GetPayment {
     return nextPayment;
   }
 
-  async getPaymentWithPayQrCode(payment: Payment) {
-    const ekyashMapper = new EKyashMapper(payment.supplier.ekyash as EKyash);
+  async getPaymentWithPayQrCode(payment: PaymentEntity) {
+    const ekyashMapper = new EKyashMapper(
+      payment.supplier.ekyash as EKyashEntity
+    );
 
     const invoice = await ekyashMapper.createInvoice(payment);
 
-    const nextPayment = new Payment({
+    const nextPayment = new PaymentEntity({
       ...payment,
       additionalData: {
         ...payment.additionalData,

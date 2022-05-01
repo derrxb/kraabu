@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import type { LoaderFunction, MetaFunction } from "remix";
 import { json, useLoaderData, useNavigate } from "remix";
-import type Payment from "~/domain/payments/entities/payment";
+import type PaymentEntity from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
 import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
@@ -31,7 +31,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const data = useLoaderData() as { payment: Payment };
+  const data = useLoaderData() as { payment: PaymentEntity };
 
   const navigate = useNavigate();
   useEffect(() => {

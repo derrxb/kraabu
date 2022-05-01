@@ -1,13 +1,13 @@
 import axios from "axios";
 import { enc, HmacSHA256 } from "crypto-js";
 import { ekyash } from "~/config/index.server";
-import { EKyash } from "../entities/ekyash";
+import { EKyashEntity } from "../entities/ekyash";
 
 /**
  * Builds & returns a JWT token for calls to E-kyash's API.
  * @returns
  */
-const getJWTToken = async (kyash: EKyash) => {
+const getJWTToken = async (kyash: EKyashEntity) => {
   const header = enc.Base64.stringify(
     enc.Utf8.parse(JSON.stringify({ alg: "HS256", typ: "JWT" }))
   );
@@ -53,7 +53,7 @@ type AuthorizationResponse = {
  * @returns
  */
 const getAuthorization = async (
-  data: EKyash
+  data: EKyashEntity
 ): Promise<AuthorizationResponse> => {
   const jwt = await getJWTToken(data);
 
@@ -164,7 +164,7 @@ type NewInvoiceResponse = {
  */
 const createNewInvoice = async (
   data: NewInvoiceData,
-  kyash: EKyash
+  kyash: EKyashEntity
 ): Promise<NewInvoiceResponse> => {
   const jwt = await getJWTToken(kyash);
 
@@ -208,7 +208,7 @@ type UploadInvoiceImageResponse = {
 
 const uploadInvoiceImage = async (
   data: UploadInvoiceImageData,
-  kyash: EKyash
+  kyash: EKyashEntity
 ) => {
   const response = await axios.post(`${kyash.api}/upload-image`, {
     ...data,

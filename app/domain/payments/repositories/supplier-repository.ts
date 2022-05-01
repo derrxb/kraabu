@@ -1,30 +1,33 @@
-import { supabase } from "~/config/index.server";
-import { Tables } from ".";
-import { Supplier } from "../entities/supplier";
+import prisma from "~/infrastructure/database";
+import { SupplierEntity } from "../entities/supplier";
 import { EKyashRepository } from "./ekyash-repository";
 
 export class SupplierRepository {
   static async rebuildEntity(data: any) {
     if (!data || typeof data === "undefined") {
-      return null;
+      return undefined;
     }
 
-    return new Supplier({
+    const ekyash = await EKyashRepository.rebuildEntity(data.ekyash);
+
+    return new SupplierEntity({
       id: data.id,
       homepage: data.homepage,
-      logo_url: data.logo_url,
+      logoUrl: data.logoUrl,
       name: data.name,
       tag: data.name,
-      ekyash: await EKyashRepository.rebuildEntity(data.ekyash),
+      ekyashId: ekyash?.id ?? null,
+      username: data.username,
+      ekyash: ekyash,
     });
   }
 
   static async findSupplierByUsername(username: string) {
-    const result = await supabase
-      .from(Tables.Suppliers)
-      .select("*, ekyash:ekyash (*)")
-      .eq("username", username);
+    const result = prisma.supplier.findFirst({
+      where: { username: username },
+      include: { ekyash: true },
+    });
 
-    return await this.rebuildEntity(result.body?.[0]);
+    return await this.rebuildEntity(result);
   }
 }

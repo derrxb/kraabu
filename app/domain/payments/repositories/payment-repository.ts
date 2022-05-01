@@ -1,97 +1,85 @@
-import { supabase } from "~/config/index.server";
-import { Tables } from ".";
-import Payment, { PaymentStatus } from "../entities/payment";
-import { Supplier } from "../entities/supplier";
+import prisma from "~/infrastructure/database";
+import PaymentEntity, { PaymentStatus } from "../entities/payment";
 import { SupplierRepository } from "./supplier-repository";
 
 export default class PaymentRepository {
   static async rebuildEntity(data: any) {
     if (!data || typeof data === "undefined") {
-      return null;
+      return undefined;
     }
 
-    return new Payment({
+    const supplier = await SupplierRepository.rebuildEntity(data.supplier);
+
+    return new PaymentEntity({
       additionalData: data?.additionalData,
-      currency: {
-        amount: data?.amount,
-        type: data.currency,
-      },
+      amount: data?.amount,
+      currency: data.currency,
       description: data?.description,
       id: data.id,
       invoice: data.invoice,
       status: data.status,
-      supplier: (await SupplierRepository.rebuildEntity(
-        data.supplier
-      )) as Supplier,
+      supplier: supplier,
+      supplierId: supplier?.id as number,
     });
   }
 
-  static async createPending(data: Payment) {
-    const result = await supabase.from(Tables.Payments).insert([
-      {
+  static async createPending(data: PaymentEntity) {
+    const result = await prisma.payment.create({
+      data: {
         additionalData: data.additionalData,
-        amount: data.currency.amount,
-        currency: data.currency.type,
+        amount: data.amount,
+        currency: data.currency,
         description: data.description,
         invoice: data.invoice,
         status: data.status,
-        supplier_id: data.supplier.id,
+        supplierId: data.supplier?.id as number,
       },
-    ]);
+    });
 
-    return this.rebuildEntity(result.body?.[0]);
+    return this.rebuildEntity(result);
   }
 
   static async getPaymentByInvoice(invoice: string) {
-    const result = await supabase
-      .from(Tables.Payments)
-      .select("*, supplier:supplier (*, ekyash:ekyash (*))")
-      .eq("invoice", invoice);
+    const result = await prisma.payment.findFirst({
+      where: { invoice: invoice },
+    });
 
-    return await this.rebuildEntity(result.body?.[0]);
+    return await this.rebuildEntity(result);
   }
 
-  static async setPaymentQrCodeUrl(payment: Payment, qrCodeUrl: string) {
-    const result = await supabase
-      .from(Tables.Payments)
-      .update({
-        additionalData: { qrCodeUrl, ...(payment.additionalData || {}) },
-      })
-      .eq("invoice", payment.invoice);
+  static async setPaymentQrCodeUrl(payment: PaymentEntity, qrCodeUrl: string) {
+    const result = await prisma.payment.update({
+      data: { additionalData: { qrCodeUrl, ...payment.additionalData } },
+      where: { id: payment.id },
+    });
 
-    return this.rebuildEntity(result.body?.[0]);
+    return this.rebuildEntity(result);
   }
 
-  static async setPaymentAdditionalData(payment: Payment) {
-    const result = await supabase
-      .from(Tables.Payments)
-      .update({
-        additionalData: payment.additionalData,
-      })
-      .eq("invoice", payment.invoice);
+  static async setPaymentAdditionalData(payment: PaymentEntity) {
+    const result = await prisma.payment.update({
+      data: { additionalData: payment.additionalData },
+      where: { id: payment.id },
+    });
 
-    return this.rebuildEntity(result.body?.[0]);
+    return this.rebuildEntity(result);
   }
 
-  static async setPaymentAsCompleted(payment: Payment) {
-    const result = await supabase
-      .from(Tables.Payments)
-      .update({
-        status: PaymentStatus.Completed,
-      } as Partial<Payment>)
-      .eq("invoice", payment.invoice);
+  static async setPaymentAsCompleted(payment: PaymentEntity) {
+    const result = await prisma.payment.update({
+      data: { status: PaymentStatus.Completed },
+      where: { id: payment.id },
+    });
 
-    return this.rebuildEntity(result.body?.[0]);
+    return this.rebuildEntity(result);
   }
 
-  static async setPaymentAsRejected(payment: Payment) {
-    const result = await supabase
-      .from(Tables.Payments)
-      .update({
-        status: PaymentStatus.Failure,
-      } as Partial<Payment>)
-      .eq("invoice", payment.invoice);
+  static async setPaymentAsRejected(payment: PaymentEntity) {
+    const result = await prisma.payment.update({
+      data: { status: PaymentStatus.Failed },
+      where: { id: payment.id },
+    });
 
-    return this.rebuildEntity(result.body?.[0]);
+    return this.rebuildEntity(result);
   }
 }

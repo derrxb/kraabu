@@ -1,29 +1,34 @@
-import { EKyash } from "./ekyash";
+import { Supplier as SupplierORM } from "@prisma/client";
+import { EKyashEntity } from "./ekyash";
 
-type Props = {
-  id: number;
-  name: string;
-  tag: string;
-  logo_url: string;
-  homepage: string;
-  ekyash?: EKyash;
-};
+export class SupplierEntity {
+  id: SupplierORM["id"];
+  name: SupplierORM["name"];
+  tag: SupplierORM["tag"];
+  logoUrl: SupplierORM["logoUrl"];
+  homepage: SupplierORM["homepage"];
+  ekyash?: EKyashEntity;
+  username: SupplierORM["username"];
+  ekyashId: SupplierORM["ekyashId"] | null;
 
-export class Supplier {
-  id: number;
-  name: string;
-  tag: string;
-  logo_url: string;
-  homepage: string;
-  ekyash?: EKyash;
-
-  constructor({ id, name, tag, logo_url, homepage, ekyash }: Props) {
+  constructor({
+    id,
+    name,
+    tag,
+    logoUrl,
+    homepage,
+    ekyash,
+    username,
+    ekyashId,
+  }: SupplierORM & { ekyash?: EKyashEntity }) {
     this.id = id;
     this.name = name;
     this.tag = tag;
-    this.logo_url = logo_url;
+    this.logoUrl = logoUrl;
     this.homepage = homepage;
     this.ekyash = ekyash;
+    this.username = username;
+    this.ekyashId = ekyashId;
   }
 
   json() {
@@ -31,7 +36,7 @@ export class Supplier {
       id: this.id,
       name: this.name,
       tag: this.tag,
-      logo_url: this.logo_url,
+      logoUrl: this.logoUrl,
       homepage: this.homepage,
       ekyash: this.ekyash?.json(),
     };

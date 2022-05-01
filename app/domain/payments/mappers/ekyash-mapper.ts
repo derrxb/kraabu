@@ -1,12 +1,12 @@
-import { EKyash } from "../entities/ekyash";
-import Payment from "../entities/payment";
+import { EKyashEntity } from "../entities/ekyash";
+import PaymentEntity from "../entities/payment";
 import { createNewInvoice, getAuthorization } from "../library/ekyash-api";
 
 export class EKyashMapper {
   private session: string | null;
-  private ekyash: EKyash;
+  private ekyash: EKyashEntity;
 
-  constructor(ekyash: EKyash) {
+  constructor(ekyash: EKyashEntity) {
     this.ekyash = ekyash;
     this.session = null;
   }
@@ -21,10 +21,10 @@ export class EKyashMapper {
     this.session = response.session;
   }
 
-  async createInvoice(payment: Payment) {
+  async createInvoice(payment: PaymentEntity) {
     const invoice = await createNewInvoice(
       {
-        amount: payment.currency.amount,
+        amount: payment.amount,
         description: payment.description,
         currency: "BZD",
         orderId: payment.invoice,

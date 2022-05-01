@@ -1,11 +1,11 @@
 import { truncate } from "lodash";
-import type Payment from "~/domain/payments/entities/payment";
+import type PaymentEntity from "~/domain/payments/entities/payment";
 
 export type OrderItemProps = {
   name: string;
   description: string;
   quantity: number;
-  currency: Payment["currency"];
+  currency: PaymentEntity["currency"];
 };
 
 export const OrderItem = ({

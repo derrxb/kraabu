@@ -1,13 +1,13 @@
-import { Supplier } from "~/domain/payments/entities/supplier";
+import { SupplierEntity } from "~/domain/payments/entities/supplier";
 
 export type VendorHeaderProps = Pick<
-  Supplier,
-  "homepage" | "logo_url" | "name" | "tag"
+  SupplierEntity,
+  "homepage" | "logoUrl" | "name" | "tag"
 >;
 
 export function VendorHeader({
   name,
-  logo_url,
+  logoUrl,
   tag,
   homepage,
 }: VendorHeaderProps) {
@@ -19,7 +19,7 @@ export function VendorHeader({
         rel="noreferrer"
         className="w-fit pb-1"
       >
-        <img src={logo_url} alt={`${name} logo`} className="mb-1 h-auto w-36" />
+        <img src={logoUrl} alt={`${name} logo`} className="mb-1 h-auto w-36" />
       </a>
 
       <span className="text-[10px] font-medium text-gray-600">{tag}</span>

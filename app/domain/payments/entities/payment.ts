@@ -1,12 +1,8 @@
+import { Currency, Payment as PaymentORM, PaymentStatus } from "@prisma/client";
 import Failure from "~/lib/failure";
-import { Supplier } from "./supplier";
+import { SupplierEntity } from "./supplier";
 
-export const enum PaymentStatus {
-  Pending,
-  InProgress,
-  Completed,
-  Failure,
-}
+export { PaymentStatus, Currency };
 
 export type GiggedOrderDetails = {
   qrCodeUrl?: string;
@@ -26,40 +22,36 @@ export type GiggedOrderDetails = {
   };
 };
 
-type Props = {
-  status: PaymentStatus;
-  supplier: Supplier;
-  id?: number;
-  currency: {
-    amount: number;
-    type: string;
-  };
-  description: string;
-  createdAt?: any;
-  invoice: string;
+class PaymentEntity {
+  createdAt?: PaymentORM["createdAt"];
+  updatedAt?: PaymentORM["updatedAt"];
+  description: PaymentORM["description"];
+  currency: PaymentORM["currency"];
+  amount: PaymentORM["amount"];
+  id?: PaymentORM["id"];
+  invoice: PaymentORM["invoice"];
+  status: PaymentORM["status"];
+  supplier?: SupplierEntity;
   additionalData: GiggedOrderDetails;
-};
-
-class Payment {
-  additionalData: Props["additionalData"];
-  createdAt: Props["createdAt"];
-  currency: Props["currency"];
-  description: Props["description"];
-  id: Props["id"];
-  invoice: Props["invoice"];
-  status: Props["status"];
-  supplier: Props["supplier"];
+  supplierId: PaymentORM["supplierId"];
 
   constructor({
     additionalData,
     createdAt,
     currency,
+    amount,
     description,
     id,
     invoice,
     status,
     supplier,
-  }: Props) {
+    supplierId,
+  }: Omit<PaymentORM, "id" | "createdAt" | "updatedAt"> &
+    Partial<Pick<PaymentORM, "id" | "createdAt" | "updatedAt">> & {
+      additionalData: GiggedOrderDetails;
+      supplier?: SupplierEntity;
+    }) {
+    this.amount = amount;
     this.additionalData = additionalData;
     this.createdAt = createdAt;
     this.currency = currency;
@@ -68,10 +60,11 @@ class Payment {
     this.invoice = invoice;
     this.status = status;
     this.supplier = supplier;
+    this.supplierId = supplierId;
   }
 
   isValid() {
-    return this.currency.amount > 0;
+    return this.amount > 0;
   }
 
   isPending() {
@@ -91,8 +84,12 @@ class Payment {
   }
 
   hasOrderDetails() {
-    switch (this.supplier.json().name) {
-      case "GiggedBz":
+    if (!this.supplier || !this.supplier) {
+      return false;
+    }
+
+    switch (this.supplier?.username) {
+      case "giggedbz":
         if (!this.additionalData.order) {
           return false;
         }
@@ -108,9 +105,9 @@ class Payment {
       description: this.description,
       status: this.status,
       currency: this.currency,
-      supplier: this.supplier.json(),
+      supplier: this.supplier?.json(),
     };
   }
 }
 
-export default Payment;
+export default PaymentEntity;

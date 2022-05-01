@@ -1,4 +1,4 @@
-import Payment from "~/domain/payments/entities/payment";
+import PaymentEntity from "~/domain/payments/entities/payment";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";
@@ -14,7 +14,7 @@ import GiggedMapper from "../../mappers/gigged-mapper";
  */
 export default class CompletePayment {
   private request: Request;
-  private payment: Payment | null;
+  private payment: PaymentEntity | null;
   private invoice: string | null = null;
   private paymentStatus: CompletedPaymentCallbackData | null;
 
@@ -52,10 +52,14 @@ export default class CompletePayment {
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        await PaymentRepository.setPaymentAsCompleted(this.payment as Payment);
+        await PaymentRepository.setPaymentAsCompleted(
+          this.payment as PaymentEntity
+        );
         break;
       case TransactionStatus.Declined:
-        await PaymentRepository.setPaymentAsRejected(this.payment as Payment);
+        await PaymentRepository.setPaymentAsRejected(
+          this.payment as PaymentEntity
+        );
         break;
       default:
         throw new Failure(
