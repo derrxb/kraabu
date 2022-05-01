@@ -1,9 +1,22 @@
-import { json, LoaderFunction, redirect, useLoaderData } from "remix";
+import {
+  json,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+} from "remix";
 import gigged from "~/assets/images/gigged-logo.png";
 import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 import { PaymentPayDetails } from "~/ui/molecules/payment-pay-details";
 import { PaymentSuccess } from "~/ui/molecules/payment-success";
+
+export const meta: MetaFunction = () => {
+  return {
+    title:
+      "Payment Success | Giggedbz - Make life easier by hiring a Gigger to help",
+  };
+};
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   try {
