@@ -6,7 +6,7 @@ import type PaymentEntity from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
 import { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
-import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
+import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment.server";
 import { PaymentPayCode } from "~/ui/molecules/payment-pay-code";
 import { PaymentPayDetails } from "~/ui/molecules/payment-pay-details";
 
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const payment = await new GetPayment(searchParams).call();
 
   return json({
-    payment: payment,
+    payment: payment.json(),
   });
 };
 

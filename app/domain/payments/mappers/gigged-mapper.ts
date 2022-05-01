@@ -1,5 +1,5 @@
-import axios from "axios";
 import { nanoid } from "nanoid";
+import superagent from "superagent";
 import Failure from "~/lib/failure";
 import PaymentEntity, { Currency, PaymentStatus } from "../entities/payment";
 import { SupplierEntity } from "../entities/supplier";
@@ -62,11 +62,11 @@ class GiggedMapper {
     supplier: SupplierEntity
   ) {
     try {
-      const response = await axios.get(
+      const response = await superagent.get(
         `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${this.hashkey}`
       );
 
-      const order = response.data as OrderDetails;
+      const order = JSON.parse(response.text) as OrderDetails;
 
       return this.buildEntity(order, supplier);
     } catch (e) {
@@ -77,7 +77,7 @@ class GiggedMapper {
 
   async updateOrderStatus(data: PaymentEntity) {
     try {
-      await axios.post(`${GiggedRoutes.TransactionStatus}`, {
+      await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
         invoiceno: data.invoice,
         hashkey: data.additionalData.hashkey,
         gateway: data.additionalData.hashkey,

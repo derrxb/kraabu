@@ -1,4 +1,8 @@
-import { Currency, PaymentORM, PaymentStatus } from "~/infrastructure/database";
+import {
+  Currency,
+  PaymentORM,
+  PaymentStatus,
+} from "~/infrastructure/database/index.server";
 import Failure from "~/lib/failure";
 import { SupplierEntity } from "./supplier";
 
@@ -106,6 +110,10 @@ class PaymentEntity {
       status: this.status,
       currency: this.currency,
       supplier: this.supplier?.json(),
+      additionalData: this.additionalData,
+      amount: this.amount,
+      createdAt: this.createdAt,
+      id: this.id,
     };
   }
 }

@@ -11,7 +11,7 @@ const getPrettyPaymentStatus = (status: OrderStatusProps["status"]) => {
       return "Completed";
     case PaymentStatus.Pending:
       return "In Progress";
-    case PaymentStatus.Failure:
+    case PaymentStatus.Failed:
       return "Cancelled";
     default:
       break;
@@ -27,7 +27,7 @@ export const OrderStatus = ({ status }: OrderStatusProps) => {
         className={clsx("font-semibold", {
           "text-green-500": PaymentStatus.Completed === status,
           "text-yellow-700": PaymentStatus.Pending === status,
-          "text-red-500": PaymentStatus.Failure === status,
+          "text-red-500": PaymentStatus.Failed === status,
         })}
       >
         {getPrettyPaymentStatus(status)}

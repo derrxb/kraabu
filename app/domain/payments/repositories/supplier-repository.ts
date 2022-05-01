@@ -1,4 +1,4 @@
-import prisma from "~/infrastructure/database";
+import prisma from "~/infrastructure/database/index.server";
 import { SupplierEntity } from "../entities/supplier";
 import { EKyashRepository } from "./ekyash-repository";
 

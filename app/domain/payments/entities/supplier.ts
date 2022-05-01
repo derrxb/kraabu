@@ -1,4 +1,4 @@
-import { SupplierORM } from "~/infrastructure/database";
+import { SupplierORM } from "~/infrastructure/database/index.server";
 import { EKyashEntity } from "./ekyash";
 
 export class SupplierEntity {

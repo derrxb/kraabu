@@ -6,6 +6,7 @@ export type OrderItemProps = {
   description: string;
   quantity: number;
   currency: PaymentEntity["currency"];
+  amount: PaymentEntity["amount"];
 };
 
 export const OrderItem = ({
@@ -13,6 +14,7 @@ export const OrderItem = ({
   currency,
   quantity,
   description,
+  amount,
 }: OrderItemProps) => {
   return (
     <article className="flex h-fit w-full max-w-lg flex-col">
@@ -23,12 +25,12 @@ export const OrderItem = ({
 
       <div className="flex flex-row items-baseline justify-between pt-2">
         <div className="flex flex-row items-end text-lg text-indigo-500">
-          {currency.amount > 0 ? (
+          {amount > 0 ? (
             <>
               <span className="mr-2 font-bold">
-                {currency?.amount > 0 ? `$${currency.amount}` : "FREE"}
+                {amount > 0 ? `$${amount}` : "FREE"}
               </span>
-              <span className="font-medium">{currency.type}</span>
+              <span className="font-medium">{currency}</span>
             </>
           ) : (
             <span className="font-medium uppercase">Free</span>

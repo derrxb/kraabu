@@ -1,5 +1,5 @@
-import axios from "axios";
 import { enc, HmacSHA256 } from "crypto-js";
+import superagent from "superagent";
 import { ekyash } from "~/config/index.server";
 import { EKyashEntity } from "../entities/ekyash";
 /**
@@ -55,25 +55,22 @@ const getAuthorization = async (
   data: EKyashEntity
 ): Promise<AuthorizationResponse> => {
   const jwt = await getJWTToken(data);
-  const sid = data.sid;
+  const sid = Number(data.sid);
 
-  const response = await axios.post(
-    `${data.api}/authorization`,
-    {
-      pushkey: "{{pushkey}}",
+  const response = await superagent
+    .post(`${data.api}/authorization`)
+    .send({
+      pushkey: "",
       sid: sid.toString(),
       pinHash: data.pinHash,
-    },
-    {
-      headers: {
-        ...ekyash.headers,
-        SID: sid.toString(),
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
+    })
+    .set({
+      ...ekyash.headers,
+      SID: sid.toString(),
+      Authorization: `Bearer ${jwt}`,
+    });
 
-  return response.data as AuthorizationResponse;
+  return JSON.parse(response.text) as AuthorizationResponse;
 };
 
 export type NewInvoiceData = {
@@ -169,20 +166,15 @@ const createNewInvoice = async (
 ): Promise<NewInvoiceResponse> => {
   const jwt = await getJWTToken(kyash);
 
-  const response = await axios.post(
-    `${kyash.api}/create-new-invoice`,
-    {
-      ...data,
-    },
-    {
-      headers: {
-        ...ekyash.headers,
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
+  const response = await superagent
+    .post(`${kyash.api}/create-new-invoice`)
+    .send({ ...data })
+    .set({
+      ...ekyash.headers,
+      Authorization: `Bearer ${jwt}`,
+    });
 
-  return response.data as NewInvoiceResponse;
+  return JSON.parse(response.text) as NewInvoiceResponse;
 };
 
 type UploadInvoiceImageData = {
@@ -211,11 +203,11 @@ const uploadInvoiceImage = async (
   data: UploadInvoiceImageData,
   kyash: EKyashEntity
 ) => {
-  const response = await axios.post(`${kyash.api}/upload-image`, {
-    ...data,
-  });
+  const response = await superagent
+    .post(`${kyash.api}/upload-image`)
+    .send({ ...data });
 
-  return response.data as UploadInvoiceImageResponse;
+  return JSON.parse(response.text) as UploadInvoiceImageResponse;
 };
 
 export enum TransactionStatus {

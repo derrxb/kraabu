@@ -1,8 +1,9 @@
-import type { LinksFunction, MetaFunction } from "remix";
 import {
   Links,
+  LinksFunction,
   LiveReload,
   Meta,
+  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,

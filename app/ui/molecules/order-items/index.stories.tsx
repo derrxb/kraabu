@@ -19,18 +19,14 @@ Default.args = {
   items: [
     {
       name: "Test Item One",
-      currency: {
-        amount: 100,
-        type: "BZD",
-      },
+      amount: 100,
+      currency: "BZD",
       quantity: 1,
     },
     {
       name: "Test Item Two",
-      currency: {
-        amount: 250,
-        type: "BZD",
-      },
+      amount: 250,
+      currency: "BZD",
       quantity: 5,
     },
   ],

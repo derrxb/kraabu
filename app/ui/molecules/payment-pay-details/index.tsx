@@ -28,10 +28,8 @@ export const PaymentPayDetails = ({
           {
             name: payment.additionalData.order?.name || "Untitled Item",
             description: payment.additionalData.order?.description || "",
-            currency: {
-              amount: payment.additionalData.order?.price || 0,
-              type: payment.currency.type,
-            },
+            amount: payment.amount,
+            currency: payment.currency,
             quantity: payment.additionalData.order?.quantity || 0,
           },
         ]}

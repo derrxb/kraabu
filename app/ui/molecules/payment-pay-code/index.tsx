@@ -11,6 +11,8 @@ export type PaymentPayCodeProps = {
 };
 
 export const PaymentPayCode = ({ qr, paymentMethod }: PaymentPayCodeProps) => {
+  console.log(qr, paymentMethod);
+
   return (
     <div className="my-auto flex h-full w-full flex-col leading-relaxed md:px-32 md:py-20 md:pt-36">
       <h1 className="pb-2 pt-5 text-3xl font-bold text-gray-800">

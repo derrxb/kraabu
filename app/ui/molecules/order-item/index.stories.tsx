@@ -18,10 +18,8 @@ export const QuantityOne = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 QuantityOne.args = {
   name: "Test Item one",
-  currency: {
-    amount: 100,
-    type: "BZD",
-  },
+  amount: 100,
+  currency: "BZD",
   quantity: 1,
 } as OrderItemProps;
 
@@ -30,10 +28,8 @@ export const QuantityMultiple = Template.bind({});
 QuantityMultiple.args = {
   name: "Test Item one",
   description: "Test Item Description",
-  currency: {
-    amount: 100,
-    type: "BZD",
-  },
+  amount: 100,
+  currency: "BZD",
   quantity: 10,
 } as OrderItemProps;
 
@@ -42,9 +38,7 @@ export const FreeItem = Template.bind({});
 FreeItem.args = {
   name: "Test Item one",
   description: "Test Item Description",
-  currency: {
-    amount: 0,
-    type: "BZD",
-  },
+  amount: 0,
+  currency: "BZD",
   quantity: 10,
 } as OrderItemProps;

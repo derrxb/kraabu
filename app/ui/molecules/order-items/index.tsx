@@ -17,7 +17,7 @@ export const OrderItemList = ({ items }: OrderItemListProps) => {
       ) : (
         <ul className="list-none space-y-4">
           {items.map((item) => (
-            <li key={item.name + item.quantity + item.currency.amount}>
+            <li key={item.name + item.quantity + item.currency}>
               <OrderItem {...item} />
             </li>
           ))}

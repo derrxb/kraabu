@@ -8,6 +8,7 @@ import {
 import PaymentEntity, {
   PaymentStatus,
 } from "~/domain/payments/entities/payment";
+import { SupplierEntity } from "~/domain/payments/entities/supplier";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 import { PaymentPayDetails } from "~/ui/molecules/payment-pay-details";
 import { PaymentSuccess } from "~/ui/molecules/payment-success";
@@ -26,7 +27,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     switch (payment.status) {
       case PaymentStatus.Completed:
         return json({ payment });
-      case PaymentStatus.Failure:
+      case PaymentStatus.Failed:
         return redirect(`/payments/ekyash/${payment.invoice}/failed`);
       case PaymentStatus.Pending:
         return redirect(
@@ -53,7 +54,7 @@ export default function Completed() {
       <div className="h-full w-full md:w-1/2">
         <PaymentPayDetails
           payment={data.payment}
-          vendor={data.payment.supplier}
+          vendor={data.payment.supplier as SupplierEntity}
         />
       </div>
 

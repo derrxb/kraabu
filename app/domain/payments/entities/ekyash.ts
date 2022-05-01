@@ -1,4 +1,4 @@
-import { EkyashORM } from "~/infrastructure/database";
+import { EkyashORM } from "~/infrastructure/database/index.server";
 
 export class EKyashEntity {
   id: EkyashORM["id"];
