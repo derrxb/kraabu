@@ -1,4 +1,5 @@
 import Failure from "~/lib/failure";
+import { Supplier } from "./supplier";
 
 export const enum PaymentStatus {
   Pending,
@@ -27,7 +28,7 @@ export type GiggedOrderDetails = {
 
 type Props = {
   status: PaymentStatus;
-  user: string;
+  supplier: Supplier;
   id?: number;
   currency: {
     amount: number;
@@ -47,7 +48,7 @@ class Payment {
   id: Props["id"];
   invoice: Props["invoice"];
   status: Props["status"];
-  user: Props["user"];
+  supplier: Props["supplier"];
 
   constructor({
     additionalData,
@@ -57,7 +58,7 @@ class Payment {
     id,
     invoice,
     status,
-    user,
+    supplier,
   }: Props) {
     this.additionalData = additionalData;
     this.createdAt = createdAt;
@@ -66,7 +67,7 @@ class Payment {
     this.id = id;
     this.invoice = invoice;
     this.status = status;
-    this.user = user;
+    this.supplier = supplier;
   }
 
   isValid() {
@@ -90,8 +91,8 @@ class Payment {
   }
 
   hasOrderDetails() {
-    switch (this.user) {
-      case "giggedBz":
+    switch (this.supplier.json().name) {
+      case "GiggedBz":
         if (!this.additionalData.order) {
           return false;
         }

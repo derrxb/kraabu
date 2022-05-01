@@ -5,7 +5,6 @@ import {
   redirect,
   useLoaderData,
 } from "remix";
-import gigged from "~/assets/images/gigged-logo.png";
 import Payment, { PaymentStatus } from "~/domain/payments/entities/payment";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 import { PaymentPayDetails } from "~/ui/molecules/payment-pay-details";
@@ -52,12 +51,7 @@ export default function Completed() {
       <div className="h-full w-full md:w-1/2">
         <PaymentPayDetails
           payment={data.payment}
-          vendor={{
-            name: "GiggedBz",
-            logo: gigged,
-            url: "http://gigged.bz",
-            tag: "Make life easier by hiring a Gigger to help",
-          }}
+          vendor={data.payment.supplier}
         />
       </div>
 

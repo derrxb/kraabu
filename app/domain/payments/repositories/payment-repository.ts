@@ -18,7 +18,7 @@ export default class PaymentRepository {
       id: data.id,
       invoice: data.invoice,
       status: data.status,
-      user: data.user,
+      supplier: data.supplier,
     });
   }
 
@@ -31,7 +31,7 @@ export default class PaymentRepository {
         description: data.description,
         invoice: data.invoice,
         status: data.status,
-        user: data.user,
+        supplier_id: data.supplier.id,
       },
     ]);
 
@@ -41,7 +41,7 @@ export default class PaymentRepository {
   static async getPaymentByInvoice(invoice: string) {
     const result = await supabase
       .from(Tables.Payments)
-      .select("*")
+      .select("*, supplier:supplier (*)")
       .eq("invoice", invoice);
 
     return this.rebuildEntity(result.body?.[0]);

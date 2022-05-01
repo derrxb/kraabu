@@ -1,12 +1,12 @@
 import type Payment from "~/domain/payments/entities/payment";
+import { Supplier } from "~/domain/payments/entities/supplier";
 import { OrderItemList } from "../order-items";
 import { OrderStatus } from "../order-status";
-import type { VendorHeaderProps } from "../vendor-header";
 import { VendorHeader } from "../vendor-header";
 
 export type PaymentPayDetailsProps = {
   payment: Payment;
-  vendor: VendorHeaderProps;
+  vendor: Supplier;
 };
 
 export const PaymentPayDetails = ({
