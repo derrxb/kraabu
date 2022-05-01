@@ -12,11 +12,11 @@ model Ekyash {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   api        String     @db.VarChar(255)
-  sid        Int
+  sid        BigInt     @db.BigInt
   pinHash    String     @db.VarChar(255)
   pinEncoded String     @db.VarChar(255)
   phone      String     @db.VarChar(255)
-  Supplier   Supplier[]
+  Supplier   Supplier?
 }
 
 model Supplier {
@@ -47,7 +47,7 @@ model Payment {
   description    String        @db.VarChar(255)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
-  invoice        String        @db.VarChar(255)
+  invoice        String        @unique @db.VarChar(255)
   status         PaymentStatus @default(Pending)
   currency       Currency      @default(BZD)
   amount         Int

@@ -1,5 +1,6 @@
 import prisma from "~/infrastructure/database";
 import PaymentEntity, { PaymentStatus } from "../entities/payment";
+import { SupplierEntity } from "../entities/supplier";
 import { SupplierRepository } from "./supplier-repository";
 
 export default class PaymentRepository {
@@ -23,7 +24,7 @@ export default class PaymentRepository {
     });
   }
 
-  static async createPending(data: PaymentEntity) {
+  static async createPending(data: PaymentEntity, supplier: SupplierEntity) {
     const result = await prisma.payment.create({
       data: {
         additionalData: data.additionalData,
@@ -32,7 +33,11 @@ export default class PaymentRepository {
         description: data.description,
         invoice: data.invoice,
         status: data.status,
-        supplierId: data.supplier?.id as number,
+        supplier: {
+          connect: {
+            id: supplier.id,
+          },
+        },
       },
     });
 

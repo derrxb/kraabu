@@ -46,7 +46,10 @@ export default class CreatePayment {
       this.payment.gateway,
       this.payment.hashkey
     ).getInitialPayment(this.payment, supplier);
-    const payment = await PaymentRepository.createPending(pendingPayment);
+    const payment = await PaymentRepository.createPending(
+      pendingPayment,
+      supplier
+    );
 
     return payment as PaymentEntity;
   }

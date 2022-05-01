@@ -23,7 +23,7 @@ export class SupplierRepository {
   }
 
   static async findSupplierByUsername(username: string) {
-    const result = prisma.supplier.findFirst({
+    const result = await prisma.supplier.findFirst({
       where: { username: username },
       include: { ekyash: true },
     });

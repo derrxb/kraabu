@@ -8,6 +8,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     return json(payment.additionalData?.paymentKey, HTTP_CODE.ok);
   } catch (e) {
+    console.log(e);
     return json(
       {
         message: "Something unexpected happened. Please try again",
