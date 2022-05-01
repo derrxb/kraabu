@@ -1,4 +1,4 @@
-import { Currency, Payment as PaymentORM, PaymentStatus } from "@prisma/client";
+import { Currency, PaymentORM, PaymentStatus } from "~/infrastructure/database";
 import Failure from "~/lib/failure";
 import { SupplierEntity } from "./supplier";
 

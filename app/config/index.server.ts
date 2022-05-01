@@ -13,7 +13,6 @@ const ekyash = {
     IMGE: "APPKEY17-07A8-4BAF-AA0F-B1568C5017A3",
     appVersion: "99.1.1",
     operatingSystem: "Android",
-    SID: "2324518403",
   },
 };
 

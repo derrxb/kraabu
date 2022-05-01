@@ -47,6 +47,7 @@ export default class PaymentRepository {
   static async getPaymentByInvoice(invoice: string) {
     const result = await prisma.payment.findFirst({
       where: { invoice: invoice },
+      include: { supplier: { include: { ekyash: true } } },
     });
 
     return await this.rebuildEntity(result);

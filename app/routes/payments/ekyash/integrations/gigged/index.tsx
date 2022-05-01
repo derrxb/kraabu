@@ -4,6 +4,7 @@ import type { LoaderFunction, MetaFunction } from "remix";
 import { json, useLoaderData, useNavigate } from "remix";
 import type PaymentEntity from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
+import { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
 import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment";
 import { PaymentPayCode } from "~/ui/molecules/payment-pay-code";
@@ -65,7 +66,7 @@ export default function Index() {
       <div className="h-full w-full md:w-1/2">
         <PaymentPayDetails
           payment={data.payment}
-          vendor={data.payment.supplier}
+          vendor={data.payment.supplier as SupplierEntity}
         />
       </div>
 

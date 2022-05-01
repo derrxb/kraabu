@@ -10,8 +10,8 @@ export class EKyashRepository {
       api: data.api,
       id: data.id,
       phone: data.phone,
-      pinEncoded: data.pin_encoded,
-      pinHash: data.pin_hash,
+      pinEncoded: data.pinEncoded,
+      pinHash: data.pinHash,
       sid: data.sid,
     });
   }

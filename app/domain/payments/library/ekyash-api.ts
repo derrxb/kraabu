@@ -2,7 +2,6 @@ import axios from "axios";
 import { enc, HmacSHA256 } from "crypto-js";
 import { ekyash } from "~/config/index.server";
 import { EKyashEntity } from "../entities/ekyash";
-
 /**
  * Builds & returns a JWT token for calls to E-kyash's API.
  * @returns
@@ -16,7 +15,7 @@ const getJWTToken = async (kyash: EKyashEntity) => {
     enc.Utf8.parse(
       JSON.stringify({
         mobile: kyash.phone,
-        sid: kyash.sid,
+        sid: String(kyash.sid),
         pushkey: "",
         pinHash: kyash.pinEncoded,
       })
@@ -56,17 +55,19 @@ const getAuthorization = async (
   data: EKyashEntity
 ): Promise<AuthorizationResponse> => {
   const jwt = await getJWTToken(data);
+  const sid = data.sid;
 
   const response = await axios.post(
     `${data.api}/authorization`,
     {
-      pushkey: "",
-      sid: String(data.sid),
+      pushkey: "{{pushkey}}",
+      sid: sid.toString(),
       pinHash: data.pinHash,
     },
     {
       headers: {
         ...ekyash.headers,
+        SID: sid.toString(),
         Authorization: `Bearer ${jwt}`,
       },
     }

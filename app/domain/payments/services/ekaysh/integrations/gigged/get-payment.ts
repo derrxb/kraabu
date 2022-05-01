@@ -1,5 +1,6 @@
 import { EKyashEntity } from "~/domain/payments/entities/ekyash";
 import PaymentEntity from "~/domain/payments/entities/payment";
+import { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
@@ -49,7 +50,7 @@ export default class GetPayment {
         invoiceno: this.invoiceNo as string,
         paymentKey: this.paymentKey as string,
       },
-      payment.supplier
+      payment?.supplier as SupplierEntity
     );
 
     const nextPayment = new PaymentEntity({
@@ -67,8 +68,10 @@ export default class GetPayment {
 
   async getPaymentWithPayQrCode(payment: PaymentEntity) {
     const ekyashMapper = new EKyashMapper(
-      payment.supplier.ekyash as EKyashEntity
+      payment?.supplier?.ekyash as EKyashEntity
     );
+
+    await ekyashMapper.initialize();
 
     const invoice = await ekyashMapper.createInvoice(payment);
 
