@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import type { LoaderFunction, MetaFunction } from "remix";
-import { json, useLoaderData, useSubmit } from "remix";
+import { json, useLoaderData, useNavigate } from "remix";
 import gigged from "~/assets/images/gigged-logo.png";
 import type Payment from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
@@ -33,7 +33,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const data = useLoaderData() as { payment: Payment };
-  const submit = useSubmit();
+
+  const navigate = useNavigate();
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
 
@@ -45,11 +46,9 @@ export default function Index() {
         );
 
         if (result.data?.status === PaymentStatus.Completed) {
-          submit(null, {
-            method: "post",
-            action: `/payments/ekyash/${data.payment.invoice}/completed`,
+          navigate(`/payments/ekyash/${data.payment.invoice}/completed`, {
+            replace: true,
           });
-          return;
         }
       },
       1500
@@ -60,7 +59,7 @@ export default function Index() {
         clearTimeout(timer);
       }
     };
-  }, [data.payment.invoice, submit]);
+  }, [data.payment.invoice, navigate]);
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">

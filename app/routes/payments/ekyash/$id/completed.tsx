@@ -1,11 +1,23 @@
-import { ActionFunction, json } from "remix";
+import { json, LoaderFunction, redirect } from "remix";
+import { PaymentStatus } from "~/domain/payments/entities/payment";
+import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 
-export const action: ActionFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   try {
-    // const payment = await new CompletePendingEkyashPayment(params).call();
-    // return redirect(
-    //   `https://giggedbz.arcadier.io/user/checkout/current-status?invoiceNo=${payment?.invoice}`
-    // );
+    const payment = await new GetPayment(params).call();
+
+    switch (payment.status) {
+      case PaymentStatus.Completed:
+        return json(payment);
+      case PaymentStatus.Failure:
+        return redirect(`/payments/ekyash/${payment.invoice}/failed`);
+      case PaymentStatus.Pending:
+        return redirect(
+          `/payments/ekyash/integrations/gigged?invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}`
+        );
+      default:
+        break;
+    }
   } catch (e) {
     return json(
       {
@@ -15,3 +27,11 @@ export const action: ActionFunction = async ({ params }) => {
     );
   }
 };
+
+export default function Completed() {
+  return (
+    <div>
+      <h1>Your order was completed successfully!!</h1>
+    </div>
+  );
+}
