@@ -1,9 +1,12 @@
+import { EKyash } from "./ekyash";
+
 type Props = {
   id: number;
   name: string;
   tag: string;
   logo_url: string;
   homepage: string;
+  ekyash?: EKyash;
 };
 
 export class Supplier {
@@ -12,13 +15,15 @@ export class Supplier {
   tag: string;
   logo_url: string;
   homepage: string;
+  ekyash?: EKyash;
 
-  constructor({ id, name, tag, logo_url, homepage }: Props) {
+  constructor({ id, name, tag, logo_url, homepage, ekyash }: Props) {
     this.id = id;
     this.name = name;
     this.tag = tag;
     this.logo_url = logo_url;
     this.homepage = homepage;
+    this.ekyash = ekyash;
   }
 
   json() {
@@ -28,6 +33,7 @@ export class Supplier {
       tag: this.tag,
       logo_url: this.logo_url,
       homepage: this.homepage,
+      ekyash: this.ekyash?.json(),
     };
   }
 }

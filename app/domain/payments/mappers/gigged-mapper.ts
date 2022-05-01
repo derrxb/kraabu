@@ -2,6 +2,7 @@ import axios from "axios";
 import { nanoid } from "nanoid";
 import Failure from "~/lib/failure";
 import Payment, { PaymentStatus } from "../entities/payment";
+import { Supplier } from "../entities/supplier";
 import type { GiggedOrderHandshake } from "../library/gigged-api";
 import { GiggedRoutes } from "../library/gigged-api";
 
@@ -45,8 +46,8 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getInitialPayment(data: GiggedOrderHandshake) {
-    return this.buildInitialEntity(data);
+  getInitialPayment(data: GiggedOrderHandshake, supplier: Supplier) {
+    return this.buildInitialEntity(data, supplier);
   }
 
   /**
@@ -57,7 +58,8 @@ class GiggedMapper {
   async findOrderWithPaymentKey(
     data: Pick<GiggedOrderHandshake, "invoiceno"> & {
       paymentKey: string;
-    }
+    },
+    supplier: Supplier
   ) {
     try {
       const response = await axios.get(
@@ -66,7 +68,7 @@ class GiggedMapper {
 
       const order = response.data as OrderDetails;
 
-      return this.buildEntity(order);
+      return this.buildEntity(order, supplier);
     } catch (e) {
       console.log(e);
       throw e;
@@ -95,9 +97,12 @@ class GiggedMapper {
     }
   }
 
-  private buildInitialEntity(data: GiggedOrderHandshake): Payment {
+  private buildInitialEntity(
+    data: GiggedOrderHandshake,
+    supplier: Supplier
+  ): Payment {
     return new Payment({
-      user: "giggedBz",
+      supplier: supplier,
       status: PaymentStatus.Pending,
       currency: {
         amount: Number(data.total),
@@ -113,7 +118,7 @@ class GiggedMapper {
     });
   }
 
-  private buildEntity(data: OrderDetails): Payment {
+  private buildEntity(data: OrderDetails, supplier: Supplier): Payment {
     // Get all the totals from PayeesInfo and adds them up.
     const total = data?.PayeeInfos?.map((item) => item.Total).reduce(
       (prev, curr) => prev + curr,
@@ -125,7 +130,7 @@ class GiggedMapper {
     const purchasedItem = data.PayeeInfos[0].Items[0];
 
     return new Payment({
-      user: "giggedBz",
+      supplier: supplier,
       status: PaymentStatus.Pending,
       currency: {
         amount: Number(total),

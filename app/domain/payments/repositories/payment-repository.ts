@@ -1,6 +1,8 @@
 import { supabase } from "~/config/index.server";
 import { Tables } from ".";
 import Payment, { PaymentStatus } from "../entities/payment";
+import { Supplier } from "../entities/supplier";
+import { SupplierRepository } from "./supplier-repository";
 
 export default class PaymentRepository {
   static async rebuildEntity(data: any) {
@@ -18,7 +20,9 @@ export default class PaymentRepository {
       id: data.id,
       invoice: data.invoice,
       status: data.status,
-      supplier: data.supplier,
+      supplier: (await SupplierRepository.rebuildEntity(
+        data.supplier
+      )) as Supplier,
     });
   }
 
@@ -41,10 +45,10 @@ export default class PaymentRepository {
   static async getPaymentByInvoice(invoice: string) {
     const result = await supabase
       .from(Tables.Payments)
-      .select("*, supplier:supplier (*)")
+      .select("*, supplier:supplier (*, ekyash:ekyash (*))")
       .eq("invoice", invoice);
 
-    return this.rebuildEntity(result.body?.[0]);
+    return await this.rebuildEntity(result.body?.[0]);
   }
 
   static async setPaymentQrCodeUrl(payment: Payment, qrCodeUrl: string) {

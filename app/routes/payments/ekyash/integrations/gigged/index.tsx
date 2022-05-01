@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import type { LoaderFunction, MetaFunction } from "remix";
 import { json, useLoaderData, useNavigate } from "remix";
-import gigged from "~/assets/images/gigged-logo.png";
 import type Payment from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
@@ -66,12 +65,7 @@ export default function Index() {
       <div className="h-full w-full md:w-1/2">
         <PaymentPayDetails
           payment={data.payment}
-          vendor={{
-            name: "GiggedBz",
-            logo: gigged,
-            url: "http://gigged.bz",
-            tag: "Make life easier by hiring a Gigger to help",
-          }}
+          vendor={data.payment.supplier}
         />
       </div>
 

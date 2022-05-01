@@ -1,12 +1,13 @@
 import axios from "axios";
 import { enc, HmacSHA256 } from "crypto-js";
 import { ekyash } from "~/config/index.server";
+import { EKyash } from "../entities/ekyash";
 
 /**
  * Builds & returns a JWT token for calls to E-kyash's API.
  * @returns
  */
-const getJWTToken = async () => {
+const getJWTToken = async (kyash: EKyash) => {
   const header = enc.Base64.stringify(
     enc.Utf8.parse(JSON.stringify({ alg: "HS256", typ: "JWT" }))
   );
@@ -14,10 +15,10 @@ const getJWTToken = async () => {
   const data = enc.Base64.stringify(
     enc.Utf8.parse(
       JSON.stringify({
-        mobile: ekyash.data.phone,
-        sid: ekyash.credentials.SID,
+        mobile: kyash.phone,
+        sid: kyash.sid,
         pushkey: "",
-        pinHash: ekyash.credentials.pinEncoded,
+        pinHash: kyash.pinEncoded,
       })
     )
   );
@@ -27,21 +28,6 @@ const getJWTToken = async () => {
   );
 
   return `${header}.${data}.${signature}`;
-};
-
-type AuthorizationData = {
-  /**
-   * Merchant ID provided by Ekyash
-   */
-  sid: number;
-  /**
-   * pinHash, provided by Ekyash: hash('sha256', md5('pin'))
-   */
-  pinHash: string;
-  /**
-   * always provided as an empty string
-   */
-  pushKey: string;
 };
 
 type AuthorizationResponse = {
@@ -67,16 +53,16 @@ type AuthorizationResponse = {
  * @returns
  */
 const getAuthorization = async (
-  data: AuthorizationData
+  data: EKyash
 ): Promise<AuthorizationResponse> => {
-  const jwt = await getJWTToken();
+  const jwt = await getJWTToken(data);
 
   const response = await axios.post(
-    `${ekyash.api}/authorization`,
+    `${data.api}/authorization`,
     {
       pushkey: "",
       sid: String(data.sid),
-      pinHash: ekyash.credentials["Pin Hash"],
+      pinHash: data.pinHash,
     },
     {
       headers: {
@@ -177,12 +163,13 @@ type NewInvoiceResponse = {
  * Creates an invoice for users with a specified amount in Belize Dollars.
  */
 const createNewInvoice = async (
-  data: NewInvoiceData
+  data: NewInvoiceData,
+  kyash: EKyash
 ): Promise<NewInvoiceResponse> => {
-  const jwt = await getJWTToken();
+  const jwt = await getJWTToken(kyash);
 
   const response = await axios.post(
-    `${ekyash.api}/create-new-invoice`,
+    `${kyash.api}/create-new-invoice`,
     {
       ...data,
     },
@@ -219,8 +206,11 @@ type UploadInvoiceImageResponse = {
   success?: boolean;
 };
 
-const uploadInvoiceImage = async (data: UploadInvoiceImageData) => {
-  const response = await axios.post(`${ekyash.api}/upload-image`, {
+const uploadInvoiceImage = async (
+  data: UploadInvoiceImageData,
+  kyash: EKyash
+) => {
+  const response = await axios.post(`${kyash.api}/upload-image`, {
     ...data,
   });
 

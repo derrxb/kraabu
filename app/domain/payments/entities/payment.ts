@@ -108,6 +108,7 @@ class Payment {
       description: this.description,
       status: this.status,
       currency: this.currency,
+      supplier: this.supplier.json(),
     };
   }
 }

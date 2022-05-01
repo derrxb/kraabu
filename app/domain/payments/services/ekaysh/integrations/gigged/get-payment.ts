@@ -1,4 +1,4 @@
-import { ekyash } from "~/config/index.server";
+import { EKyash } from "~/domain/payments/entities/ekyash";
 import Payment from "~/domain/payments/entities/payment";
 import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
@@ -44,10 +44,13 @@ export default class GetPayment {
     const paymentWithOrderDetails = await new GiggedMapper(
       payment.additionalData.gateway as string,
       payment.additionalData.hashkey as string
-    ).findOrderWithPaymentKey({
-      invoiceno: this.invoiceNo as string,
-      paymentKey: this.paymentKey as string,
-    });
+    ).findOrderWithPaymentKey(
+      {
+        invoiceno: this.invoiceNo as string,
+        paymentKey: this.paymentKey as string,
+      },
+      payment.supplier
+    );
 
     const nextPayment = new Payment({
       ...payment,
@@ -63,10 +66,7 @@ export default class GetPayment {
   }
 
   async getPaymentWithPayQrCode(payment: Payment) {
-    const ekyashMapper = new EKyashMapper(
-      ekyash.credentials.SID,
-      ekyash.credentials["Pin Hash"]
-    );
+    const ekyashMapper = new EKyashMapper(payment.supplier.ekyash as EKyash);
 
     const invoice = await ekyashMapper.createInvoice(payment);
 
