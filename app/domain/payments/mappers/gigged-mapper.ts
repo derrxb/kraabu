@@ -70,7 +70,6 @@ class GiggedMapper {
 
       return this.buildEntity(order, supplier);
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }

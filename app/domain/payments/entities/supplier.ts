@@ -1,4 +1,4 @@
-import { SupplierORM } from "~/infrastructure/database/index.server";
+import { Supplier as SupplierORM } from "@prisma/client";
 import { EKyashEntity } from "./ekyash";
 
 export class SupplierEntity {

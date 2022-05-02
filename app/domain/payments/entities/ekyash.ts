@@ -1,4 +1,4 @@
-import { EkyashORM } from "~/infrastructure/database/index.server";
+import { Ekyash as EkyashORM } from "@prisma/client";
 
 export class EKyashEntity {
   id: EkyashORM["id"];
