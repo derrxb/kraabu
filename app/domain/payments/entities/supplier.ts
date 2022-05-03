@@ -1,5 +1,5 @@
-import { Supplier as SupplierORM } from "@prisma/client";
-import { EKyashEntity } from "./ekyash";
+import type { Supplier as SupplierORM } from "@prisma/client";
+import type { EKyashEntity } from "./ekyash";
 
 export class SupplierEntity {
   id: SupplierORM["id"];

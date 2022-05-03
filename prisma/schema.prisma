@@ -7,15 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PaymentStatus {
+  Pending
+  Completed
+  Failed
+}
+
+enum Currency {
+  BZD
+  USD
+}
+
 model Ekyash {
-  id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  api        String     @db.VarChar(255)
-  sid        BigInt     @db.BigInt
-  pinHash    String     @db.VarChar(255)
-  pinEncoded String     @db.VarChar(255)
-  phone      String     @db.VarChar(255)
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  api        String    @db.VarChar(255)
+  sid        BigInt    @db.BigInt
+  pinHash    String    @db.VarChar(255)
+  pinEncoded String    @db.VarChar(255)
+  phone      String    @db.VarChar(255)
   Supplier   Supplier?
 }
 
@@ -27,19 +38,19 @@ model Supplier {
   logoUrl  String    @db.VarChar(255)
   homepage String    @db.VarChar(255)
   ekyash   Ekyash?   @relation(fields: [ekyashId], references: [id])
-  ekyashId Int?
+  ekyashId Int?      @unique
   Payment  Payment[]
 }
 
-enum PaymentStatus {
-  Pending
-  Completed
-  Failed
-}
-
-enum Currency {
-  BZD
-  USD
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  quantity    Int
+  description String   @db.VarChar(255)
+  price       Int
+  currency    Currency @default(BZD)
+  payment     Payment  @relation(fields: [paymentId], references: [id])
+  paymentId   Int
 }
 
 model Payment {
@@ -54,4 +65,5 @@ model Payment {
   supplier       Supplier      @relation(fields: [supplierId], references: [id])
   supplierId     Int
   additionalData Json
+  orderItems     OrderItem[]
 }
