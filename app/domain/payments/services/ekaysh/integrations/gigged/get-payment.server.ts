@@ -9,27 +9,25 @@ import getGiggedBzPaymentSchema from "~/requests/get-gigged-bz-payment";
 
 export default class GetPayment {
   private params: URLSearchParams;
-  private invoiceNo?: string;
-  private paymentKey?: string;
 
   constructor(params: URLSearchParams) {
     this.params = params;
   }
 
-  async verifyParams() {
+  async verifyParams(): Promise<{ invoiceNo: string; paymentKey: string }> {
     const { invoiceNo, paykey } = await getGiggedBzPaymentSchema.validateAsync({
       invoiceNo: this.params.get("invoiceNo"),
       paykey: this.params.get("paykey"),
     });
 
-    this.invoiceNo = invoiceNo;
-    this.paymentKey = paykey;
+    return {
+      invoiceNo,
+      paymentKey: paykey,
+    };
   }
 
-  async getPendingPayment() {
-    const payment = await PaymentRepository.getPaymentByInvoice(
-      this.invoiceNo as string
-    );
+  async getPendingPayment(invoice: string) {
+    const payment = await PaymentRepository.getPaymentByInvoice(invoice);
 
     if (!payment) {
       throw new Failure(
@@ -41,14 +39,18 @@ export default class GetPayment {
     return payment;
   }
 
-  async getPaymentWithOrderDetails(payment: PaymentEntity) {
+  async getPaymentWithOrderDetails(
+    payment: PaymentEntity,
+    invoice: string,
+    paymentKey: string
+  ) {
     const paymentWithOrderDetails = await new GiggedMapper(
       payment.additionalData.gateway as string,
       payment.additionalData.hashkey as string
     ).findOrderWithPaymentKey(
       {
-        invoiceno: this.invoiceNo as string,
-        paymentKey: this.paymentKey as string,
+        invoiceno: invoice,
+        paymentKey: paymentKey,
       },
       payment?.supplier as SupplierEntity
     );
@@ -92,14 +94,17 @@ export default class GetPayment {
   }
 
   async call() {
-    let payment;
-
-    await this.verifyParams();
-    payment = await this.getPendingPayment();
+    let payment: PaymentEntity | null = null;
+    const { invoiceNo: invoice, paymentKey } = await this.verifyParams();
+    payment = await this.getPendingPayment(invoice);
 
     if (payment.canBePaid()) return payment;
     if (!payment.hasOrderDetails()) {
-      payment = await this.getPaymentWithOrderDetails(payment);
+      payment = await this.getPaymentWithOrderDetails(
+        payment,
+        invoice,
+        paymentKey
+      );
     }
     if (!payment.hasQrCode()) {
       payment = await this.getPaymentWithPayQrCode(payment);
