@@ -1,56 +1,58 @@
 import type PaymentEntity from "~/domain/payments/entities/payment";
+import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import type { GiggedOrderHandshake } from "~/domain/payments/library/gigged-api";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import { SupplierRepository } from "~/domain/payments/repositories/supplier-repository";
 import Failure from "~/lib/failure";
 import createdPendingGiggedPaymentSchema from "~/requests/create-pending-gigged-payment";
+import { GIGGED_USERNAME } from ".";
 
+/**
+ * Creates a bare payment record in the database with no order details nor payment url.
+ */
 export default class CreatePayment {
   private request: Request;
-  private payment: GiggedOrderHandshake | null;
 
   constructor(request: Request) {
     this.request = request;
-    this.payment = null;
   }
 
-  async verifyPaymentParams() {
+  async verifyPaymentParams(): Promise<GiggedOrderHandshake> {
     const body = await this.request.json();
 
-    this.payment = await createdPendingGiggedPaymentSchema.validateAsync({
+    return await createdPendingGiggedPaymentSchema.validateAsync({
       ...body,
-      total: Number(body.total).toString(), // ensure string
+      total: Number(body.total).toString(),
     });
   }
 
-  async call(): Promise<PaymentEntity> {
-    await this.verifyPaymentParams();
+  async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake) {
+    const pendingPayment = new GiggedMapper(
+      order.gateway,
+      order.hashkey
+    ).getInitialPayment(order, supplier);
 
-    if (!this.payment) {
-      throw new Error("No data from GiggedBz received.");
-    }
+    return (await PaymentRepository.createPending(
+      pendingPayment,
+      supplier
+    )) as PaymentEntity;
+  }
+
+  async call(): Promise<PaymentEntity> {
+    const order = await this.verifyPaymentParams();
 
     const supplier = await SupplierRepository.findSupplierByUsername(
-      "giggedbz"
+      GIGGED_USERNAME
     );
 
     if (!supplier) {
       throw new Failure(
-        "forbidden",
-        `There is no supplier with the username: giggedbz`
+        "not_found",
+        `There is no supplier with the username: ` + GIGGED_USERNAME
       );
     }
 
-    const pendingPayment = new GiggedMapper(
-      this.payment.gateway,
-      this.payment.hashkey
-    ).getInitialPayment(this.payment, supplier);
-    const payment = await PaymentRepository.createPending(
-      pendingPayment,
-      supplier
-    );
-
-    return payment as PaymentEntity;
+    return await this.createPayment(supplier, order);
   }
 }

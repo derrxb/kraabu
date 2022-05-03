@@ -1,20 +1,9 @@
 {
-  "include": [
-    "remix.env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "sourceMap": true,
-    "types": [
-      "vitest/globals"
-    ],
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2019",
-      "ESNext",
-    ],
+    "types": ["vitest/globals"],
+    "lib": ["DOM", "DOM.Iterable", "ES2019", "ESNext"],
     "module": "CommonJS",
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -26,11 +15,10 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./app/*"
-      ]
+      "~/*": ["./app/*"]
     },
-    // Remix takes care of building everything in `remix build`.
-    "noEmit": true
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true
   }
 }
