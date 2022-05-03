@@ -12,8 +12,8 @@ export type PaymentPayCodeProps = {
 
 export const PaymentPayCode = ({ qr, paymentMethod }: PaymentPayCodeProps) => {
   return (
-    <div className="my-auto flex h-full w-full flex-col leading-relaxed md:px-32 md:py-20 md:pt-36">
-      <h1 className="pb-2 pt-5 text-3xl font-bold text-gray-800">
+    <div className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32">
+      <h1 className="pb-2 pt-5 text-xl font-bold text-gray-800 sm:text-3xl">
         Confirm your order by completing payment with your{" "}
         <a
           href={paymentMethod.url}

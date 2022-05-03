@@ -14,8 +14,8 @@ export const PaymentPayDetails = ({
   payment,
 }: PaymentPayDetailsProps) => {
   return (
-    <div className="flex h-full w-full flex-col bg-slate-100 px-12 md:px-32 md:py-10">
-      <div className="mb-10 pb-4">
+    <div className="flex h-full w-full flex-col bg-slate-100 px-8 py-4 md:px-16 md:py-10 xl:px-32">
+      <div className="mb-4 pb-4 md:mb-10">
         <VendorHeader {...vendor} />
       </div>
 

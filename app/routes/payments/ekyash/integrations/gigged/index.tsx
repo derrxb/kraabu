@@ -63,14 +63,14 @@ export default function Index() {
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
-      <div className="h-full w-full md:w-1/2">
+      <div className="h-full w-full lg:w-1/2">
         <PaymentPayDetails
           payment={data.payment}
           vendor={data.payment.supplier as SupplierEntity}
         />
       </div>
 
-      <div className="h-full w-full md:w-1/2">
+      <div className="h-full w-full lg:w-1/2">
         {data.payment.additionalData.qrCodeUrl ? (
           <PaymentPayCode
             qr={data.payment.additionalData.qrCodeUrl as string}
