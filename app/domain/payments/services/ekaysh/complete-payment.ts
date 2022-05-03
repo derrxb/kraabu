@@ -1,11 +1,9 @@
-import PaymentEntity from "~/domain/payments/entities/payment";
+import type PaymentEntity from "~/domain/payments/entities/payment";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";
-import {
-  CompletedPaymentCallbackData,
-  TransactionStatus,
-} from "../../library/ekyash-api";
+import type { CompletedPaymentCallbackData } from "../../library/ekyash-api";
+import { TransactionStatus } from "../../library/ekyash-api";
 import GiggedMapper from "../../mappers/gigged-mapper";
 
 /**
@@ -38,7 +36,8 @@ export default class CompletePayment {
 
   async setPayment() {
     if (this.invoice) {
-      this.payment = await PaymentRepository.getPaymentByInvoice(this.invoice);
+      this.payment =
+        (await PaymentRepository.getPaymentByInvoice(this.invoice)) ?? null;
     } else {
       throw new Failure(
         "not_found",

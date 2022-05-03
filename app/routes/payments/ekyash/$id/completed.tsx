@@ -1,14 +1,8 @@
-import {
-  json,
-  LoaderFunction,
-  MetaFunction,
-  redirect,
-  useLoaderData,
-} from "remix";
-import PaymentEntity, {
-  PaymentStatus,
-} from "~/domain/payments/entities/payment";
-import { SupplierEntity } from "~/domain/payments/entities/supplier";
+import type { LoaderFunction, MetaFunction } from "remix";
+import { json, redirect, useLoaderData } from "remix";
+import type PaymentEntity from "~/domain/payments/entities/payment";
+import { PaymentStatus } from "~/domain/payments/entities/payment";
+import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 import { PaymentPayDetails } from "~/ui/molecules/payment-pay-details";
 import { PaymentSuccess } from "~/ui/molecules/payment-success";

@@ -1,11 +1,9 @@
-import {
-  Currency,
+import type {
   Ekyash as EkyashORM,
   Payment as PaymentORM,
-  PaymentStatus,
-  PrismaClient,
   Supplier as SupplierORM,
 } from "@prisma/client";
+import { Currency, PaymentStatus, PrismaClient } from "@prisma/client";
 
 // add prisma to the NodeJS global type
 interface CustomNodeJsGlobal extends NodeJS.Global {

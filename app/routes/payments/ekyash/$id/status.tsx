@@ -1,4 +1,5 @@
-import { json, LoaderFunction } from "remix";
+import type { LoaderFunction } from "remix";
+import { json } from "remix";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";
 import { HTTP_CODE } from "~/representers/http-response-representer";
 

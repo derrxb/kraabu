@@ -4,7 +4,7 @@ import type { LoaderFunction, MetaFunction } from "remix";
 import { json, useLoaderData, useNavigate } from "remix";
 import type PaymentEntity from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
-import { SupplierEntity } from "~/domain/payments/entities/supplier";
+import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { setIntervalAsync } from "~/domain/payments/library/async-internval";
 import GetPayment from "~/domain/payments/services/ekaysh/integrations/gigged/get-payment.server";
 import { PaymentPayCode } from "~/ui/molecules/payment-pay-code";

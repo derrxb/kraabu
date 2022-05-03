@@ -1,6 +1,6 @@
-import { EKyashEntity } from "~/domain/payments/entities/ekyash";
+import type { EKyashEntity } from "~/domain/payments/entities/ekyash";
 import PaymentEntity from "~/domain/payments/entities/payment";
-import { SupplierEntity } from "~/domain/payments/entities/supplier";
+import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";

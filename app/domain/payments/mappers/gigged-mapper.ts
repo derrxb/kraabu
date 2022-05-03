@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import superagent from "superagent";
 import Failure from "~/lib/failure";
 import PaymentEntity, { Currency, PaymentStatus } from "../entities/payment";
-import { SupplierEntity } from "../entities/supplier";
+import type { SupplierEntity } from "../entities/supplier";
 import type { GiggedOrderHandshake } from "../library/gigged-api";
 import { GiggedRoutes } from "../library/gigged-api";
 

@@ -1,5 +1,5 @@
-import { EKyashEntity } from "../entities/ekyash";
-import PaymentEntity from "../entities/payment";
+import type { EKyashEntity } from "../entities/ekyash";
+import type PaymentEntity from "../entities/payment";
 import { createNewInvoice, getAuthorization } from "../library/ekyash-api";
 
 export class EKyashMapper {

@@ -1,7 +1,7 @@
 import { enc, HmacSHA256 } from "crypto-js";
 import superagent from "superagent";
 import { ekyash } from "~/config/index.server";
-import { EKyashEntity } from "../entities/ekyash";
+import type { EKyashEntity } from "../entities/ekyash";
 /**
  * Builds & returns a JWT token for calls to E-kyash's API.
  * @returns
