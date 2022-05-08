@@ -1,5 +1,5 @@
 import prisma from "~/infrastructure/database/index.server";
-import PaymentEntity, { PaymentStatus } from "../entities/payment";
+import { PaymentEntity, PaymentStatus } from "../entities/payment";
 import type { SupplierEntity } from "../entities/supplier";
 import OrderItemRepository from "./order-item-repository";
 import { SupplierRepository } from "./supplier-repository";

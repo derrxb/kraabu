@@ -1,4 +1,4 @@
-import type PaymentEntity from "~/domain/payments/entities/payment";
+import type { PaymentEntity } from "~/domain/payments/entities/payment";
 import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import type { GiggedOrderHandshake } from "~/domain/payments/library/gigged-api";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";

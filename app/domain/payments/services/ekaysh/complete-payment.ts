@@ -1,4 +1,4 @@
-import type PaymentEntity from "~/domain/payments/entities/payment";
+import type { PaymentEntity } from "~/domain/payments/entities/payment";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
 import Failure from "~/lib/failure";
 import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";

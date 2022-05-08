@@ -1,4 +1,4 @@
-import type PaymentEntity from "~/domain/payments/entities/payment";
+import type { PaymentEntity } from "~/domain/payments/entities/payment";
 import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { OrderItemList } from "../order-items";
 import { OrderStatus } from "../order-status";

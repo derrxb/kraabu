@@ -1,6 +1,6 @@
 import type { LoaderFunction, MetaFunction } from "remix";
 import { json, redirect, useLoaderData } from "remix";
-import type PaymentEntity from "~/domain/payments/entities/payment";
+import type { PaymentEntity } from "~/domain/payments/entities/payment";
 import { PaymentStatus } from "~/domain/payments/entities/payment";
 import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import GetPayment from "~/domain/payments/services/ekaysh/get-payment";

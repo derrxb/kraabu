@@ -16,7 +16,7 @@ export type GiggedOrderDetails = {
   };
 };
 
-class PaymentEntity {
+export class PaymentEntity {
   createdAt?: PaymentORM["createdAt"];
   updatedAt?: PaymentORM["updatedAt"];
   description: PaymentORM["description"];
@@ -104,5 +104,3 @@ class PaymentEntity {
     };
   }
 }
-
-export default PaymentEntity;
