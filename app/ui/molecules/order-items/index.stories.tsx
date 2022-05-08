@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { OrderItemList, OrderItemListProps } from ".";
+import type { OrderItemListProps } from ".";
+import { OrderItemList } from ".";
 
 export default {
   title: "Molecules/OrderItems",
@@ -19,13 +20,13 @@ Default.args = {
   items: [
     {
       name: "Test Item One",
-      amount: 100,
+      price: 100,
       currency: "BZD",
       quantity: 1,
     },
     {
       name: "Test Item Two",
-      amount: 250,
+      price: 250,
       currency: "BZD",
       quantity: 5,
     },

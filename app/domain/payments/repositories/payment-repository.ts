@@ -11,13 +11,13 @@ export default class PaymentRepository {
     }
 
     const supplier = await SupplierRepository.rebuildEntity(data.supplier);
-    const orders =
-      data.orders?.map((orderItem: any) =>
+    const orderItems =
+      data.orderItems?.map((orderItem: any) =>
         OrderItemRepository.rebuildEntity(orderItem)
       ) || [];
 
     return new PaymentEntity({
-      orders,
+      orderItems,
       supplier,
       additionalData: data?.additionalData,
       amount: data?.amount,
@@ -63,6 +63,7 @@ export default class PaymentRepository {
     const result = await prisma.payment.update({
       data: { additionalData: { qrCodeUrl, ...payment.additionalData } },
       where: { id: payment.id },
+      include: { orderItems: true, supplier: true },
     });
 
     return this.rebuildEntity(result);
@@ -74,7 +75,7 @@ export default class PaymentRepository {
         additionalData: payment.additionalData,
         orderItems: {
           createMany: {
-            data: payment.orders.map((order) => ({
+            data: payment.orderItems.map((order) => ({
               description: order.description,
               name: order.name,
               price: order.price,
@@ -86,6 +87,7 @@ export default class PaymentRepository {
         },
       },
       where: { id: payment.id },
+      include: { orderItems: true, supplier: { include: { ekyash: true } } },
     });
 
     return this.rebuildEntity(result) as Promise<PaymentEntity>;

@@ -1,8 +1,8 @@
-import type { OrderItemProps } from "../order-item";
+import type { OrderItemEntity } from "~/domain/payments/entities/order-item";
 import { OrderItem } from "../order-item";
 
 export type OrderItemListProps = {
-  items: Array<OrderItemProps>;
+  items: OrderItemEntity[];
 };
 
 export const OrderItemList = ({ items }: OrderItemListProps) => {
@@ -18,6 +18,7 @@ export const OrderItemList = ({ items }: OrderItemListProps) => {
         <ul className="list-none space-y-4">
           {items.map((item) => (
             <li key={item.name + item.quantity + item.currency}>
+              {/* @ts-ignore */}
               <OrderItem {...item} />
             </li>
           ))}

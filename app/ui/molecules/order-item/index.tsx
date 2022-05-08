@@ -1,21 +1,13 @@
 import { truncate } from "lodash";
-import type PaymentEntity from "~/domain/payments/entities/payment";
-
-export type OrderItemProps = {
-  name: string;
-  description: string;
-  quantity: number;
-  currency: PaymentEntity["currency"];
-  amount: PaymentEntity["amount"];
-};
+import type { OrderItemEntity } from "~/domain/payments/entities/order-item";
 
 export const OrderItem = ({
   name,
   currency,
   quantity,
   description,
-  amount,
-}: OrderItemProps) => {
+  price,
+}: OrderItemEntity) => {
   return (
     <article className="flex h-fit w-full max-w-lg flex-col">
       <h2 className="text-lg text-gray-800">{name}</h2>
@@ -25,10 +17,10 @@ export const OrderItem = ({
 
       <div className="flex flex-row items-baseline justify-between pt-2">
         <div className="flex flex-row items-end text-lg text-indigo-500">
-          {amount > 0 ? (
+          {price > 0 ? (
             <>
               <span className="mr-2 font-bold">
-                {amount > 0 ? `$${amount}` : "FREE"}
+                {price > 0 ? `$${price}` : "FREE"}
               </span>
               <span className="font-medium">{currency}</span>
             </>

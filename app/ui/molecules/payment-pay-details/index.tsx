@@ -1,5 +1,5 @@
 import type PaymentEntity from "~/domain/payments/entities/payment";
-import { SupplierEntity } from "~/domain/payments/entities/supplier";
+import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { OrderItemList } from "../order-items";
 import { OrderStatus } from "../order-status";
 import { VendorHeader } from "../vendor-header";
@@ -23,17 +23,7 @@ export const PaymentPayDetails = ({
         <OrderStatus status={payment.status} />
       </div>
 
-      <OrderItemList
-        items={[
-          {
-            name: payment.additionalData.order?.name || "Untitled Item",
-            description: payment.additionalData.order?.description || "",
-            amount: payment.amount,
-            currency: payment.currency,
-            quantity: payment.additionalData.order?.quantity || 0,
-          },
-        ]}
-      />
+      <OrderItemList items={payment.orderItems} />
     </div>
   );
 };

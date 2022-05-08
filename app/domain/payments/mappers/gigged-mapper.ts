@@ -135,7 +135,7 @@ class GiggedMapper {
           email: data.PayeeInfos[0].Email,
         },
       },
-      orders: [
+      orderItems: [
         new OrderItemEntity({
           name: purchasedItem.Name,
           description: purchasedItem.Description,

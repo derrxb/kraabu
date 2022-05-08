@@ -28,7 +28,7 @@ class PaymentEntity {
   supplier?: SupplierEntity;
   additionalData: GiggedOrderDetails;
   supplierId: PaymentORM["supplierId"];
-  orders: OrderItemEntity[];
+  orderItems: OrderItemEntity[];
 
   constructor({
     additionalData,
@@ -41,12 +41,12 @@ class PaymentEntity {
     status,
     supplier,
     supplierId,
-    orders,
+    orderItems,
   }: Omit<PaymentORM, "id" | "createdAt" | "updatedAt"> &
     Partial<Pick<PaymentORM, "id" | "createdAt" | "updatedAt">> & {
       additionalData: GiggedOrderDetails;
       supplier?: SupplierEntity;
-      orders?: OrderItemEntity[];
+      orderItems?: OrderItemEntity[];
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -58,7 +58,7 @@ class PaymentEntity {
     this.status = status;
     this.supplier = supplier;
     this.supplierId = supplierId;
-    this.orders = orders ?? [];
+    this.orderItems = orderItems ?? [];
   }
 
   isValid() {
@@ -86,7 +86,7 @@ class PaymentEntity {
       return false;
     }
 
-    return this.orders && this.orders.length > 0;
+    return this.orderItems && this.orderItems.length > 0;
   }
 
   json() {
@@ -100,7 +100,7 @@ class PaymentEntity {
       amount: this.amount,
       createdAt: this.createdAt,
       id: this.id,
-      orders: this.orders.map((order) => order.json()),
+      orderItems: this.orderItems.map((order) => order.json()),
     };
   }
 }
