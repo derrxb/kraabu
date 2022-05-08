@@ -1,27 +1,29 @@
-import type { EKyashEntity } from '~/domain/payments/entities/ekyash';
-import { PaymentEntity } from '~/domain/payments/entities/payment';
 import { EKyashMapper } from '~/domain/payments/mappers/ekyash-mapper';
 import GiggedMapper from '~/domain/payments/mappers/gigged-mapper';
-import PaymentRepository from '~/domain/payments/repositories/payment-repository';
+import type { EKyashEntity } from '~/entities/ekyash';
+import type { PaymentEntity } from '~/entities/payment';
 import Failure from '~/lib/failure';
+import PaymentRepository from '~/repositories/payment-repository';
 import getGiggedBzPaymentSchema from '~/requests/get-gigged-bz-payment';
 
 export default class GetPayment {
-  private params: URLSearchParams;
+  private request: Request;
 
-  constructor(params: URLSearchParams) {
-    this.params = params;
+  constructor(request: Request) {
+    this.request = request;
   }
 
-  async verifyParams(): Promise<{ invoiceNo: string; paymentKey: string }> {
-    const { invoiceNo, paykey } = await getGiggedBzPaymentSchema.validateAsync({
-      invoiceNo: this.params.get('invoiceNo'),
-      paykey: this.params.get('paykey'),
+  async verifyParams() {
+    const params = new URL(this.request.url).searchParams;
+
+    const { invoiceNo, paymentKey } = await getGiggedBzPaymentSchema.validateAsync({
+      invoiceNo: params.get('invoiceNo'),
+      paymentKey: params.get('paykey'),
     });
 
     return {
       invoiceNo,
-      paymentKey: paykey,
+      paymentKey,
     };
   }
 
@@ -35,48 +37,53 @@ export default class GetPayment {
     return payment;
   }
 
-  async getPaymentWithOrderDetails(payment: PaymentEntity) {
-    const nextPayment = await new GiggedMapper(
+  async getPaymentOrderDetails(payment: PaymentEntity) {
+    if (payment.hasOrderDetails()) {
+      return undefined;
+    }
+
+    return await new GiggedMapper(
       payment.additionalData.gateway as string,
       payment.additionalData.hashkey as string,
-    ).findOrderWithOrderDetails(payment);
-
-    return await PaymentRepository.setPaymentAdditionalData(nextPayment);
+    ).getPaymentOrderDetails({ invoiceNo: payment.invoice, paykey: payment.additionalData?.paymentKey as string });
   }
 
-  async getPaymentWithPayQrCode(payment: PaymentEntity) {
+  async getPaymentQrCode(payment: PaymentEntity) {
+    if (payment.hasQrCode()) {
+      return undefined;
+    }
+
     const ekyashMapper = new EKyashMapper(payment?.supplier?.ekyash as EKyashEntity);
-
     await ekyashMapper.initialize();
-
-    const invoice = await ekyashMapper.createInvoice(payment);
-
-    const nextPayment = new PaymentEntity({
-      ...payment,
-      additionalData: {
-        ...payment.additionalData,
-        qrCodeUrl: invoice.qrUrl,
-      },
-    });
-
-    await PaymentRepository.setPaymentQrCodeUrl(nextPayment, nextPayment.additionalData.qrCodeUrl as string);
-
-    return nextPayment;
+    return await ekyashMapper.createInvoice(payment);
   }
 
   async call() {
     let payment: PaymentEntity | null = null;
-    const { invoiceNo: invoice } = await this.verifyParams();
-    payment = await this.getPendingPayment(invoice);
+    const params = await this.verifyParams();
+    payment = await this.getPendingPayment(params.invoiceNo);
 
-    if (payment.canBePaid()) return payment;
-    if (!payment.hasOrderDetails()) {
-      payment = await this.getPaymentWithOrderDetails(payment);
-    }
-    if (!payment.hasQrCode()) {
-      payment = await this.getPaymentWithPayQrCode(payment);
+    if (!payment.isValidPaymentKey(params.paymentKey)) {
+      throw new Failure('forbidden', "The payment key provided does not match this payment's records");
     }
 
-    return payment;
+    if (payment.canBePaid()) {
+      return payment;
+    }
+
+    const invoice = await this.getPaymentQrCode(payment);
+    const orderDetails = await this.getPaymentOrderDetails(payment);
+
+    if (!!invoice || !!orderDetails) {
+      return await PaymentRepository.setOrderDetailsAndPaymentCode(payment, invoice, orderDetails);
+    }
+
+    throw new Failure(
+      'bad_request',
+      `
+        Unexpected state reached: The payment has valid order details and a valid payment QR code URL.
+        This is more than likely a development error.
+      `,
+    );
   }
 }

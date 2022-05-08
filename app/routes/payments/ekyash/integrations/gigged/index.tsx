@@ -17,14 +17,10 @@ export const meta: MetaFunction = () => {
 };
 
 /**
- * This URL's loader function is responsible for loading a
- * pending payment request and its QR payment code.
- * NOTE: We need this to get values as query strings because we don't control how arcadier calls this endpoint.
- * @returns The page data
+ * Loads a payment's details for payment.
  */
 export const loader: LoaderFunction = async ({ request }) => {
-  const searchParams = new URL(request.url).searchParams;
-  const payment = await new GetPayment(searchParams).call();
+  const payment = await new GetPayment(request).call();
 
   return json({
     payment: payment.json(),

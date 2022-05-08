@@ -70,7 +70,7 @@ export class PaymentEntity {
   }
 
   canBePaid() {
-    return !!this.additionalData.qrCodeUrl && !this.additionalData.paymentKey;
+    return this.hasOrderDetails() && this.hasQrCode();
   }
 
   canMarkInProgress() {
@@ -87,6 +87,10 @@ export class PaymentEntity {
     }
 
     return this.orderItems && this.orderItems.length > 0;
+  }
+
+  isValidPaymentKey(paymentKey: string) {
+    return this.additionalData.paymentKey === paymentKey;
   }
 
   json() {

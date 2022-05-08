@@ -1,6 +1,7 @@
 import prisma from '~/infrastructure/database/index.server';
 import { PaymentEntity, PaymentStatus } from '../entities/payment';
 import type { SupplierEntity } from '../entities/supplier';
+import type { NewInvoiceResponse } from '../library/ekyash-api';
 import OrderItemRepository from './order-item-repository';
 import { SupplierRepository } from './supplier-repository';
 
@@ -56,38 +57,36 @@ export default class PaymentRepository {
     return await this.rebuildEntity(result);
   }
 
-  static async setPaymentQrCodeUrl(payment: PaymentEntity, qrCodeUrl: string) {
-    const result = await prisma.payment.update({
-      data: { additionalData: { qrCodeUrl, ...payment.additionalData } },
-      where: { id: payment.id },
-      include: { orderItems: true, supplier: true },
-    });
-
-    return this.rebuildEntity(result);
-  }
-
-  static async setPaymentAdditionalData(payment: PaymentEntity) {
+  static async setOrderDetailsAndPaymentCode(payment: PaymentEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
     const result = await prisma.payment.update({
       data: {
-        additionalData: payment.additionalData,
-        orderItems: {
-          createMany: {
-            data: payment.orderItems.map((order) => ({
-              description: order.description,
-              name: order.name,
-              price: order.price,
-              quantity: order.quantity,
-              currency: order.currency,
-            })),
-            skipDuplicates: true,
-          },
+        amount: orderDetails?.amount,
+        currency: orderDetails?.currency,
+        additionalData: {
+          ...payment.additionalData,
+          qrCodeUrl: invoice?.qrUrl,
+          payer: orderDetails?.payer,
         },
+        orderItems: orderDetails?.orderItems
+          ? {
+              createMany: {
+                data: orderDetails?.orderItems?.map((order: any) => ({
+                  description: order.description,
+                  name: order.name,
+                  price: order.price,
+                  quantity: order.quantity,
+                  currency: order.currency,
+                })),
+                skipDuplicates: true,
+              },
+            }
+          : undefined,
       },
       where: { id: payment.id },
       include: { orderItems: true, supplier: { include: { ekyash: true } } },
     });
 
-    return this.rebuildEntity(result) as Promise<PaymentEntity>;
+    return this.rebuildEntity(result);
   }
 
   static async setPaymentAsCompleted(payment: PaymentEntity) {

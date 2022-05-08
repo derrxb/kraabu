@@ -1,7 +1,7 @@
 import type { ActionFunction } from 'remix';
 import { json } from 'remix';
-import CreatePayment from '~/domain/payments/services/ekaysh/integrations/gigged/create-payment';
 import { HTTP_CODE } from '~/representers/http-response-representer';
+import CreatePayment from '~/services/ekaysh/integrations/gigged/create-payment';
 
 export const action: ActionFunction = async ({ request }) => {
   try {

@@ -1,10 +1,10 @@
-import type { PaymentEntity } from '~/domain/payments/entities/payment';
-import type { SupplierEntity } from '~/domain/payments/entities/supplier';
 import type { GiggedOrderHandshake } from '~/domain/payments/library/gigged-api';
 import GiggedMapper from '~/domain/payments/mappers/gigged-mapper';
-import PaymentRepository from '~/domain/payments/repositories/payment-repository';
-import { SupplierRepository } from '~/domain/payments/repositories/supplier-repository';
+import type { PaymentEntity } from '~/entities/payment';
+import type { SupplierEntity } from '~/entities/supplier';
 import Failure from '~/lib/failure';
+import PaymentRepository from '~/repositories/payment-repository';
+import { SupplierRepository } from '~/repositories/supplier-repository';
 import createdPendingGiggedPaymentSchema from '~/requests/create-pending-gigged-payment';
 import { GIGGED_USERNAME } from '.';
 
@@ -18,7 +18,7 @@ export default class CreatePayment {
     this.request = request;
   }
 
-  async verifyPaymentParams(): Promise<GiggedOrderHandshake> {
+  async verifyParams(): Promise<GiggedOrderHandshake> {
     const body = await this.request.json();
 
     return await createdPendingGiggedPaymentSchema.validateAsync({
@@ -27,15 +27,25 @@ export default class CreatePayment {
     });
   }
 
-  async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake) {
-    const pendingPayment = new GiggedMapper(order.gateway, order.hashkey).getInitialPayment(order, supplier);
+  async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake): Promise<PaymentEntity> {
+    try {
+      const payment = await PaymentRepository.createPending(
+        new GiggedMapper(order.gateway, order.hashkey).getPaymentFromHandshake(order, supplier),
+        supplier,
+      );
 
-    return (await PaymentRepository.createPending(pendingPayment, supplier)) as PaymentEntity;
+      if (!payment) {
+        throw new Failure('cannot_process', 'Something unexpected occurred while creating pending payment.');
+      }
+
+      return payment;
+    } catch (e) {
+      throw new Failure('internal_error', 'Something unexpected occurred while creating pending payment.');
+    }
   }
 
   async call(): Promise<PaymentEntity> {
-    const order = await this.verifyPaymentParams();
-
+    const order = await this.verifyParams();
     const supplier = await SupplierRepository.findSupplierByUsername(GIGGED_USERNAME);
 
     if (!supplier) {

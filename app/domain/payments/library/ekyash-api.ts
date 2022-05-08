@@ -129,7 +129,7 @@ export type NewInvoiceData = {
   longTerm?: boolean;
 };
 
-type NewInvoiceResponse = {
+export type NewInvoiceResponse = {
   /**
    * @type AuthorizationResponse.Session
    */

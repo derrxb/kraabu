@@ -1,7 +1,6 @@
 import { nanoid } from 'nanoid';
 import superagent from 'superagent';
 import Failure from '~/lib/failure';
-import { OrderItemEntity } from '../entities/order-item';
 import { Currency, PaymentEntity, PaymentStatus } from '../entities/payment';
 import type { SupplierEntity } from '../entities/supplier';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
@@ -47,24 +46,61 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getInitialPayment(data: GiggedOrderHandshake, supplier: SupplierEntity) {
-    return this.buildInitialEntity(data, supplier);
+  getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): PaymentEntity {
+    return new PaymentEntity({
+      supplier: supplier,
+      supplierId: supplier.id,
+      status: PaymentStatus.Pending,
+      amount: Number(data.total),
+      currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
+      description: 'A GiggedBZ Order via EKyash',
+      invoice: data.invoiceno,
+      additionalData: {
+        gateway: data.gateway,
+        hashkey: data.hashkey,
+        paymentKey: nanoid(),
+      },
+    });
   }
 
   /**
-   * This is used to find a payment's detail when the paymentKey is present
-   * @param data
+   * Load a payment's order details from GiggedBZ's website.
    * @returns The initial payment data send by arcadier
    */
-  async findOrderWithOrderDetails(payment: PaymentEntity) {
+  async getPaymentOrderDetails(options: { invoiceNo: string; paykey: string }) {
     try {
-      const response = await superagent.get(
-        `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}&hashkey=${this.hashkey}`,
-      );
-
+      const url = new URL(GiggedRoutes.OrderDetails);
+      const query = new URLSearchParams({ ...options, gateway: this.gateway, hashkey: this.hashkey });
+      const response = await superagent.get(`${url.toString()}?${query.toString()}`);
       const order = JSON.parse(response.text) as OrderDetails;
 
-      return this.buildEntity(payment, order);
+      // Get all the totals from PayeesInfo and adds them up.
+      const payees = order?.PayeeInfos?.[0];
+      const total = order?.PayeeInfos?.map((item) => item.Total).reduce((prev, curr) => {
+        return Number(prev) + Number(curr);
+      }, 0);
+
+      // NOTE: This might change so we need to update this to
+      // get the only item with a valid `Sku` value.
+      const purchasedItem = order.PayeeInfos[0].Items[0];
+
+      return {
+        amount: parseInt((Number(total) * 100).toString(), 10),
+        currency: Currency[payees.Currency as Currency],
+        payer: {
+          name: order.PayeeInfos[0].Name,
+          email: order.PayeeInfos[0].Email,
+        },
+        orderItems: [
+          {
+            name: purchasedItem.Name,
+            description: purchasedItem.Description,
+            price: parseInt((purchasedItem.Price * 100).toString(), 10),
+            quantity: purchasedItem.Quantity,
+            currency: Currency.BZD,
+          },
+        ],
+      };
     } catch (e) {
       throw e;
     }
@@ -83,56 +119,6 @@ class GiggedMapper {
     } catch (e) {
       throw new Failure('bad_request', "Could not update GiggedBz's order status.");
     }
-  }
-
-  private buildInitialEntity(data: GiggedOrderHandshake, supplier: SupplierEntity): PaymentEntity {
-    return new PaymentEntity({
-      supplier: supplier,
-      supplierId: supplier.id,
-      status: PaymentStatus.Pending,
-      amount: Number(data.total),
-      currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
-      description: data.invoiceno,
-      invoice: data.invoiceno,
-      additionalData: {
-        gateway: data.gateway,
-        hashkey: data.hashkey,
-        paymentKey: nanoid(),
-      },
-    });
-  }
-
-  private buildEntity(payment: PaymentEntity, data: OrderDetails) {
-    // Get all the totals from PayeesInfo and adds them up.
-    const payees = data?.PayeeInfos?.[0];
-    const total = data?.PayeeInfos?.map((item) => item.Total).reduce((prev, curr) => prev + curr, 0);
-
-    // NOTE: This might change so we need to update this to
-    // get the only item with a valid `Sku` value.
-    const purchasedItem = data.PayeeInfos[0].Items[0];
-
-    return new PaymentEntity({
-      ...payment,
-      amount: Number(total),
-      currency: Currency[payees.Currency as Currency],
-      additionalData: {
-        ...payment.additionalData,
-        payer: {
-          name: data.PayeeInfos[0].Name,
-          email: data.PayeeInfos[0].Email,
-        },
-      },
-      orderItems: [
-        new OrderItemEntity({
-          name: purchasedItem.Name,
-          description: purchasedItem.Description,
-          price: parseInt((purchasedItem.Price * 100).toString(), 10),
-          quantity: purchasedItem.Quantity,
-          currency: Currency.BZD,
-          paymentId: payment.id as number,
-        }),
-      ],
-    });
   }
 }
 
