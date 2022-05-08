@@ -1,6 +1,5 @@
 import type { EKyashEntity } from "~/domain/payments/entities/ekyash";
 import PaymentEntity from "~/domain/payments/entities/payment";
-import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
 import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
 import PaymentRepository from "~/domain/payments/repositories/payment-repository";
@@ -39,33 +38,13 @@ export default class GetPayment {
     return payment;
   }
 
-  async getPaymentWithOrderDetails(
-    payment: PaymentEntity,
-    invoice: string,
-    paymentKey: string
-  ) {
-    const paymentWithOrderDetails = await new GiggedMapper(
+  async getPaymentWithOrderDetails(payment: PaymentEntity) {
+    const nextPayment = await new GiggedMapper(
       payment.additionalData.gateway as string,
       payment.additionalData.hashkey as string
-    ).findOrderWithPaymentKey(
-      {
-        invoiceno: invoice,
-        paymentKey: paymentKey,
-      },
-      payment?.supplier as SupplierEntity
-    );
+    ).findOrderWithOrderDetails(payment);
 
-    const nextPayment = new PaymentEntity({
-      ...payment,
-      additionalData: {
-        ...payment.additionalData,
-        ...paymentWithOrderDetails.additionalData,
-      },
-    });
-
-    await PaymentRepository.setPaymentAdditionalData(nextPayment);
-
-    return nextPayment;
+    return await PaymentRepository.setPaymentAdditionalData(nextPayment);
   }
 
   async getPaymentWithPayQrCode(payment: PaymentEntity) {
@@ -95,16 +74,12 @@ export default class GetPayment {
 
   async call() {
     let payment: PaymentEntity | null = null;
-    const { invoiceNo: invoice, paymentKey } = await this.verifyParams();
+    const { invoiceNo: invoice } = await this.verifyParams();
     payment = await this.getPendingPayment(invoice);
 
     if (payment.canBePaid()) return payment;
     if (!payment.hasOrderDetails()) {
-      payment = await this.getPaymentWithOrderDetails(
-        payment,
-        invoice,
-        paymentKey
-      );
+      payment = await this.getPaymentWithOrderDetails(payment);
     }
     if (!payment.hasQrCode()) {
       payment = await this.getPaymentWithPayQrCode(payment);

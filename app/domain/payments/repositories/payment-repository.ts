@@ -1,6 +1,7 @@
 import prisma from "~/infrastructure/database/index.server";
 import PaymentEntity, { PaymentStatus } from "../entities/payment";
 import type { SupplierEntity } from "../entities/supplier";
+import OrderItemRepository from "./order-item-repository";
 import { SupplierRepository } from "./supplier-repository";
 
 export default class PaymentRepository {
@@ -10,8 +11,14 @@ export default class PaymentRepository {
     }
 
     const supplier = await SupplierRepository.rebuildEntity(data.supplier);
+    const orders =
+      data.orders?.map((orderItem: any) =>
+        OrderItemRepository.rebuildEntity(orderItem)
+      ) || [];
 
     return new PaymentEntity({
+      orders,
+      supplier,
       additionalData: data?.additionalData,
       amount: data?.amount,
       currency: data.currency,
@@ -19,7 +26,6 @@ export default class PaymentRepository {
       id: data.id,
       invoice: data.invoice,
       status: data.status,
-      supplier: supplier,
       supplierId: supplier?.id as number,
     });
   }
@@ -47,7 +53,7 @@ export default class PaymentRepository {
   static async getPaymentByInvoice(invoice: string) {
     const result = await prisma.payment.findFirst({
       where: { invoice: invoice },
-      include: { supplier: { include: { ekyash: true } } },
+      include: { orderItems: true, supplier: { include: { ekyash: true } } },
     });
 
     return await this.rebuildEntity(result);
@@ -64,11 +70,25 @@ export default class PaymentRepository {
 
   static async setPaymentAdditionalData(payment: PaymentEntity) {
     const result = await prisma.payment.update({
-      data: { additionalData: payment.additionalData },
+      data: {
+        additionalData: payment.additionalData,
+        orderItems: {
+          createMany: {
+            data: payment.orders.map((order) => ({
+              description: order.description,
+              name: order.name,
+              price: order.price,
+              quantity: order.quantity,
+              currency: order.currency,
+            })),
+            skipDuplicates: true,
+          },
+        },
+      },
       where: { id: payment.id },
     });
 
-    return this.rebuildEntity(result);
+    return this.rebuildEntity(result) as Promise<PaymentEntity>;
   }
 
   static async setPaymentAsCompleted(payment: PaymentEntity) {

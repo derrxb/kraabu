@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import superagent from "superagent";
 import Failure from "~/lib/failure";
+import { OrderItemEntity } from "../entities/order-item";
 import PaymentEntity, { Currency, PaymentStatus } from "../entities/payment";
 import type { SupplierEntity } from "../entities/supplier";
 import type { GiggedOrderHandshake } from "../library/gigged-api";
@@ -55,20 +56,15 @@ class GiggedMapper {
    * @param data
    * @returns The initial payment data send by arcadier
    */
-  async findOrderWithPaymentKey(
-    data: Pick<GiggedOrderHandshake, "invoiceno"> & {
-      paymentKey: string;
-    },
-    supplier: SupplierEntity
-  ) {
+  async findOrderWithOrderDetails(payment: PaymentEntity) {
     try {
       const response = await superagent.get(
-        `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${data.invoiceno}&paykey=${data.paymentKey}&hashkey=${this.hashkey}`
+        `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}&hashkey=${this.hashkey}`
       );
 
       const order = JSON.parse(response.text) as OrderDetails;
 
-      return this.buildEntity(order, supplier);
+      return this.buildEntity(payment, order);
     } catch (e) {
       throw e;
     }
@@ -116,10 +112,7 @@ class GiggedMapper {
     });
   }
 
-  private buildEntity(
-    data: OrderDetails,
-    supplier: SupplierEntity
-  ): PaymentEntity {
+  private buildEntity(payment: PaymentEntity, data: OrderDetails) {
     // Get all the totals from PayeesInfo and adds them up.
     const payees = data?.PayeeInfos?.[0];
     const total = data?.PayeeInfos?.map((item) => item.Total).reduce(
@@ -132,26 +125,27 @@ class GiggedMapper {
     const purchasedItem = data.PayeeInfos[0].Items[0];
 
     return new PaymentEntity({
-      supplier: supplier,
-      supplierId: supplier.id,
-      status: PaymentStatus.Pending,
+      ...payment,
       amount: Number(total),
-      currency: payees.Currency === "BZD" ? Currency.BZD : Currency.USD,
-      description: "A GiggedBz order using EKyash.",
-      invoice: data.InvoiceNo,
+      currency: Currency[payees.Currency as Currency],
       additionalData: {
+        ...payment.additionalData,
         payer: {
           name: data.PayeeInfos[0].Name,
           email: data.PayeeInfos[0].Email,
         },
-        order: {
-          id: purchasedItem.Id,
+      },
+      orders: [
+        new OrderItemEntity({
           name: purchasedItem.Name,
           description: purchasedItem.Description,
-          price: purchasedItem.Price,
+          // @TODO: Improve this to do the conversion for us.
+          price: parseInt((purchasedItem.Price * 100).toString(), 10),
           quantity: purchasedItem.Quantity,
-        },
-      },
+          currency: Currency.BZD,
+          paymentId: payment.id as number,
+        }),
+      ],
     });
   }
 }

@@ -1,6 +1,6 @@
 import type { Payment as PaymentORM } from "@prisma/client";
 import { Currency, PaymentStatus } from "@prisma/client";
-import Failure from "~/lib/failure";
+import type { OrderItemEntity } from "./order-item";
 import type { SupplierEntity } from "./supplier";
 
 export { PaymentStatus, Currency };
@@ -13,13 +13,6 @@ export type GiggedOrderDetails = {
   payer?: {
     name: string;
     email: string;
-  };
-  order?: {
-    id: string;
-    name: string;
-    quantity: number;
-    description: string;
-    price: number;
   };
 };
 
@@ -35,6 +28,7 @@ class PaymentEntity {
   supplier?: SupplierEntity;
   additionalData: GiggedOrderDetails;
   supplierId: PaymentORM["supplierId"];
+  orders: OrderItemEntity[];
 
   constructor({
     additionalData,
@@ -47,10 +41,12 @@ class PaymentEntity {
     status,
     supplier,
     supplierId,
+    orders,
   }: Omit<PaymentORM, "id" | "createdAt" | "updatedAt"> &
     Partial<Pick<PaymentORM, "id" | "createdAt" | "updatedAt">> & {
       additionalData: GiggedOrderDetails;
       supplier?: SupplierEntity;
+      orders?: OrderItemEntity[];
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -62,6 +58,7 @@ class PaymentEntity {
     this.status = status;
     this.supplier = supplier;
     this.supplierId = supplierId;
+    this.orders = orders ?? [];
   }
 
   isValid() {
@@ -89,15 +86,7 @@ class PaymentEntity {
       return false;
     }
 
-    switch (this.supplier?.username) {
-      case "giggedbz":
-        if (!this.additionalData.order) {
-          return false;
-        }
-        return true;
-      default:
-        throw new Failure("cannot_process", "Unsupported user");
-    }
+    return this.orders && this.orders.length > 0;
   }
 
   json() {
@@ -111,6 +100,7 @@ class PaymentEntity {
       amount: this.amount,
       createdAt: this.createdAt,
       id: this.id,
+      orders: this.orders.map((order) => order.json()),
     };
   }
 }

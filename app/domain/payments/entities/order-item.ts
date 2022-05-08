@@ -2,7 +2,7 @@ import type { OrderItem as OrderItemORM } from "@prisma/client";
 import type PaymentEntity from "./payment";
 
 class OrderItemEntity {
-  id: OrderItemORM["id"];
+  id?: OrderItemORM["id"];
   name: OrderItemORM["name"];
   currency: OrderItemORM["currency"];
   description: OrderItemORM["description"];
@@ -20,7 +20,10 @@ class OrderItemEntity {
     quantity,
     paymentId,
     payment,
-  }: OrderItemORM & { payment?: PaymentEntity }) {
+  }: Omit<OrderItemORM, "id"> & {
+    id?: OrderItemEntity["id"];
+    payment?: PaymentEntity;
+  }) {
     this.id = id;
     this.name = name;
     this.currency = currency;
