@@ -1,5 +1,6 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
+import { mockOrderItem } from "~/ui/assets/fixtures";
 import type { OrderItemProps } from ".";
 import { OrderItem } from ".";
 
@@ -17,30 +18,21 @@ const Template: ComponentStory<typeof OrderItem> = (args) => (
 export const QuantityOne = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 QuantityOne.args = {
-  name: "Test Item one",
-  currency: "BZD",
+  ...mockOrderItem,
   quantity: 1,
-  description: "Test",
-  price: 100,
-  id: 1,
 } as OrderItemProps;
 
 export const QuantityMultiple = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 QuantityMultiple.args = {
-  name: "Test Item one",
-  description: "Test Item Description",
-  price: 100,
-  currency: "BZD",
+  ...mockOrderItem,
   quantity: 10,
 } as OrderItemProps;
 
 export const FreeItem = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 FreeItem.args = {
-  name: "Test Item one",
-  description: "Test Item Description",
+  ...mockOrderItem,
   price: 0,
   currency: "BZD",
-  quantity: 10,
 } as OrderItemProps;

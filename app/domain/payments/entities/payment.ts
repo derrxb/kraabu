@@ -1,7 +1,7 @@
 import type { Payment as PaymentORM } from "@prisma/client";
 import { Currency, PaymentStatus } from "@prisma/client";
-import type { OrderItemEntity } from "./order-item";
-import type { SupplierEntity } from "./supplier";
+import type { OrderItemDTO, OrderItemEntity } from "./order-item";
+import type { SupplierDTO, SupplierEntity } from "./supplier";
 
 export { PaymentStatus, Currency };
 
@@ -104,3 +104,15 @@ export class PaymentEntity {
     };
   }
 }
+
+export type PaymentDTO = Pick<
+  PaymentEntity,
+  | "invoice"
+  | "description"
+  | "status"
+  | "currency"
+  | "additionalData"
+  | "amount"
+  | "createdAt"
+  | "id"
+> & { supplier: SupplierDTO; orderItems: OrderItemDTO[] };
