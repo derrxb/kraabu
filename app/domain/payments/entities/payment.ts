@@ -95,11 +95,11 @@ class PaymentEntity {
       description: this.description,
       status: this.status,
       currency: this.currency,
-      supplier: this.supplier?.json(),
       additionalData: this.additionalData,
       amount: this.amount,
       createdAt: this.createdAt,
       id: this.id,
+      supplier: this.supplier?.json(),
       orderItems: this.orderItems.map((order) => order.json()),
     };
   }

@@ -1,13 +1,15 @@
 import { truncate } from "lodash";
 import type { OrderItemEntity } from "~/domain/payments/entities/order-item";
 
+export type OrderItemProps = OrderItemEntity;
+
 export const OrderItem = ({
   name,
   currency,
   quantity,
   description,
   price,
-}: OrderItemEntity) => {
+}: OrderItemProps) => {
   return (
     <article className="flex h-fit w-full max-w-lg flex-col">
       <h2 className="text-lg text-gray-800">{name}</h2>

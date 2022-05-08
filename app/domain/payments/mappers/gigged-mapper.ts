@@ -139,7 +139,6 @@ class GiggedMapper {
         new OrderItemEntity({
           name: purchasedItem.Name,
           description: purchasedItem.Description,
-          // @TODO: Improve this to do the conversion for us.
           price: parseInt((purchasedItem.Price * 100).toString(), 10),
           quantity: purchasedItem.Quantity,
           currency: Currency.BZD,
