@@ -38,7 +38,11 @@ export class SupplierEntity {
       tag: this.tag,
       logoUrl: this.logoUrl,
       homepage: this.homepage,
-      ekyash: this.ekyash?.json(),
-    };
+    } as SupplierDTO;
   }
 }
+
+export type SupplierDTO = Pick<
+  SupplierEntity,
+  "homepage" | "id" | "logoUrl" | "name" | "tag" | "username"
+>;

@@ -1,9 +1,6 @@
-import type { SupplierEntity } from "~/domain/payments/entities/supplier";
+import type { SupplierDTO } from "~/domain/payments/entities/supplier";
 
-export type VendorHeaderProps = Pick<
-  SupplierEntity,
-  "homepage" | "logoUrl" | "name" | "tag"
->;
+export type VendorHeaderProps = SupplierDTO;
 
 export function VendorHeader({
   name,
