@@ -26,7 +26,7 @@ export const OrderStatus = ({ status }: OrderStatusProps) => {
       <span
         className={clsx('font-semibold', {
           'text-green-500': PaymentStatus.Completed === status,
-          'text-yellow-700': PaymentStatus.Pending === status,
+          'text-blue-500': PaymentStatus.Pending === status,
           'text-red-500': PaymentStatus.Failed === status,
         })}
       >

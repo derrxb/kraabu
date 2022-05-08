@@ -15,7 +15,7 @@ export class SupplierRepository {
       homepage: data.homepage,
       logoUrl: data.logoUrl,
       name: data.name,
-      tag: data.name,
+      tag: data.tag,
       ekyashId: ekyash?.id ?? null,
       username: data.username,
       ekyash: ekyash,
