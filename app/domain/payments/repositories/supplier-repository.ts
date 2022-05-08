@@ -1,10 +1,10 @@
-import prisma from "~/infrastructure/database/index.server";
-import { SupplierEntity } from "../entities/supplier";
-import { EKyashRepository } from "./ekyash-repository";
+import prisma from '~/infrastructure/database/index.server';
+import { SupplierEntity } from '../entities/supplier';
+import { EKyashRepository } from './ekyash-repository';
 
 export class SupplierRepository {
   static async rebuildEntity(data: any) {
-    if (!data || typeof data === "undefined") {
+    if (!data || typeof data === 'undefined') {
       return undefined;
     }
 

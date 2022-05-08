@@ -1,5 +1,5 @@
 export enum Tables {
-  Payments = "payments",
-  Suppliers = "suppliers",
-  EKyash = "ekyash",
+  Payments = 'payments',
+  Suppliers = 'suppliers',
+  EKyash = 'ekyash',
 }

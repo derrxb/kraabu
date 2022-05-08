@@ -1,8 +1,8 @@
-import faker from "@faker-js/faker";
-import { Currency, PaymentStatus } from "@prisma/client";
-import type { OrderItemDTO } from "~/domain/payments/entities/order-item";
-import type { PaymentDTO } from "~/domain/payments/entities/payment";
-import type { SupplierDTO } from "~/domain/payments/entities/supplier";
+import faker from '@faker-js/faker';
+import { Currency, PaymentStatus } from '@prisma/client';
+import type { OrderItemDTO } from '~/domain/payments/entities/order-item';
+import type { PaymentDTO } from '~/domain/payments/entities/payment';
+import type { SupplierDTO } from '~/domain/payments/entities/supplier';
 
 export const mockOrderItem: OrderItemDTO = {
   currency: Currency.BZD,
@@ -32,7 +32,7 @@ export const mockPayment: PaymentDTO = {
   createdAt: faker.date.recent(),
   amount: mockOrderItem.price,
   additionalData: {
-    qrCodeUrl: "https://boofcv.org/images/3/35/Example_rendered_qrcode.png",
+    qrCodeUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
     paymentKey: faker.finance.bic(),
     payer: {
       email: faker.internet.email(),

@@ -1,10 +1,10 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import React from "react";
-import type { PaymentSuccessProps } from ".";
-import { PaymentSuccess } from ".";
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React from 'react';
+import type { PaymentSuccessProps } from '.';
+import { PaymentSuccess } from '.';
 
 export default {
-  title: "Molecules/PaymentSuccess",
+  title: 'Molecules/PaymentSuccess',
   component: PaymentSuccess,
   argTypes: {},
 } as ComponentMeta<typeof PaymentSuccess>;

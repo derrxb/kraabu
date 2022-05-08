@@ -1,7 +1,7 @@
 export enum GiggedRoutes {
-  TransactionStatus = "https://giggedbz.arcadier.io/user/checkout/transaction-status",
-  OrderStatus = "https://giggedbz.arcadier.io/user/checkout/current-status",
-  OrderDetails = "https://giggedbz.arcadier.io/user/checkout/order-details",
+  TransactionStatus = 'https://giggedbz.arcadier.io/user/checkout/transaction-status',
+  OrderStatus = 'https://giggedbz.arcadier.io/user/checkout/current-status',
+  OrderDetails = 'https://giggedbz.arcadier.io/user/checkout/order-details',
 }
 
 export type GiggedOrderHandshake = {

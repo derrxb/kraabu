@@ -1,7 +1,7 @@
-import type { ActionFunction } from "remix";
-import { json } from "remix";
-import CompletePayment from "~/domain/payments/services/ekaysh/complete-payment";
-import { HTTP_CODE } from "~/representers/http-response-representer";
+import type { ActionFunction } from 'remix';
+import { json } from 'remix';
+import CompletePayment from '~/domain/payments/services/ekaysh/complete-payment';
+import { HTTP_CODE } from '~/representers/http-response-representer';
 
 /**
  * This route is called by EKyash and it marks a payment as completed.
@@ -11,9 +11,6 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     await new CompletePayment(request).call();
   } catch (e) {
-    return json(
-      { message: "Something unexpected happened" },
-      HTTP_CODE.bad_request
-    );
+    return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
   }
 };

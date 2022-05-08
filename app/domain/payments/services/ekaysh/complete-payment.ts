@@ -1,10 +1,10 @@
-import type { PaymentEntity } from "~/domain/payments/entities/payment";
-import PaymentRepository from "~/domain/payments/repositories/payment-repository";
-import Failure from "~/lib/failure";
-import completePendingEkyashPaymentSchema from "~/requests/complete-pending-ekyash-payment";
-import type { CompletedPaymentCallbackData } from "../../library/ekyash-api";
-import { TransactionStatus } from "../../library/ekyash-api";
-import GiggedMapper from "../../mappers/gigged-mapper";
+import type { PaymentEntity } from '~/domain/payments/entities/payment';
+import PaymentRepository from '~/domain/payments/repositories/payment-repository';
+import Failure from '~/lib/failure';
+import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekyash-payment';
+import type { CompletedPaymentCallbackData } from '../../library/ekyash-api';
+import { TransactionStatus } from '../../library/ekyash-api';
+import GiggedMapper from '../../mappers/gigged-mapper';
 
 /**
  * This uses the data obtained from EKyash to mark a payment as completed
@@ -24,10 +24,9 @@ export default class CompletePayment {
 
   async verifyPaymentParams() {
     const body = await this.request.json();
-    const validatedParams =
-      await completePendingEkyashPaymentSchema.validateAsync({
-        ...body,
-      });
+    const validatedParams = await completePendingEkyashPaymentSchema.validateAsync({
+      ...body,
+    });
 
     this.paymentStatus = {
       ...validatedParams,
@@ -36,13 +35,9 @@ export default class CompletePayment {
 
   async setPayment() {
     if (this.invoice) {
-      this.payment =
-        (await PaymentRepository.getPaymentByInvoice(this.invoice)) ?? null;
+      this.payment = (await PaymentRepository.getPaymentByInvoice(this.invoice)) ?? null;
     } else {
-      throw new Failure(
-        "not_found",
-        "No payment request with the given invoice found."
-      );
+      throw new Failure('not_found', 'No payment request with the given invoice found.');
     }
   }
 
@@ -51,34 +46,24 @@ export default class CompletePayment {
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        await PaymentRepository.setPaymentAsCompleted(
-          this.payment as PaymentEntity
-        );
+        await PaymentRepository.setPaymentAsCompleted(this.payment as PaymentEntity);
         break;
       case TransactionStatus.Declined:
-        await PaymentRepository.setPaymentAsRejected(
-          this.payment as PaymentEntity
-        );
+        await PaymentRepository.setPaymentAsRejected(this.payment as PaymentEntity);
         break;
       default:
-        throw new Failure(
-          "bad_request",
-          "Could not complete this request as an unknown `statusPay` was provided."
-        );
+        throw new Failure('bad_request', 'Could not complete this request as an unknown `statusPay` was provided.');
     }
   }
 
   async setGiggedPaymentAsAcceptedOrRejected() {
-    if (typeof this.payment?.status === "undefined") {
-      throw new Failure(
-        "cannot_process",
-        "The payment is missing the status field."
-      );
+    if (typeof this.payment?.status === 'undefined') {
+      throw new Failure('cannot_process', 'The payment is missing the status field.');
     }
 
     await new GiggedMapper(
       this.payment?.additionalData.gateway as string,
-      this.payment?.additionalData.hashkey as string
+      this.payment?.additionalData.hashkey as string,
     ).updateOrderStatus(this.payment);
   }
 

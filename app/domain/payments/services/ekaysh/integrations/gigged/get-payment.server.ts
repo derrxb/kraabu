@@ -1,10 +1,10 @@
-import type { EKyashEntity } from "~/domain/payments/entities/ekyash";
-import { PaymentEntity } from "~/domain/payments/entities/payment";
-import { EKyashMapper } from "~/domain/payments/mappers/ekyash-mapper";
-import GiggedMapper from "~/domain/payments/mappers/gigged-mapper";
-import PaymentRepository from "~/domain/payments/repositories/payment-repository";
-import Failure from "~/lib/failure";
-import getGiggedBzPaymentSchema from "~/requests/get-gigged-bz-payment";
+import type { EKyashEntity } from '~/domain/payments/entities/ekyash';
+import { PaymentEntity } from '~/domain/payments/entities/payment';
+import { EKyashMapper } from '~/domain/payments/mappers/ekyash-mapper';
+import GiggedMapper from '~/domain/payments/mappers/gigged-mapper';
+import PaymentRepository from '~/domain/payments/repositories/payment-repository';
+import Failure from '~/lib/failure';
+import getGiggedBzPaymentSchema from '~/requests/get-gigged-bz-payment';
 
 export default class GetPayment {
   private params: URLSearchParams;
@@ -15,8 +15,8 @@ export default class GetPayment {
 
   async verifyParams(): Promise<{ invoiceNo: string; paymentKey: string }> {
     const { invoiceNo, paykey } = await getGiggedBzPaymentSchema.validateAsync({
-      invoiceNo: this.params.get("invoiceNo"),
-      paykey: this.params.get("paykey"),
+      invoiceNo: this.params.get('invoiceNo'),
+      paykey: this.params.get('paykey'),
     });
 
     return {
@@ -29,10 +29,7 @@ export default class GetPayment {
     const payment = await PaymentRepository.getPaymentByInvoice(invoice);
 
     if (!payment) {
-      throw new Failure(
-        "not_found",
-        "No payment with the provided `invoiceNo` exists."
-      );
+      throw new Failure('not_found', 'No payment with the provided `invoiceNo` exists.');
     }
 
     return payment;
@@ -41,16 +38,14 @@ export default class GetPayment {
   async getPaymentWithOrderDetails(payment: PaymentEntity) {
     const nextPayment = await new GiggedMapper(
       payment.additionalData.gateway as string,
-      payment.additionalData.hashkey as string
+      payment.additionalData.hashkey as string,
     ).findOrderWithOrderDetails(payment);
 
     return await PaymentRepository.setPaymentAdditionalData(nextPayment);
   }
 
   async getPaymentWithPayQrCode(payment: PaymentEntity) {
-    const ekyashMapper = new EKyashMapper(
-      payment?.supplier?.ekyash as EKyashEntity
-    );
+    const ekyashMapper = new EKyashMapper(payment?.supplier?.ekyash as EKyashEntity);
 
     await ekyashMapper.initialize();
 
@@ -64,10 +59,7 @@ export default class GetPayment {
       },
     });
 
-    await PaymentRepository.setPaymentQrCodeUrl(
-      nextPayment,
-      nextPayment.additionalData.qrCodeUrl as string
-    );
+    await PaymentRepository.setPaymentQrCodeUrl(nextPayment, nextPayment.additionalData.qrCodeUrl as string);
 
     return nextPayment;
   }

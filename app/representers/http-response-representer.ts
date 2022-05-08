@@ -1,16 +1,12 @@
-export type SUCCESS_STATUS_CODE =
-  | "ok"
-  | "created"
-  | "processing"
-  | "no_content";
+export type SUCCESS_STATUS_CODE = 'ok' | 'created' | 'processing' | 'no_content';
 
 export type FAILURE_STATUS_CODE =
-  | "forbidden"
-  | "not_found"
-  | "bad_request"
-  | "conflict"
-  | "cannot_process"
-  | "internal_error";
+  | 'forbidden'
+  | 'not_found'
+  | 'bad_request'
+  | 'conflict'
+  | 'cannot_process'
+  | 'internal_error';
 export type STATUS_CODE = SUCCESS_STATUS_CODE | FAILURE_STATUS_CODE;
 
 export const HTTP_CODE = {

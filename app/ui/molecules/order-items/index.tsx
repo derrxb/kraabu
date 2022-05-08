@@ -1,5 +1,5 @@
-import type { OrderItemDTO } from "~/domain/payments/entities/order-item";
-import { OrderItem } from "../order-item";
+import type { OrderItemDTO } from '~/domain/payments/entities/order-item';
+import { OrderItem } from '../order-item';
 
 export type OrderItemListProps = {
   items: OrderItemDTO[];
@@ -8,9 +8,7 @@ export type OrderItemListProps = {
 export const OrderItemList = ({ items }: OrderItemListProps) => {
   return (
     <div className="flex w-full flex-col">
-      <span className="mb-2 text-xs uppercase text-gray-500">
-        Order Details
-      </span>
+      <span className="mb-2 text-xs uppercase text-gray-500">Order Details</span>
 
       {items.length === 0 ? (
         <span className="text-gray-500">No items available...</span>

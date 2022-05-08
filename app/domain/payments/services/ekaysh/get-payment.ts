@@ -1,7 +1,7 @@
-import type { Params } from "react-router";
-import type { PaymentEntity } from "~/domain/payments/entities/payment";
-import PaymentRepository from "~/domain/payments/repositories/payment-repository";
-import Failure from "~/lib/failure";
+import type { Params } from 'react-router';
+import type { PaymentEntity } from '~/domain/payments/entities/payment';
+import PaymentRepository from '~/domain/payments/repositories/payment-repository';
+import Failure from '~/lib/failure';
 
 export default class GetPayment {
   private params: Params;
@@ -14,7 +14,7 @@ export default class GetPayment {
     const { id } = this.params;
 
     if (!id) {
-      throw new Failure("cannot_process", "A payment `invoice` is required.");
+      throw new Failure('cannot_process', 'A payment `invoice` is required.');
     }
 
     const payment = await PaymentRepository.getPaymentByInvoice(id);
@@ -23,9 +23,6 @@ export default class GetPayment {
       return payment;
     }
 
-    throw new Failure(
-      "not_found",
-      "A payment with the given `invoice` does not exist."
-    );
+    throw new Failure('not_found', 'A payment with the given `invoice` does not exist.');
   }
 }

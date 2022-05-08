@@ -1,15 +1,15 @@
-import type { Supplier as SupplierORM } from "@prisma/client";
-import type { EKyashEntity } from "./ekyash";
+import type { Supplier as SupplierORM } from '@prisma/client';
+import type { EKyashEntity } from './ekyash';
 
 export class SupplierEntity {
-  id: SupplierORM["id"];
-  name: SupplierORM["name"];
-  tag: SupplierORM["tag"];
-  logoUrl: SupplierORM["logoUrl"];
-  homepage: SupplierORM["homepage"];
+  id: SupplierORM['id'];
+  name: SupplierORM['name'];
+  tag: SupplierORM['tag'];
+  logoUrl: SupplierORM['logoUrl'];
+  homepage: SupplierORM['homepage'];
   ekyash?: EKyashEntity;
-  username: SupplierORM["username"];
-  ekyashId: SupplierORM["ekyashId"] | null;
+  username: SupplierORM['username'];
+  ekyashId: SupplierORM['ekyashId'] | null;
 
   constructor({
     id,
@@ -42,7 +42,4 @@ export class SupplierEntity {
   }
 }
 
-export type SupplierDTO = Pick<
-  SupplierEntity,
-  "homepage" | "id" | "logoUrl" | "name" | "tag" | "username"
->;
+export type SupplierDTO = Pick<SupplierEntity, 'homepage' | 'id' | 'logoUrl' | 'name' | 'tag' | 'username'>;

@@ -1,8 +1,8 @@
-import { EKyashEntity } from "../entities/ekyash";
+import { EKyashEntity } from '../entities/ekyash';
 
 export class EKyashRepository {
   static async rebuildEntity(data: any) {
-    if (!data || typeof data === "undefined") {
+    if (!data || typeof data === 'undefined') {
       return undefined;
     }
 

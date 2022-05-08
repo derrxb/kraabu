@@ -1,14 +1,14 @@
-import type { OrderItem as OrderItemORM } from "@prisma/client";
-import type { PaymentEntity } from "./payment";
+import type { OrderItem as OrderItemORM } from '@prisma/client';
+import type { PaymentEntity } from './payment';
 
 export class OrderItemEntity {
-  id?: OrderItemORM["id"];
-  name: OrderItemORM["name"];
-  currency: OrderItemORM["currency"];
-  description: OrderItemORM["description"];
-  price: OrderItemORM["price"];
-  quantity: OrderItemORM["quantity"];
-  paymentId: OrderItemORM["paymentId"];
+  id?: OrderItemORM['id'];
+  name: OrderItemORM['name'];
+  currency: OrderItemORM['currency'];
+  description: OrderItemORM['description'];
+  price: OrderItemORM['price'];
+  quantity: OrderItemORM['quantity'];
+  paymentId: OrderItemORM['paymentId'];
   payment?: PaymentEntity;
 
   constructor({
@@ -20,8 +20,8 @@ export class OrderItemEntity {
     quantity,
     paymentId,
     payment,
-  }: Omit<OrderItemORM, "id"> & {
-    id?: OrderItemEntity["id"];
+  }: Omit<OrderItemORM, 'id'> & {
+    id?: OrderItemEntity['id'];
     payment?: PaymentEntity;
   }) {
     this.id = id;
@@ -47,7 +47,4 @@ export class OrderItemEntity {
   }
 }
 
-export type OrderItemDTO = Pick<
-  OrderItemEntity,
-  "currency" | "id" | "description" | "price" | "quantity" | "name"
->;
+export type OrderItemDTO = Pick<OrderItemEntity, 'currency' | 'id' | 'description' | 'price' | 'quantity' | 'name'>;

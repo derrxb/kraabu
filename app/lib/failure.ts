@@ -1,4 +1,4 @@
-import type { STATUS_CODE } from "~/representers/http-response-representer";
+import type { STATUS_CODE } from '~/representers/http-response-representer';
 
 class Failure extends Error {
   status: STATUS_CODE;

@@ -1,8 +1,8 @@
-import { OrderItemEntity } from "../entities/order-item";
+import { OrderItemEntity } from '../entities/order-item';
 
 export default class OrderItemRepository {
   static rebuildEntity(data: any) {
-    if (!data || typeof data === "undefined") {
+    if (!data || typeof data === 'undefined') {
       return undefined;
     }
 

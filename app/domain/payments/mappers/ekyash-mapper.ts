@@ -1,6 +1,6 @@
-import type { EKyashEntity } from "../entities/ekyash";
-import type { PaymentEntity } from "../entities/payment";
-import { createNewInvoice, getAuthorization } from "../library/ekyash-api";
+import type { EKyashEntity } from '../entities/ekyash';
+import type { PaymentEntity } from '../entities/payment';
+import { createNewInvoice, getAuthorization } from '../library/ekyash-api';
 
 export class EKyashMapper {
   private session: string | null;
@@ -26,11 +26,11 @@ export class EKyashMapper {
       {
         amount: payment.amount,
         description: payment.description,
-        currency: "BZD",
+        currency: 'BZD',
         orderId: payment.invoice,
         session: this.session as string,
       },
-      this.ekyash
+      this.ekyash,
     );
 
     return invoice;

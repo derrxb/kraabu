@@ -1,11 +1,11 @@
-import { nanoid } from "nanoid";
-import superagent from "superagent";
-import Failure from "~/lib/failure";
-import { OrderItemEntity } from "../entities/order-item";
-import { Currency, PaymentEntity, PaymentStatus } from "../entities/payment";
-import type { SupplierEntity } from "../entities/supplier";
-import type { GiggedOrderHandshake } from "../library/gigged-api";
-import { GiggedRoutes } from "../library/gigged-api";
+import { nanoid } from 'nanoid';
+import superagent from 'superagent';
+import Failure from '~/lib/failure';
+import { OrderItemEntity } from '../entities/order-item';
+import { Currency, PaymentEntity, PaymentStatus } from '../entities/payment';
+import type { SupplierEntity } from '../entities/supplier';
+import type { GiggedOrderHandshake } from '../library/gigged-api';
+import { GiggedRoutes } from '../library/gigged-api';
 
 type OrderItem = {
   Id: string;
@@ -59,7 +59,7 @@ class GiggedMapper {
   async findOrderWithOrderDetails(payment: PaymentEntity) {
     try {
       const response = await superagent.get(
-        `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}&hashkey=${this.hashkey}`
+        `${GiggedRoutes.OrderDetails}?gateway=${this.gateway}&invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}&hashkey=${this.hashkey}`,
       );
 
       const order = JSON.parse(response.text) as OrderDetails;
@@ -78,30 +78,20 @@ class GiggedMapper {
         gateway: data.additionalData.hashkey,
         paykey: data.additionalData.paymentKey,
         status:
-          data.status === PaymentStatus.Completed
-            ? "success"
-            : data.status === PaymentStatus.Failed
-            ? "error"
-            : "",
+          data.status === PaymentStatus.Completed ? 'success' : data.status === PaymentStatus.Failed ? 'error' : '',
       });
     } catch (e) {
-      throw new Failure(
-        "bad_request",
-        "Could not update GiggedBz's order status."
-      );
+      throw new Failure('bad_request', "Could not update GiggedBz's order status.");
     }
   }
 
-  private buildInitialEntity(
-    data: GiggedOrderHandshake,
-    supplier: SupplierEntity
-  ): PaymentEntity {
+  private buildInitialEntity(data: GiggedOrderHandshake, supplier: SupplierEntity): PaymentEntity {
     return new PaymentEntity({
       supplier: supplier,
       supplierId: supplier.id,
       status: PaymentStatus.Pending,
       amount: Number(data.total),
-      currency: data.currency === "BZD" ? Currency.BZD : Currency.USD,
+      currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
       description: data.invoiceno,
       invoice: data.invoiceno,
       additionalData: {
@@ -115,10 +105,7 @@ class GiggedMapper {
   private buildEntity(payment: PaymentEntity, data: OrderDetails) {
     // Get all the totals from PayeesInfo and adds them up.
     const payees = data?.PayeeInfos?.[0];
-    const total = data?.PayeeInfos?.map((item) => item.Total).reduce(
-      (prev, curr) => prev + curr,
-      0
-    );
+    const total = data?.PayeeInfos?.map((item) => item.Total).reduce((prev, curr) => prev + curr, 0);
 
     // NOTE: This might change so we need to update this to
     // get the only item with a valid `Sku` value.

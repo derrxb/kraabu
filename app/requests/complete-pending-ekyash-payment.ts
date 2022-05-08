@@ -1,4 +1,4 @@
-import joi from "joi";
+import joi from 'joi';
 
 const completePendingEkyashPaymentSchema = joi.object({
   orderId: joi.string().required(),

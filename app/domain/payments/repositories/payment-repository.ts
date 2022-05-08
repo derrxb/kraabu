@@ -1,20 +1,17 @@
-import prisma from "~/infrastructure/database/index.server";
-import { PaymentEntity, PaymentStatus } from "../entities/payment";
-import type { SupplierEntity } from "../entities/supplier";
-import OrderItemRepository from "./order-item-repository";
-import { SupplierRepository } from "./supplier-repository";
+import prisma from '~/infrastructure/database/index.server';
+import { PaymentEntity, PaymentStatus } from '../entities/payment';
+import type { SupplierEntity } from '../entities/supplier';
+import OrderItemRepository from './order-item-repository';
+import { SupplierRepository } from './supplier-repository';
 
 export default class PaymentRepository {
   static async rebuildEntity(data: any) {
-    if (!data || typeof data === "undefined") {
+    if (!data || typeof data === 'undefined') {
       return undefined;
     }
 
     const supplier = await SupplierRepository.rebuildEntity(data.supplier);
-    const orderItems =
-      data.orderItems?.map((orderItem: any) =>
-        OrderItemRepository.rebuildEntity(orderItem)
-      ) || [];
+    const orderItems = data.orderItems?.map((orderItem: any) => OrderItemRepository.rebuildEntity(orderItem)) || [];
 
     return new PaymentEntity({
       orderItems,

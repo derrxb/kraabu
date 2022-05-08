@@ -1,7 +1,7 @@
-import type { ActionFunction } from "remix";
-import { json } from "remix";
-import CreatePayment from "~/domain/payments/services/ekaysh/integrations/gigged/create-payment";
-import { HTTP_CODE } from "~/representers/http-response-representer";
+import type { ActionFunction } from 'remix';
+import { json } from 'remix';
+import CreatePayment from '~/domain/payments/services/ekaysh/integrations/gigged/create-payment';
+import { HTTP_CODE } from '~/representers/http-response-representer';
 
 export const action: ActionFunction = async ({ request }) => {
   try {
@@ -11,9 +11,9 @@ export const action: ActionFunction = async ({ request }) => {
   } catch (e) {
     return json(
       {
-        message: "Something unexpected happened. Please try again",
+        message: 'Something unexpected happened. Please try again',
       },
-      422
+      422,
     );
   }
 };

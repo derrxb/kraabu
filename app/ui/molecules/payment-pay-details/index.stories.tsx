@@ -1,11 +1,11 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import React from "react";
-import { mockPayment } from "~/ui/assets/fixtures";
-import type { PaymentPayDetailsProps } from ".";
-import { PaymentPayDetails } from ".";
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React from 'react';
+import { mockPayment } from '~/ui/assets/fixtures';
+import type { PaymentPayDetailsProps } from '.';
+import { PaymentPayDetails } from '.';
 
 export default {
-  title: "Molecules/PaymentPayDetails",
+  title: 'Molecules/PaymentPayDetails',
   component: PaymentPayDetails,
   argTypes: {},
 } as ComponentMeta<typeof PaymentPayDetails>;

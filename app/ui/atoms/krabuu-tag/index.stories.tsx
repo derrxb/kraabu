@@ -1,14 +1,14 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import React from "react";
-import { KrabuuTag } from ".";
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React from 'react';
+import { KrabuuTag } from '.';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Atoms/KrabuuTag",
+  title: 'Atoms/KrabuuTag',
   component: KrabuuTag,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    backgroundColor: { control: "color" },
+    backgroundColor: { control: 'color' },
   },
 } as ComponentMeta<typeof KrabuuTag>;
 

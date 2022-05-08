@@ -1,7 +1,7 @@
-import type { Payment as PaymentORM } from "@prisma/client";
-import { Currency, PaymentStatus } from "@prisma/client";
-import type { OrderItemDTO, OrderItemEntity } from "./order-item";
-import type { SupplierDTO, SupplierEntity } from "./supplier";
+import type { Payment as PaymentORM } from '@prisma/client';
+import { Currency, PaymentStatus } from '@prisma/client';
+import type { OrderItemDTO, OrderItemEntity } from './order-item';
+import type { SupplierDTO, SupplierEntity } from './supplier';
 
 export { PaymentStatus, Currency };
 
@@ -17,17 +17,17 @@ export type GiggedOrderDetails = {
 };
 
 export class PaymentEntity {
-  createdAt?: PaymentORM["createdAt"];
-  updatedAt?: PaymentORM["updatedAt"];
-  description: PaymentORM["description"];
-  currency: PaymentORM["currency"];
-  amount: PaymentORM["amount"];
-  id?: PaymentORM["id"];
-  invoice: PaymentORM["invoice"];
-  status: PaymentORM["status"];
+  createdAt?: PaymentORM['createdAt'];
+  updatedAt?: PaymentORM['updatedAt'];
+  description: PaymentORM['description'];
+  currency: PaymentORM['currency'];
+  amount: PaymentORM['amount'];
+  id?: PaymentORM['id'];
+  invoice: PaymentORM['invoice'];
+  status: PaymentORM['status'];
   supplier?: SupplierEntity;
   additionalData: GiggedOrderDetails;
-  supplierId: PaymentORM["supplierId"];
+  supplierId: PaymentORM['supplierId'];
   orderItems: OrderItemEntity[];
 
   constructor({
@@ -42,8 +42,8 @@ export class PaymentEntity {
     supplier,
     supplierId,
     orderItems,
-  }: Omit<PaymentORM, "id" | "createdAt" | "updatedAt"> &
-    Partial<Pick<PaymentORM, "id" | "createdAt" | "updatedAt">> & {
+  }: Omit<PaymentORM, 'id' | 'createdAt' | 'updatedAt'> &
+    Partial<Pick<PaymentORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
       supplier?: SupplierEntity;
       orderItems?: OrderItemEntity[];
@@ -107,12 +107,5 @@ export class PaymentEntity {
 
 export type PaymentDTO = Pick<
   PaymentEntity,
-  | "invoice"
-  | "description"
-  | "status"
-  | "currency"
-  | "additionalData"
-  | "amount"
-  | "createdAt"
-  | "id"
+  'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
 > & { supplier: SupplierDTO; orderItems: OrderItemDTO[] };

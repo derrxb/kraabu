@@ -1,10 +1,10 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import React from "react";
-import type { PaymentPayCodeProps } from ".";
-import { PaymentPayCode } from ".";
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React from 'react';
+import type { PaymentPayCodeProps } from '.';
+import { PaymentPayCode } from '.';
 
 export default {
-  title: "Molecules/PaymentPayCode",
+  title: 'Molecules/PaymentPayCode',
   component: PaymentPayCode,
   argTypes: {},
 } as ComponentMeta<typeof PaymentPayCode>;
@@ -20,9 +20,9 @@ export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
   paymentMethod: {
-    name: "EKyash",
-    url: "https://www.e-kyash.com/",
-    color: "#e24241",
+    name: 'EKyash',
+    url: 'https://www.e-kyash.com/',
+    color: '#e24241',
   },
-  qr: "https://boofcv.org/images/3/35/Example_rendered_qrcode.png",
+  qr: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
 } as PaymentPayCodeProps;
