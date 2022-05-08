@@ -16,7 +16,6 @@ export class EKyashMapper {
   }
 
   private async setSessionId() {
-    console.log(this.ekyash);
     const response = await getAuthorization(this.ekyash);
 
     this.session = response.session;
