@@ -1,4 +1,4 @@
-import { SupplierEntity } from "~/domain/payments/entities/supplier";
+import type { SupplierEntity } from "~/domain/payments/entities/supplier";
 
 export type VendorHeaderProps = Pick<
   SupplierEntity,

@@ -1,8 +1,8 @@
-import type { OrderItemEntity } from "~/domain/payments/entities/order-item";
+import type { OrderItemDTO } from "~/domain/payments/entities/order-item";
 import { OrderItem } from "../order-item";
 
 export type OrderItemListProps = {
-  items: OrderItemEntity[];
+  items: OrderItemDTO[];
 };
 
 export const OrderItemList = ({ items }: OrderItemListProps) => {

@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { PaymentSuccess, PaymentSuccessProps } from ".";
+import type { PaymentSuccessProps } from ".";
+import { PaymentSuccess } from ".";
 
 export default {
   title: "Molecules/PaymentSuccess",

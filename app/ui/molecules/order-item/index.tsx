@@ -1,7 +1,7 @@
 import { truncate } from "lodash";
-import type { OrderItemEntity } from "~/domain/payments/entities/order-item";
+import type { OrderItemDTO } from "~/domain/payments/entities/order-item";
 
-export type OrderItemProps = OrderItemEntity;
+export type OrderItemProps = OrderItemDTO;
 
 export const OrderItem = ({
   name,
@@ -9,7 +9,7 @@ export const OrderItem = ({
   quantity,
   description,
   price,
-}: OrderItemProps) => {
+}: OrderItemDTO) => {
   return (
     <article className="flex h-fit w-full max-w-lg flex-col">
       <h2 className="text-lg text-gray-800">{name}</h2>

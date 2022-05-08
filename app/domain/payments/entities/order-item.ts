@@ -1,7 +1,7 @@
 import type { OrderItem as OrderItemORM } from "@prisma/client";
 import type PaymentEntity from "./payment";
 
-class OrderItemEntity {
+export class OrderItemEntity {
   id?: OrderItemORM["id"];
   name: OrderItemORM["name"];
   currency: OrderItemORM["currency"];
@@ -43,8 +43,11 @@ class OrderItemEntity {
       price: this.price,
       quantity: this.quantity,
       paymentId: this.paymentId,
-    };
+    } as OrderItemDTO;
   }
 }
 
-export { OrderItemEntity };
+export type OrderItemDTO = Pick<
+  OrderItemEntity,
+  "currency" | "id" | "description" | "price" | "quantity" | "name"
+>;

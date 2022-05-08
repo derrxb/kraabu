@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { PaymentPayDetails, PaymentPayDetailsProps } from ".";
+import type { PaymentPayDetailsProps } from ".";
+import { PaymentPayDetails } from ".";
 import { PaymentStatus } from "../../../domain/payments/entities/payment";
 
 export default {

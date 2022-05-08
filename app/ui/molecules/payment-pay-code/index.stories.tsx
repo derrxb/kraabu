@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { PaymentPayCode, PaymentPayCodeProps } from ".";
+import type { PaymentPayCodeProps } from ".";
+import { PaymentPayCode } from ".";
 
 export default {
   title: "Molecules/PaymentPayCode",

@@ -23,12 +23,16 @@ Default.args = {
       price: 100,
       currency: "BZD",
       quantity: 1,
+      description: "test",
+      id: 1,
     },
     {
       name: "Test Item Two",
       price: 250,
       currency: "BZD",
       quantity: 5,
+      description: "test",
+      id: 2,
     },
   ],
 } as OrderItemListProps;

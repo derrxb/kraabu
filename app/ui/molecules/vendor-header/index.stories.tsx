@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { VendorHeader, VendorHeaderProps } from ".";
+import type { VendorHeaderProps } from ".";
+import { VendorHeader } from ".";
 
 export default {
   title: "Molecules/VendorHeader",
