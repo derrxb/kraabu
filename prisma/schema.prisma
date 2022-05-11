@@ -42,17 +42,6 @@ model Supplier {
   Payment  Payment[]
 }
 
-model OrderItem {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(255)
-  quantity    Int
-  description String   @db.VarChar(255)
-  price       Int
-  currency    Currency @default(BZD)
-  payment     Payment  @relation(fields: [paymentId], references: [id])
-  paymentId   Int
-}
-
 model Payment {
   id             Int           @id @default(autoincrement())
   description    String        @db.VarChar(255)
@@ -66,4 +55,15 @@ model Payment {
   supplierId     Int
   additionalData Json
   orderItems     OrderItem[]
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  quantity    Int
+  description String   @db.VarChar(255)
+  price       Int
+  currency    Currency @default(BZD)
+  payment     Payment  @relation(fields: [paymentId], references: [id])
+  paymentId   Int
 }
