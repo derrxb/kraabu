@@ -9,6 +9,7 @@ export class EKyashMapper {
   constructor(ekyash: EKyashEntity) {
     this.ekyash = ekyash;
     this.session = null;
+    this.ekyash = ekyash;
   }
 
   async initialize() {
@@ -16,7 +17,10 @@ export class EKyashMapper {
   }
 
   private async setSessionId() {
-    const response = await getAuthorization(this.ekyash);
+    const response = await getAuthorization(
+      { pinHash: this.ekyash?.pinHash, pushkey: '', sid: String(this.ekyash?.sid) },
+      this.ekyash,
+    );
 
     this.session = response.session;
   }
