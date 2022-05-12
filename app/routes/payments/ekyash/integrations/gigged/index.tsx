@@ -13,17 +13,16 @@ import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 export const meta: MetaFunction = () => {
   return {
     title: 'GiggedBZ Payment Request |  Krabuu - Easily Pay online in Belize',
+    description:
+      'Confirm your order by completing payment with your E-Kyash App. Scan the QR code to complete payment with your E-Kyash app.',
   };
 };
 
-/**
- * Loads a payment's details for payment.
- */
 export const loader: LoaderFunction = async ({ request }) => {
   const payment = await new GetPayment(request).call();
 
   return json({
-    payment: payment.json(),
+    payment: payment?.json(),
   });
 };
 

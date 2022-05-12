@@ -105,7 +105,7 @@ export class PaymentEntity {
       id: this.id,
       supplier: this.supplier?.json(),
       orderItems: this.orderItems.map((order) => order.json()),
-    };
+    } as PaymentDTO;
   }
 }
 
