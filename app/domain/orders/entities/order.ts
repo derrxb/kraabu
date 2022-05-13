@@ -1,6 +1,6 @@
 import type { Order as OrderORM } from '@prisma/client';
 import { Currency, OrderStatus } from '@prisma/client';
-import type { EKyashTransactionEntity } from './ekyash-transaction';
+import type { EKyashTransactionDTO, EKyashTransactionEntity } from './ekyash-transaction';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
 import type { SupplierDTO, SupplierEntity } from './supplier';
 
@@ -118,4 +118,4 @@ export class OrderEntity {
 export type OrderDTO = Pick<
   OrderEntity,
   'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
-> & { supplier: SupplierDTO; orderItems: OrderItemDTO[] };
+> & { supplier: SupplierDTO; orderItems: OrderItemDTO[]; eKyashTransaction?: EKyashTransactionDTO };

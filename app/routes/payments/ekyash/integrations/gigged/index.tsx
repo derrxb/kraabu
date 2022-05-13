@@ -2,9 +2,8 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import type { LoaderFunction, MetaFunction } from 'remix';
 import { json, useLoaderData, useNavigate } from 'remix';
-import type { OrderEntity } from '~/domain/orders/entities/order';
+import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
-import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
 import { PaymentPayCode } from '~/ui/molecules/payment-pay-code';
@@ -27,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const data = useLoaderData() as { payment: OrderEntity };
+  const data = useLoaderData() as { payment: OrderDTO };
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -57,13 +56,13 @@ export default function Index() {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full lg:w-1/2">
-        <PaymentPayDetails payment={data.payment} vendor={data.payment.supplier as SupplierEntity} />
+        <PaymentPayDetails payment={data.payment} vendor={data.payment.supplier} />
       </div>
 
       <div className="h-full w-full lg:w-1/2">
         {data.payment.additionalData.qrCodeUrl ? (
           <PaymentPayCode
-            qr={data.payment.additionalData.qrCodeUrl as string}
+            qr={data.payment.eKyashTransaction?.qrCodeUrl as string}
             paymentMethod={{
               name: 'E-Kyash',
               color: '#39ae49',

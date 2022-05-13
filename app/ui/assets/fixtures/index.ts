@@ -1,5 +1,6 @@
 import faker from '@faker-js/faker';
 import { Currency, OrderStatus } from '@prisma/client';
+import type { EKyashTransactionDTO } from '~/domain/orders/entities/ekyash-transaction';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
 import type { SupplierDTO } from '~/domain/orders/entities/supplier';
@@ -22,7 +23,18 @@ export const mockSupplier: SupplierDTO = {
   username: faker.company.catchPhraseNoun(),
 };
 
-export const mockPayment: OrderDTO = {
+export const mockEKyashTransaction: EKyashTransactionDTO = {
+  deepLinkUrl: 'N/A',
+  id: 1,
+  invoiceId: 'invoice-001',
+  invoiceUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
+  qrCodeUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
+  orderId: 1,
+  status: OrderStatus.Pending,
+  transactionId: null,
+};
+
+export const mockOrder: OrderDTO = {
   currency: Currency.BZD,
   description: faker.commerce.productDescription(),
   invoice: faker.finance.bic(),
@@ -32,11 +44,11 @@ export const mockPayment: OrderDTO = {
   createdAt: faker.date.recent(),
   amount: mockOrderItem.price,
   additionalData: {
-    qrCodeUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
     paymentKey: faker.finance.bic(),
     payer: {
       email: faker.internet.email(),
       name: faker.internet.userName(),
     },
   },
+  eKyashTransaction: mockEKyashTransaction,
 };

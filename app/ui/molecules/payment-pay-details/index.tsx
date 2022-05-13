@@ -1,12 +1,12 @@
-import type { OrderEntity } from '~/domain/orders/entities/order';
-import type { SupplierEntity } from '~/domain/orders/entities/supplier';
+import type { OrderDTO } from '~/domain/orders/entities/order';
+import type { SupplierDTO } from '~/domain/orders/entities/supplier';
 import { OrderStatus } from '../../atoms/order-status';
 import { OrderItemList } from '../order-items';
 import { VendorHeader } from '../vendor-header';
 
 export type PaymentPayDetailsProps = {
-  payment: OrderEntity;
-  vendor: SupplierEntity;
+  payment: OrderDTO;
+  vendor: SupplierDTO;
 };
 
 export const PaymentPayDetails = ({ vendor, payment }: PaymentPayDetailsProps) => {
