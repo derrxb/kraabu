@@ -1,7 +1,7 @@
 import faker from '@faker-js/faker';
 import { Currency, OrderStatus } from '@prisma/client';
+import type { OrderDTO } from '~/domain/orders/entities/order';
 import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
-import type { OrderDTO } from '~/domain/orders/entities/payment';
 import type { SupplierDTO } from '~/domain/orders/entities/supplier';
 
 export const mockOrderItem: OrderItemDTO = {

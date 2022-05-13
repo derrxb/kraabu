@@ -1,4 +1,4 @@
-import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { OrderEntity } from '~/domain/orders/entities/order';
 import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import { OrderStatus } from '../../atoms/order-status';
 import { OrderItemList } from '../order-items';

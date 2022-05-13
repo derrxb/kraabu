@@ -1,5 +1,5 @@
 import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
-import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { OrderEntity } from '~/domain/orders/entities/order';
 import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';

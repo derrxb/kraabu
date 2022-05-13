@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { OrderStatus as OrderStatusEnum } from '~/domain/orders/entities/payment';
+import { OrderStatus as OrderStatusEnum } from '~/domain/orders/entities/order';
 
 export type OrderStatusProps = {
   status: OrderStatusEnum;

@@ -1,5 +1,5 @@
 import type { Params } from 'react-router';
-import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { OrderEntity } from '~/domain/orders/entities/order';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 

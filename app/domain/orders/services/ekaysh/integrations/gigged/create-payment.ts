@@ -1,4 +1,4 @@
-import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { OrderEntity } from '~/domain/orders/entities/order';
 import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper';

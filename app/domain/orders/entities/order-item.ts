@@ -1,5 +1,5 @@
 import type { OrderItem as OrderItemORM } from '@prisma/client';
-import type { OrderEntity } from './payment';
+import type { OrderEntity } from './order';
 
 export class OrderItemEntity {
   id?: OrderItemORM['id'];

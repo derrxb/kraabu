@@ -1,6 +1,6 @@
 import { EKyashStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
-import { OrderEntity, OrderStatus } from '../entities/payment';
+import { OrderEntity, OrderStatus } from '../entities/order';
 import type { SupplierEntity } from '../entities/supplier';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
 import OrderItemRepository from './order-item-repository';

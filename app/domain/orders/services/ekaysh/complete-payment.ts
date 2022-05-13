@@ -1,4 +1,4 @@
-import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { OrderEntity } from '~/domain/orders/entities/order';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekyash-payment';
