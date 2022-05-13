@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Ekyash" ALTER COLUMN "sid" SET DATA TYPE BIGINT;

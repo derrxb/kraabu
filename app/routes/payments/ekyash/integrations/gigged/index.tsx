@@ -2,17 +2,17 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import type { LoaderFunction, MetaFunction } from 'remix';
 import { json, useLoaderData, useNavigate } from 'remix';
-import type { PaymentEntity } from '~/domain/payments/entities/payment';
-import { PaymentStatus } from '~/domain/payments/entities/payment';
-import type { SupplierEntity } from '~/domain/payments/entities/supplier';
-import { setIntervalAsync } from '~/domain/payments/library/async-internval';
-import GetPayment from '~/domain/payments/services/ekaysh/integrations/gigged/get-payment.server';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import { OrderStatus } from '~/domain/orders/entities/payment';
+import type { SupplierEntity } from '~/domain/orders/entities/supplier';
+import { setIntervalAsync } from '~/domain/orders/library/async-internval';
+import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
 import { PaymentPayCode } from '~/ui/molecules/payment-pay-code';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'GiggedBZ Payment Request |  Krabuu - Easily Pay online in Belize',
+    title: 'GiggedBZ Order Payment | Krabuu - Easily Pay online in Belize',
     description:
       'Confirm your order by completing payment with your E-Kyash App. Scan the QR code to complete payment with your E-Kyash app.',
   };
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const data = useLoaderData() as { payment: PaymentEntity };
+  const data = useLoaderData() as { payment: OrderEntity };
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Index() {
       async () => {
         const result = await axios.get(`/payments/ekyash/${data.payment.invoice}/status`);
 
-        if (result.data?.status === PaymentStatus.Completed) {
+        if (result.data?.status === OrderStatus.Completed) {
           navigate(`/payments/ekyash/${data.payment.invoice}/completed`, {
             replace: true,
           });

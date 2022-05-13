@@ -1,6 +1,6 @@
 import type { ActionFunction } from 'remix';
 import { json } from 'remix';
-import CompletePayment from '~/domain/payments/services/ekaysh/complete-payment';
+import CompletePayment from '~/domain/orders/services/ekaysh/complete-payment';
 import { HTTP_CODE } from '~/representers/http-response-representer';
 
 /**

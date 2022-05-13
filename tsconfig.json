@@ -30,13 +30,13 @@
         "./app/*"
       ],
       "~/entities/*": [
-        "./app/domain/payments/entities/*"
+        "app/domain/orders/entities/*"
       ],
       "~/repositories/*": [
-        "./app/domain/payments/repositories/*"
+        "app/domain/orders/repositories/*"
       ],
       "~/services/*": [
-        "./app/domain/payments/services/*"
+        "app/domain/orders/services/*"
       ],
     },
     "noEmit": true,

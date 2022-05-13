@@ -1,8 +1,7 @@
-import { PaymentStatus } from '@prisma/client';
+import { OrderStatus } from '@prisma/client';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import type { OrderStatusProps } from '.';
-import { OrderStatus } from '.';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -20,17 +19,17 @@ const Template: ComponentStory<typeof OrderStatus> = (args) => <OrderStatus {...
 export const Pending = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Pending.args = {
-  status: PaymentStatus.Pending,
+  status: OrderStatus.Pending,
 } as OrderStatusProps;
 
 export const Completed = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Completed.args = {
-  status: PaymentStatus.Completed,
+  status: OrderStatus.Completed,
 } as OrderStatusProps;
 
 export const Failed = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Failed.args = {
-  status: PaymentStatus.Failed,
+  status: OrderStatus.Failed,
 } as OrderStatusProps;

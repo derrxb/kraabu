@@ -1,5 +1,5 @@
 import prisma from '~/infrastructure/database/index.server';
-import { PaymentEntity, PaymentStatus } from '../entities/payment';
+import { OrderEntity, OrderStatus } from '../entities/payment';
 import type { SupplierEntity } from '../entities/supplier';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
 import OrderItemRepository from './order-item-repository';
@@ -14,7 +14,7 @@ export default class PaymentRepository {
     const supplier = await SupplierRepository.rebuildEntity(data.supplier);
     const orderItems = data.orderItems?.map((orderItem: any) => OrderItemRepository.rebuildEntity(orderItem)) || [];
 
-    return new PaymentEntity({
+    return new OrderEntity({
       orderItems,
       supplier,
       additionalData: data?.additionalData,
@@ -28,8 +28,8 @@ export default class PaymentRepository {
     });
   }
 
-  static async createPending(data: PaymentEntity, supplier: SupplierEntity) {
-    const result = await prisma.payment.create({
+  static async createPending(data: OrderEntity, supplier: SupplierEntity) {
+    const result = await prisma.order.create({
       data: {
         additionalData: data.additionalData,
         amount: data.amount,
@@ -49,7 +49,7 @@ export default class PaymentRepository {
   }
 
   static async getPaymentByInvoice(invoice: string) {
-    const result = await prisma.payment.findFirst({
+    const result = await prisma.order.findFirst({
       where: { invoice: invoice },
       include: { orderItems: true, supplier: { include: { ekyash: true } } },
     });
@@ -57,8 +57,8 @@ export default class PaymentRepository {
     return await this.rebuildEntity(result);
   }
 
-  static async setOrderDetailsAndPaymentCode(payment: PaymentEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
-    const result = await prisma.payment.update({
+  static async setOrderDetailsAndPaymentCode(payment: OrderEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
+    const result = await prisma.order.update({
       data: {
         amount: orderDetails?.amount,
         currency: orderDetails?.currency,
@@ -89,18 +89,18 @@ export default class PaymentRepository {
     return this.rebuildEntity(result);
   }
 
-  static async setPaymentAsCompleted(payment: PaymentEntity) {
-    const result = await prisma.payment.update({
-      data: { status: PaymentStatus.Completed },
+  static async setPaymentAsCompleted(payment: OrderEntity) {
+    const result = await prisma.order.update({
+      data: { status: OrderStatus.Completed },
       where: { id: payment.id },
     });
 
     return this.rebuildEntity(result);
   }
 
-  static async setPaymentAsRejected(payment: PaymentEntity) {
-    const result = await prisma.payment.update({
-      data: { status: PaymentStatus.Failed },
+  static async setPaymentAsRejected(payment: OrderEntity) {
+    const result = await prisma.order.update({
+      data: { status: OrderStatus.Failed },
       where: { id: payment.id },
     });
 

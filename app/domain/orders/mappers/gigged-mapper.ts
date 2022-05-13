@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import superagent from 'superagent';
 import Failure from '~/lib/failure';
-import { Currency, PaymentEntity, PaymentStatus } from '../entities/payment';
+import { Currency, OrderEntity, OrderStatus } from '../entities/payment';
 import type { SupplierEntity } from '../entities/supplier';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
 import { GiggedRoutes } from '../library/gigged-api';
@@ -46,11 +46,11 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): PaymentEntity {
-    return new PaymentEntity({
+  getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): OrderEntity {
+    return new OrderEntity({
       supplier: supplier,
       supplierId: supplier.id,
-      status: PaymentStatus.Pending,
+      status: OrderStatus.Pending,
       amount: Number(data.total),
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
       description: 'A GiggedBZ Order via EKyash',
@@ -106,15 +106,14 @@ class GiggedMapper {
     }
   }
 
-  async updateOrderStatus(data: PaymentEntity) {
+  async updateOrderStatus(data: OrderEntity) {
     try {
       await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
         invoiceno: data.invoice,
         hashkey: data.additionalData.hashkey,
         gateway: data.additionalData.hashkey,
         paykey: data.additionalData.paymentKey,
-        status:
-          data.status === PaymentStatus.Completed ? 'success' : data.status === PaymentStatus.Failed ? 'error' : '',
+        status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'error' : '',
       });
     } catch (e) {
       throw new Failure('bad_request', "Could not update GiggedBz's order status.");

@@ -1,10 +1,10 @@
-import type { GiggedOrderHandshake } from '~/domain/payments/library/gigged-api';
-import GiggedMapper from '~/domain/payments/mappers/gigged-mapper';
-import type { PaymentEntity } from '~/entities/payment';
-import type { SupplierEntity } from '~/entities/supplier';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { SupplierEntity } from '~/domain/orders/entities/supplier';
+import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
+import GiggedMapper from '~/domain/orders/mappers/gigged-mapper';
+import PaymentRepository from '~/domain/orders/repositories/payment-repository';
+import { SupplierRepository } from '~/domain/orders/repositories/supplier-repository';
 import Failure from '~/lib/failure';
-import PaymentRepository from '~/repositories/payment-repository';
-import { SupplierRepository } from '~/repositories/supplier-repository';
 import createdPendingGiggedPaymentSchema from '~/requests/create-pending-gigged-payment';
 import { GIGGED_USERNAME } from '.';
 
@@ -27,7 +27,7 @@ export default class CreatePayment {
     });
   }
 
-  async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake): Promise<PaymentEntity> {
+  async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
       const payment = await PaymentRepository.createPending(
         new GiggedMapper(order.gateway, order.hashkey).getPaymentFromHandshake(order, supplier),
@@ -44,7 +44,7 @@ export default class CreatePayment {
     }
   }
 
-  async call(): Promise<PaymentEntity> {
+  async call(): Promise<OrderEntity> {
     const order = await this.verifyParams();
     const supplier = await SupplierRepository.findSupplierByUsername(GIGGED_USERNAME);
 

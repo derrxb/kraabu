@@ -1,4 +1,4 @@
-import type { OrderItemDTO } from '~/domain/payments/entities/order-item';
+import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
 import { OrderItem } from '../order-item';
 
 export type OrderItemListProps = {

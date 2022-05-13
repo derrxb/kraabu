@@ -1,15 +1,15 @@
 import type { LoaderFunction, MetaFunction } from 'remix';
 import { json, redirect, useLoaderData } from 'remix';
-import type { PaymentEntity } from '~/domain/payments/entities/payment';
-import { PaymentStatus } from '~/domain/payments/entities/payment';
-import type { SupplierEntity } from '~/domain/payments/entities/supplier';
-import GetPayment from '~/domain/payments/services/ekaysh/get-payment';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import { OrderStatus } from '~/domain/orders/entities/payment';
+import type { SupplierEntity } from '~/domain/orders/entities/supplier';
+import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Payment Success | Giggedbz - Make life easier by hiring a Gigger to help',
+    title: 'Order Success | Giggedbz - Make life easier by hiring a Gigger to help',
   };
 };
 
@@ -18,11 +18,11 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     const payment = await new GetPayment(params).call();
 
     switch (payment.status) {
-      case PaymentStatus.Completed:
+      case OrderStatus.Completed:
         return json({ payment });
-      case PaymentStatus.Failed:
+      case OrderStatus.Failed:
         return redirect(`/payments/ekyash/${payment.invoice}/failed`);
-      case PaymentStatus.Pending:
+      case OrderStatus.Pending:
         return redirect(
           `/payments/ekyash/integrations/gigged?invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}`,
         );
@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function Completed() {
-  const data = useLoaderData() as { payment: PaymentEntity };
+  const data = useLoaderData() as { payment: OrderEntity };
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">

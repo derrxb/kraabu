@@ -1,17 +1,17 @@
 import clsx from 'clsx';
-import { PaymentStatus } from '~/domain/payments/entities/payment';
+import { OrderStatus as OrderStatusEnum } from '~/domain/orders/entities/payment';
 
 export type OrderStatusProps = {
-  status: PaymentStatus;
+  status: OrderStatusEnum;
 };
 
 const getPrettyPaymentStatus = (status: OrderStatusProps['status']) => {
   switch (status) {
-    case PaymentStatus.Completed:
+    case OrderStatusEnum.Completed:
       return 'Completed';
-    case PaymentStatus.Pending:
+    case OrderStatusEnum.Pending:
       return 'In Progress';
-    case PaymentStatus.Failed:
+    case OrderStatusEnum.Failed:
       return 'Cancelled';
     default:
       break;
@@ -25,9 +25,9 @@ export const OrderStatus = ({ status }: OrderStatusProps) => {
 
       <span
         className={clsx('font-semibold', {
-          'text-green-500': PaymentStatus.Completed === status,
-          'text-blue-500': PaymentStatus.Pending === status,
-          'text-red-500': PaymentStatus.Failed === status,
+          'text-green-500': OrderStatusEnum.Completed === status,
+          'text-blue-500': OrderStatusEnum.Pending === status,
+          'text-red-500': OrderStatusEnum.Failed === status,
         })}
       >
         {getPrettyPaymentStatus(status)}
