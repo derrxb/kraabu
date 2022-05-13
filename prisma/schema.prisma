@@ -39,7 +39,7 @@ model Supplier {
   homepage String  @db.VarChar(255)
   ekyash   Ekyash? @relation(fields: [ekyashId], references: [id])
   ekyashId Int?    @unique
-  Order  Order[]
+  Order    Order[]
 }
 
 enum EKyashStatus {
@@ -53,12 +53,12 @@ model EKyashTransaction {
   id            Int          @id @default(autoincrement())
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  deeplinkUrl   String       @db.VarChar(255)
+  deepLinkUrl   String       @db.VarChar(255)
   qrCodeUrl     String       @db.VarChar(255)
   status        EKyashStatus @default(Pending)
   invoiceId     String       @db.VarChar(255)
-  transactionId String       @db.VarChar(255)
-  invoiceUrl    String       @db.VarChar(255)
+  transactionId String?      @db.VarChar(255)
+  invoiceUrl    String?      @db.VarChar(255)
   order         Order        @relation(fields: [orderId], references: [id])
   orderId       Int          @unique
 }

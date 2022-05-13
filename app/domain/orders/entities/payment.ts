@@ -1,5 +1,6 @@
 import type { Order as OrderORM } from '@prisma/client';
 import { Currency, OrderStatus } from '@prisma/client';
+import type { EKyashTransactionEntity } from './ekyash-transaction';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
 import type { SupplierDTO, SupplierEntity } from './supplier';
 
@@ -29,6 +30,7 @@ export class OrderEntity {
   additionalData: GiggedOrderDetails;
   supplierId: OrderORM['supplierId'];
   orderItems: OrderItemEntity[];
+  eKyashTransaction?: EKyashTransactionEntity;
 
   constructor({
     additionalData,
@@ -42,11 +44,13 @@ export class OrderEntity {
     supplier,
     supplierId,
     orderItems,
+    eKyashTransaction,
   }: Omit<OrderORM, 'id' | 'createdAt' | 'updatedAt'> &
     Partial<Pick<OrderORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
       supplier?: SupplierEntity;
       orderItems?: OrderItemEntity[];
+      eKyashTransaction?: EKyashTransactionEntity;
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -59,6 +63,7 @@ export class OrderEntity {
     this.supplier = supplier;
     this.supplierId = supplierId;
     this.orderItems = orderItems ?? [];
+    this.eKyashTransaction = eKyashTransaction;
   }
 
   isValid() {
@@ -105,6 +110,7 @@ export class OrderEntity {
       id: this.id,
       supplier: this.supplier?.json(),
       orderItems: this.orderItems.map((order) => order.json()),
+      eKyashTransaction: this.eKyashTransaction?.json(),
     } as OrderDTO;
   }
 }

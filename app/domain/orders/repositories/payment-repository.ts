@@ -1,3 +1,4 @@
+import { EKyashStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
 import { OrderEntity, OrderStatus } from '../entities/payment';
 import type { SupplierEntity } from '../entities/supplier';
@@ -51,7 +52,7 @@ export default class PaymentRepository {
   static async getPaymentByInvoice(invoice: string) {
     const result = await prisma.order.findFirst({
       where: { invoice: invoice },
-      include: { orderItems: true, supplier: { include: { ekyash: true } } },
+      include: { ekyashTransaction: true, orderItems: true, supplier: { include: { ekyash: true } } },
     });
 
     return await this.rebuildEntity(result);
@@ -66,6 +67,14 @@ export default class PaymentRepository {
           ...payment.additionalData,
           qrCodeUrl: invoice?.qrUrl,
           payer: orderDetails?.payer,
+        },
+        ekyashTransaction: {
+          create: {
+            deepLinkUrl: String(invoice?.paymentLink),
+            invoiceId: String(invoice?.invoiceId),
+            qrCodeUrl: String(invoice?.qrUrl),
+            status: EKyashStatus.Pending,
+          },
         },
         orderItems: orderDetails?.orderItems
           ? {
@@ -83,7 +92,7 @@ export default class PaymentRepository {
           : undefined,
       },
       where: { id: payment.id },
-      include: { orderItems: true, supplier: { include: { ekyash: true } } },
+      include: { ekyashTransaction: true, orderItems: true, supplier: { include: { ekyash: true } } },
     });
 
     return this.rebuildEntity(result);
