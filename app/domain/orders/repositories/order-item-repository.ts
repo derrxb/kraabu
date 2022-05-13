@@ -11,10 +11,10 @@ export default class OrderItemRepository {
       currency: data.currency,
       description: data.description,
       name: data.name,
-      paymentId: data.paymentId,
+      orderId: data.orderId,
       price: data.price,
       quantity: data.quantity,
-      payment: data.payment,
+      order: data.order,
     });
   }
 }

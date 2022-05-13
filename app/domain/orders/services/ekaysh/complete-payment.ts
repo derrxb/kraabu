@@ -1,5 +1,5 @@
-import type { PaymentEntity } from '~/domain/payments/entities/payment';
-import PaymentRepository from '~/domain/payments/repositories/payment-repository';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekyash-payment';
 import type { CompletedPaymentCallbackData } from '../../library/ekyash-api';
@@ -12,7 +12,7 @@ import GiggedMapper from '../../mappers/gigged-mapper';
  */
 export default class CompletePayment {
   private request: Request;
-  private payment: PaymentEntity | null;
+  private payment: OrderEntity | null;
   private invoice: string | null = null;
   private paymentStatus: CompletedPaymentCallbackData | null;
 
@@ -46,10 +46,10 @@ export default class CompletePayment {
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        await PaymentRepository.setPaymentAsCompleted(this.payment as PaymentEntity);
+        await PaymentRepository.setPaymentAsCompleted(this.payment as OrderEntity);
         break;
       case TransactionStatus.Declined:
-        await PaymentRepository.setPaymentAsRejected(this.payment as PaymentEntity);
+        await PaymentRepository.setPaymentAsRejected(this.payment as OrderEntity);
         break;
       default:
         throw new Failure('bad_request', 'Could not complete this request as an unknown `statusPay` was provided.');

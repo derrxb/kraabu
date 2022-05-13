@@ -1,8 +1,8 @@
 import faker from '@faker-js/faker';
-import { Currency, PaymentStatus } from '@prisma/client';
-import type { OrderItemDTO } from '~/domain/payments/entities/order-item';
-import type { PaymentDTO } from '~/domain/payments/entities/payment';
-import type { SupplierDTO } from '~/domain/payments/entities/supplier';
+import { Currency, OrderStatus } from '@prisma/client';
+import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
+import type { OrderDTO } from '~/domain/orders/entities/payment';
+import type { SupplierDTO } from '~/domain/orders/entities/supplier';
 
 export const mockOrderItem: OrderItemDTO = {
   currency: Currency.BZD,
@@ -22,12 +22,12 @@ export const mockSupplier: SupplierDTO = {
   username: faker.company.catchPhraseNoun(),
 };
 
-export const mockPayment: PaymentDTO = {
+export const mockPayment: OrderDTO = {
   currency: Currency.BZD,
   description: faker.commerce.productDescription(),
   invoice: faker.finance.bic(),
   orderItems: [mockOrderItem],
-  status: PaymentStatus.Pending,
+  status: OrderStatus.Pending,
   supplier: mockSupplier,
   createdAt: faker.date.recent(),
   amount: mockOrderItem.price,

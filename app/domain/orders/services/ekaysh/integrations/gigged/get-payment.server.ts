@@ -1,9 +1,9 @@
-import { EKyashMapper } from '~/domain/payments/mappers/ekyash-mapper';
-import GiggedMapper from '~/domain/payments/mappers/gigged-mapper';
-import type { EKyashEntity } from '~/entities/ekyash';
-import type { PaymentEntity } from '~/entities/payment';
+import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
+import GiggedMapper from '~/domain/orders/mappers/gigged-mapper';
+import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
-import PaymentRepository from '~/repositories/payment-repository';
 import getGiggedBzPaymentSchema from '~/requests/get-gigged-bz-payment';
 
 export default class GetPayment {
@@ -37,7 +37,7 @@ export default class GetPayment {
     return payment;
   }
 
-  async getPaymentOrderDetails(payment: PaymentEntity) {
+  async getPaymentOrderDetails(payment: OrderEntity) {
     if (payment.hasOrderDetails()) {
       return undefined;
     }
@@ -48,7 +48,7 @@ export default class GetPayment {
     ).getPaymentOrderDetails({ invoiceNo: payment.invoice, paykey: payment.additionalData?.paymentKey as string });
   }
 
-  async getPaymentQrCode(payment: PaymentEntity) {
+  async getPaymentQrCode(payment: OrderEntity) {
     if (payment.hasQrCode()) {
       return undefined;
     }
@@ -59,7 +59,7 @@ export default class GetPayment {
   }
 
   async call() {
-    let payment: PaymentEntity | null = null;
+    let payment: OrderEntity | null = null;
     const params = await this.verifyParams();
     payment = await this.getPendingPayment(params.invoiceNo);
 

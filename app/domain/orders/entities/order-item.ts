@@ -1,5 +1,5 @@
 import type { OrderItem as OrderItemORM } from '@prisma/client';
-import type { PaymentEntity } from './payment';
+import type { OrderEntity } from './payment';
 
 export class OrderItemEntity {
   id?: OrderItemORM['id'];
@@ -8,8 +8,8 @@ export class OrderItemEntity {
   description: OrderItemORM['description'];
   price: OrderItemORM['price'];
   quantity: OrderItemORM['quantity'];
-  paymentId: OrderItemORM['paymentId'];
-  payment?: PaymentEntity;
+  orderId: OrderItemORM['orderId'];
+  order?: OrderEntity;
 
   constructor({
     id,
@@ -18,11 +18,11 @@ export class OrderItemEntity {
     description,
     price,
     quantity,
-    paymentId,
-    payment,
+    orderId,
+    order,
   }: Omit<OrderItemORM, 'id'> & {
     id?: OrderItemEntity['id'];
-    payment?: PaymentEntity;
+    order?: OrderEntity;
   }) {
     this.id = id;
     this.name = name;
@@ -30,8 +30,8 @@ export class OrderItemEntity {
     this.description = description;
     this.price = price;
     this.quantity = quantity;
-    this.paymentId = paymentId;
-    this.payment = payment;
+    this.orderId = orderId;
+    this.order = order;
   }
 
   json() {
@@ -42,7 +42,7 @@ export class OrderItemEntity {
       description: this.description,
       price: this.price,
       quantity: this.quantity,
-      paymentId: this.paymentId,
+      orderId: this.orderId,
     } as OrderItemDTO;
   }
 }

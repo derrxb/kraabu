@@ -1,9 +1,9 @@
-import type { Payment as PaymentORM } from '@prisma/client';
-import { Currency, PaymentStatus } from '@prisma/client';
+import type { Order as OrderORM } from '@prisma/client';
+import { Currency, OrderStatus } from '@prisma/client';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
 import type { SupplierDTO, SupplierEntity } from './supplier';
 
-export { PaymentStatus, Currency };
+export { OrderStatus, Currency };
 
 export type GiggedOrderDetails = {
   qrCodeUrl?: string;
@@ -16,18 +16,18 @@ export type GiggedOrderDetails = {
   };
 };
 
-export class PaymentEntity {
-  createdAt?: PaymentORM['createdAt'];
-  updatedAt?: PaymentORM['updatedAt'];
-  description: PaymentORM['description'];
-  currency: PaymentORM['currency'];
-  amount: PaymentORM['amount'];
-  id?: PaymentORM['id'];
-  invoice: PaymentORM['invoice'];
-  status: PaymentORM['status'];
+export class OrderEntity {
+  createdAt?: OrderORM['createdAt'];
+  updatedAt?: OrderORM['updatedAt'];
+  description: OrderORM['description'];
+  currency: OrderORM['currency'];
+  amount: OrderORM['amount'];
+  id?: OrderORM['id'];
+  invoice: OrderORM['invoice'];
+  status: OrderORM['status'];
   supplier?: SupplierEntity;
   additionalData: GiggedOrderDetails;
-  supplierId: PaymentORM['supplierId'];
+  supplierId: OrderORM['supplierId'];
   orderItems: OrderItemEntity[];
 
   constructor({
@@ -42,8 +42,8 @@ export class PaymentEntity {
     supplier,
     supplierId,
     orderItems,
-  }: Omit<PaymentORM, 'id' | 'createdAt' | 'updatedAt'> &
-    Partial<Pick<PaymentORM, 'id' | 'createdAt' | 'updatedAt'>> & {
+  }: Omit<OrderORM, 'id' | 'createdAt' | 'updatedAt'> &
+    Partial<Pick<OrderORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
       supplier?: SupplierEntity;
       orderItems?: OrderItemEntity[];
@@ -66,7 +66,7 @@ export class PaymentEntity {
   }
 
   isPending() {
-    return this.status === PaymentStatus.Pending;
+    return this.status === OrderStatus.Pending;
   }
 
   canBePaid() {
@@ -105,11 +105,11 @@ export class PaymentEntity {
       id: this.id,
       supplier: this.supplier?.json(),
       orderItems: this.orderItems.map((order) => order.json()),
-    } as PaymentDTO;
+    } as OrderDTO;
   }
 }
 
-export type PaymentDTO = Pick<
-  PaymentEntity,
+export type OrderDTO = Pick<
+  OrderEntity,
   'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
 > & { supplier: SupplierDTO; orderItems: OrderItemDTO[] };

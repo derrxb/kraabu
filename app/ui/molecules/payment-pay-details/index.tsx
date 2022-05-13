@@ -1,11 +1,11 @@
-import type { PaymentEntity } from '~/domain/payments/entities/payment';
-import type { SupplierEntity } from '~/domain/payments/entities/supplier';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import { OrderStatus } from '../../atoms/order-status';
 import { OrderItemList } from '../order-items';
 import { VendorHeader } from '../vendor-header';
 
 export type PaymentPayDetailsProps = {
-  payment: PaymentEntity;
+  payment: OrderEntity;
   vendor: SupplierEntity;
 };
 

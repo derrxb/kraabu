@@ -1,6 +1,6 @@
 import type { Params } from 'react-router';
-import type { PaymentEntity } from '~/domain/payments/entities/payment';
-import PaymentRepository from '~/domain/payments/repositories/payment-repository';
+import type { OrderEntity } from '~/domain/orders/entities/payment';
+import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 
 export default class GetPayment {
@@ -10,7 +10,7 @@ export default class GetPayment {
     this.params = params;
   }
 
-  async call(): Promise<PaymentEntity> {
+  async call(): Promise<OrderEntity> {
     const { id } = this.params;
 
     if (!id) {

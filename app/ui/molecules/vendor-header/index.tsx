@@ -1,4 +1,4 @@
-import type { SupplierDTO } from '~/domain/payments/entities/supplier';
+import type { SupplierDTO } from '~/domain/orders/entities/supplier';
 
 export type VendorHeaderProps = SupplierDTO;
 

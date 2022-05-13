@@ -1,5 +1,5 @@
 import type { EKyashEntity } from '../entities/ekyash';
-import type { PaymentEntity } from '../entities/payment';
+import type { OrderEntity } from '../entities/payment';
 import { createNewInvoice, getAuthorization } from '../library/ekyash-api';
 
 export class EKyashMapper {
@@ -25,13 +25,13 @@ export class EKyashMapper {
     this.session = response.session;
   }
 
-  async createInvoice(payment: PaymentEntity) {
+  async createInvoice(order: OrderEntity) {
     const invoice = await createNewInvoice(
       {
-        amount: payment.amount,
-        description: payment.description,
+        amount: order.amount,
+        description: order.description,
         currency: 'BZD',
-        orderId: payment.invoice,
+        orderId: order.invoice,
         session: this.session as string,
       },
       this.ekyash,
