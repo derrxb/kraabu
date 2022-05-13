@@ -39,7 +39,7 @@ model Supplier {
   homepage String  @db.VarChar(255)
   ekyash   Ekyash? @relation(fields: [ekyashId], references: [id])
   ekyashId Int?    @unique
-  Payment  Order[]
+  Order  Order[]
 }
 
 enum EKyashStatus {
