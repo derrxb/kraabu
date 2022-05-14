@@ -30,7 +30,7 @@ export class OrderEntity {
   additionalData: GiggedOrderDetails;
   supplierId: OrderORM['supplierId'];
   orderItems: OrderItemEntity[];
-  eKyashTransaction?: EKyashTransactionEntity;
+  ekyashTransaction?: EKyashTransactionEntity;
 
   constructor({
     additionalData,
@@ -44,13 +44,13 @@ export class OrderEntity {
     supplier,
     supplierId,
     orderItems,
-    eKyashTransaction,
+    ekyashTransaction,
   }: Omit<OrderORM, 'id' | 'createdAt' | 'updatedAt'> &
     Partial<Pick<OrderORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
       supplier?: SupplierEntity;
       orderItems?: OrderItemEntity[];
-      eKyashTransaction?: EKyashTransactionEntity;
+      ekyashTransaction?: EKyashTransactionEntity;
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -63,7 +63,7 @@ export class OrderEntity {
     this.supplier = supplier;
     this.supplierId = supplierId;
     this.orderItems = orderItems ?? [];
-    this.eKyashTransaction = eKyashTransaction;
+    this.ekyashTransaction = ekyashTransaction;
   }
 
   isValid() {
@@ -83,7 +83,7 @@ export class OrderEntity {
   }
 
   hasQrCode() {
-    return this.additionalData.qrCodeUrl;
+    return this.ekyashTransaction?.qrCodeUrl;
   }
 
   hasOrderDetails() {
@@ -110,7 +110,7 @@ export class OrderEntity {
       id: this.id,
       supplier: this.supplier?.json(),
       orderItems: this.orderItems.map((order) => order.json()),
-      eKyashTransaction: this.eKyashTransaction?.json(),
+      ekyashTransaction: this.ekyashTransaction?.json(),
     } as OrderDTO;
   }
 }
@@ -118,4 +118,4 @@ export class OrderEntity {
 export type OrderDTO = Pick<
   OrderEntity,
   'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
-> & { supplier: SupplierDTO; orderItems: OrderItemDTO[]; eKyashTransaction?: EKyashTransactionDTO };
+> & { supplier: SupplierDTO; orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO };

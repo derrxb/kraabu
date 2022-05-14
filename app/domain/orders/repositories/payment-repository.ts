@@ -3,6 +3,7 @@ import prisma from '~/infrastructure/database/index.server';
 import { OrderEntity, OrderStatus } from '../entities/order';
 import type { SupplierEntity } from '../entities/supplier';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
+import { EKyashTransactionRepository } from './e-kyash-transaction-repository';
 import OrderItemRepository from './order-item-repository';
 import { SupplierRepository } from './supplier-repository';
 
@@ -14,6 +15,7 @@ export default class PaymentRepository {
 
     const supplier = await SupplierRepository.rebuildEntity(data.supplier);
     const orderItems = data.orderItems?.map((orderItem: any) => OrderItemRepository.rebuildEntity(orderItem)) || [];
+    const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
 
     return new OrderEntity({
       orderItems,
@@ -26,6 +28,7 @@ export default class PaymentRepository {
       invoice: data.invoice,
       status: data.status,
       supplierId: supplier?.id as number,
+      ekyashTransaction: ekyashTransaction,
     });
   }
 

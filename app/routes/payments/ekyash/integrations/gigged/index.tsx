@@ -62,7 +62,7 @@ export default function Index() {
       <div className="h-full w-full lg:w-1/2">
         {data.payment.additionalData.qrCodeUrl ? (
           <PaymentPayCode
-            qr={data.payment.eKyashTransaction?.qrCodeUrl as string}
+            qr={data.payment.ekyashTransaction?.qrCodeUrl as string}
             paymentMethod={{
               name: 'E-Kyash',
               color: '#39ae49',
