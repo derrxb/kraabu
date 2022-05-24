@@ -7,7 +7,6 @@ const headers = {
   'Accept-Language': 'en',
   'The-Timezone-IANA': 'Belize',
   WL: 'bibi',
-  IMGE: 'APPKEY17-07A8-4BAF-AA0F-B1568C5017A3',
   appVersion: '99.1.1',
   operatingSystem: 'Android',
 };
@@ -30,7 +29,7 @@ const getJWTToken = async (kyash: EKyashEntity) => {
     ),
   );
 
-  const signature = enc.Base64.stringify(HmacSHA256(`${header}.${data}`, headers.IMGE));
+  const signature = enc.Base64.stringify(HmacSHA256(`${header}.${data}`, kyash.apiKey));
 
   return `${header}.${data}.${signature}`;
 };
