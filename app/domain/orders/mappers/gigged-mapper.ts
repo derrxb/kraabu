@@ -124,7 +124,7 @@ class GiggedMapper {
   }
 
   async validatePaymentCallback(data: CompletedPaymentCallbackData, eKyash: EKyashEntity) {
-    return isCallbackRequestValid(data, eKyash.api);
+    return isCallbackRequestValid(data, eKyash.apiKey);
   }
 }
 
