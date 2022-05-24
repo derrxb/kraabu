@@ -27,6 +27,7 @@ model Ekyash {
   pinHash    String    @db.VarChar(255)
   pinEncoded String    @db.VarChar(255)
   phone      String    @db.VarChar(255)
+  apiKey     String   @db.VarChar(255)
   Supplier   Supplier?
 }
 
