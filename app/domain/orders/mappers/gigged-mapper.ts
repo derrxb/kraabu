@@ -1,8 +1,11 @@
 import { nanoid } from 'nanoid';
 import superagent from 'superagent';
 import Failure from '~/lib/failure';
+import type { EKyashEntity } from '../entities/ekyash';
 import { Currency, OrderEntity, OrderStatus } from '../entities/order';
 import type { SupplierEntity } from '../entities/supplier';
+import type { CompletedPaymentCallbackData } from '../library/ekyash-api';
+import { isCallbackRequestValid } from '../library/ekyash-api';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
 import { GiggedRoutes } from '../library/gigged-api';
 
@@ -118,6 +121,10 @@ class GiggedMapper {
     } catch (e) {
       throw new Failure('bad_request', "Could not update GiggedBz's order status.");
     }
+  }
+
+  async validatePaymentCallback(data: CompletedPaymentCallbackData, eKyash: EKyashEntity) {
+    return isCallbackRequestValid(data, eKyash.apiKey);
   }
 }
 

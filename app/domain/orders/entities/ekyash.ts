@@ -8,8 +8,9 @@ export class EKyashEntity {
   phone: EkyashORM['phone'];
   sid: EkyashORM['sid'];
   pushKey: string;
+  apiKey: string;
 
-  constructor({ id, api, pinHash, pinEncoded, phone, sid }: Omit<EkyashORM, 'createdAt' | 'updatedAt'>) {
+  constructor({ id, api, pinHash, pinEncoded, phone, sid, apiKey }: Omit<EkyashORM, 'createdAt' | 'updatedAt'>) {
     this.id = id;
     this.api = api;
     this.pinHash = pinHash;
@@ -17,6 +18,7 @@ export class EKyashEntity {
     this.phone = phone;
     this.sid = sid;
     this.pushKey = '{{pushkey}}';
+    this.apiKey = apiKey;
   }
 
   isValid() {

@@ -2,6 +2,7 @@ import type { OrderEntity } from '~/domain/orders/entities/order';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekyash-payment';
+import type { EKyashEntity } from '../../entities/ekyash';
 import type { CompletedPaymentCallbackData } from '../../library/ekyash-api';
 import { TransactionStatus } from '../../library/ekyash-api';
 import GiggedMapper from '../../mappers/gigged-mapper';
@@ -31,6 +32,17 @@ export default class CompletePayment {
     this.paymentStatus = {
       ...validatedParams,
     };
+  }
+
+  async validateHashKey() {
+    if (this.paymentStatus) {
+      return await new GiggedMapper(
+        this.payment?.additionalData.gateway as string,
+        this.payment?.additionalData.hashkey as string,
+      ).validatePaymentCallback(this.paymentStatus, this.payment?.supplier?.ekyash as EKyashEntity);
+    }
+
+    return false;
   }
 
   async setPayment() {
@@ -70,6 +82,11 @@ export default class CompletePayment {
   async call() {
     await this.verifyPaymentParams();
     await this.setPayment();
+
+    if (await this.validateHashKey()) {
+      throw new Failure('forbidden', 'The payment hash is invalid.');
+    }
+
     await this.setGiggedPaymentAsAcceptedOrRejected();
     await this.setKrabuuPaymentAsAcceptedOrRejected();
 

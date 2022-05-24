@@ -11,6 +11,7 @@ const headers = {
   appVersion: '99.1.1',
   operatingSystem: 'Android',
 };
+
 /**
  * Builds & returns a JWT token for calls to E-kyash's API.
  * @returns
@@ -246,4 +247,30 @@ export type CompletedPaymentCallbackData = {
   hash: string;
 };
 
-export { getJWTToken, getAuthorization, createNewInvoice, uploadInvoiceImage };
+const getAuthenticatedHash = (data: Omit<CompletedPaymentCallbackData, 'transactionID'>, password: string) => {
+  return enc.Base64.stringify(HmacSHA256(JSON.stringify(data), password));
+};
+
+const isCallbackRequestValid = (data: CompletedPaymentCallbackData, password: string) => {
+  return (
+    data.hash ===
+    getAuthenticatedHash(
+      {
+        hash: data.hash,
+        invoiceId: data.invoiceId,
+        orderId: data.orderId,
+        statusPay: data.statusPay,
+      },
+      password,
+    )
+  );
+};
+
+export {
+  getJWTToken,
+  getAuthorization,
+  createNewInvoice,
+  uploadInvoiceImage,
+  getAuthenticatedHash,
+  isCallbackRequestValid,
+};

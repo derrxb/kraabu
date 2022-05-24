@@ -52,6 +52,11 @@ export default class PaymentRepository {
     return this.rebuildEntity(result);
   }
 
+  /**
+   * Gets and returns a payment by invoice. Includes a payment's orderItems, supplier & their integrations
+   * @param invoice
+   * @returns
+   */
   static async getPaymentByInvoice(invoice: string) {
     const result = await prisma.order.findFirst({
       where: { invoice: invoice },
