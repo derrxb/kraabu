@@ -30,7 +30,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
         App.
       </h1>
 
-      <span className="text-medium pb:8 text-base text-gray-500 md:pb-12">
+      <span className="text-medium pb:4 text-base text-gray-500 md:pb-8">
         Scan the QR code to complete payment with your E-Kyash app.
       </span>
 
