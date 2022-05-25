@@ -68,6 +68,7 @@ export default function Index() {
               color: '#39ae49',
               url: 'https://www.e-kyash.com/',
             }}
+            deepLink={data.payment.ekyashTransaction?.deepLinkUrl as string}
           />
         ) : (
           <div className="w-full rounded-md bg-red-200 py-2 px-4 pb-4">

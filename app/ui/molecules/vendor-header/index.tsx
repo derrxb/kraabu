@@ -2,7 +2,7 @@ import type { SupplierDTO } from '~/domain/orders/entities/supplier';
 
 export type VendorHeaderProps = SupplierDTO;
 
-export function VendorHeader({ name, logoUrl, tag, homepage }: VendorHeaderProps) {
+export function VendorHeader({ name, logoUrl, tag, homepage }: SupplierDTO) {
   return (
     <div className="mb-4 flex flex-col">
       <a href={homepage} target="_blank" rel="noreferrer" className="w-fit pb-1">

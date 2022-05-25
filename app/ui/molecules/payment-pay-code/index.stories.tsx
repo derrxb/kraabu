@@ -25,4 +25,5 @@ Default.args = {
     color: '#e24241',
   },
   qr: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
+  deepLink: 'https://ekyash-pay.page.link/qr?id=250337015412',
 } as PaymentPayCodeProps;

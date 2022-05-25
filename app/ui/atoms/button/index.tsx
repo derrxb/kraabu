@@ -1,11 +1,25 @@
 import clsx from 'clsx';
 import React from 'react';
 
+export enum ButtonColors {
+  Primary,
+  Text,
+  EKyash,
+}
+
 interface ButtonProps {
+  /**
+   * Where to redirect the user to
+   */
+  href?: string;
+  /**
+   * The button's variant
+   */
+  variant: 'button' | 'submit' | 'link';
   /**
    * Is this the principal call to action on the page?
    */
-  primary?: boolean;
+  color?: ButtonColors;
   /**
    * How large should the button be?
    */
@@ -29,17 +43,49 @@ const sizes = {
 const modes = {
   primary: 'text-white bg-blue-600',
   secondary: 'text-gray-900 bg-transparent shadow-md',
+  ekyash: 'bg-[#39ae49] text-gray-100 hover:bg-[#2d8b3a]',
 };
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({ primary = false, size = 'medium', label, ...props }: ButtonProps) => {
+export const Button = ({
+  color = ButtonColors.Primary,
+  size = 'medium',
+  label,
+  variant = 'button',
+  ...props
+}: ButtonProps) => {
+  if (variant === 'link' && typeof variant === 'undefined') {
+    throw new Error('Button links required `href` to be defined.');
+  }
+
+  if (variant === 'link') {
+    return (
+      <a
+        target="_blank"
+        href={props.href}
+        className={clsx(
+          `inline-block cursor-pointer rounded-sm border-0 text-center font-bold leading-4 ${sizes[size]}`,
+          {
+            [modes.primary]: color === ButtonColors.Primary,
+            [modes.secondary]: color === ButtonColors.Text,
+            [modes.ekyash]: color === ButtonColors.EKyash,
+          },
+        )}
+        rel="noreferrer"
+      >
+        {label}
+      </a>
+    );
+  }
+
   return (
     <button
       type="button"
       className={clsx(`inline-block cursor-pointer rounded-sm border-0 font-bold leading-4 ${sizes[size]}`, {
-        [modes.primary]: primary,
-        [modes.secondary]: !primary,
+        [modes.primary]: color === ButtonColors.Primary,
+        [modes.secondary]: color === ButtonColors.Text,
+        [modes.ekyash]: color === ButtonColors.EKyash,
       })}
       {...props}
     >

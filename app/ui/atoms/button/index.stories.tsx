@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { Button } from '.';
+import { Button, ButtonColors } from '.';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -18,7 +18,6 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
-  primary: true,
   label: 'Button',
 };
 
@@ -37,4 +36,13 @@ export const Small = Template.bind({});
 Small.args = {
   size: 'small',
   label: 'Button',
+};
+
+export const ButtonLink = Template.bind({});
+ButtonLink.args = {
+  size: 'small',
+  variant: 'link',
+  href: 'https://ekyash.page.link/GQTJ',
+  label: 'Pay with E-Kyash App',
+  color: ButtonColors.EKyash,
 };
