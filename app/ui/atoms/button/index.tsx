@@ -43,7 +43,7 @@ const sizes = {
 const modes = {
   primary: 'text-white bg-blue-600',
   secondary: 'text-gray-900 bg-transparent shadow-md',
-  ekyash: 'bg-[#39ae49] text-gray-100 hover:bg-[#2d8b3a]',
+  ekyash: 'bg-[#39ae49] text-gray-100 hover:text-white hover:bg-[#2d8b3a]',
 };
 /**
  * Primary UI component for user interaction
