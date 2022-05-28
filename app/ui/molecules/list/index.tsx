@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import map from 'lodash/map';
 import type { ListChildren } from '../list-item';
 import { ListItem, ListItemAppearance } from '../list-item';
 
@@ -16,7 +15,7 @@ export const List = ({ items, appearance, className }: ListItemsProps) => {
         'list-disc': appearance === ListItemAppearance.Default,
       })}
     >
-      {map(items, (item, index) => (
+      {items.map((item, index) => (
         <ListItem key={index} appearance={appearance}>
           {item}
         </ListItem>
