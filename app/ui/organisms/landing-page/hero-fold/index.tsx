@@ -3,7 +3,8 @@ import React from 'react';
 import heroMain from '~/assets/images/hero-home.png';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Tag, TagAppearance } from '~/ui/atoms/tag';
-import { ListItem, ListItemAppearance } from '~/ui/molecules/list-item';
+import { List } from '~/ui/molecules/list';
+import { ListItemAppearance } from '~/ui/molecules/list-item';
 
 export const HeroFold = () => {
   return (
@@ -28,10 +29,10 @@ export const HeroFold = () => {
           icon={<ChevronRightIcon className="h-4 w-4" />}
         />
 
-        <ul className="mt-4 flex flex-col space-y-2">
-          <ListItem appearance={ListItemAppearance.Secondary}>No credit card required</ListItem>
-          <ListItem appearance={ListItemAppearance.Secondary}>No time limit on free plan</ListItem>
-        </ul>
+        <List
+          appearance={ListItemAppearance.Secondary}
+          items={['No credit card required', 'No time limit on free plan']}
+        />
       </div>
 
       <div className="flex w-1/2 items-center justify-center">

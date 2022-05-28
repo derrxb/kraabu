@@ -1,15 +1,18 @@
 import { CheckCircleIcon, CheckIcon } from '@heroicons/react/outline';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
+
 export enum ListItemAppearance {
   Default,
   Primary,
   Secondary,
 }
 
+export type ListChildren = ReactNode | string;
+
 export type ListItemsProps = {
   appearance: ListItemAppearance;
-  children: ReactNode | string;
+  children: ListChildren;
 };
 
 export const ListItem = ({ children, appearance }: ListItemsProps) => {
