@@ -2,7 +2,9 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import React from 'react';
 import heroMain from '~/assets/images/hero-home.png';
 import { Button, ButtonColors } from '~/ui/atoms/button';
+import { Heading } from '~/ui/atoms/heading';
 import { Tag, TagAppearance } from '~/ui/atoms/tag';
+import { FadeInOutItems } from '~/ui/molecules/fade-in-out-items';
 import { List } from '~/ui/molecules/list';
 import { ListItemAppearance } from '~/ui/molecules/list-item';
 
@@ -12,11 +14,24 @@ export const HeroFold = () => {
       <div className=" order-2 flex flex-col justify-center space-y-4 md:order-1 md:w-1/2 ">
         <Tag appearance={TagAppearance.Gray}>Coming Soon</Tag>
 
-        <h1 className="text-3xl font-extrabold text-primary-3 md:text-4xl lg:text-5xl">
-          Sell anything online in Belize, <span className="text-primary-1">without the hassle</span>
-        </h1>
+        <Heading variant="h1">
+          Sell anything online in Belize,{' '}
+          <FadeInOutItems
+            messages={[
+              <span key={1} className="text-primary-1">
+                without the hassle
+              </span>,
+              <span key={2} className="text-primary-1">
+                without the scams
+              </span>,
+              <span key={2} className="text-primary-1">
+                without credit cards
+              </span>,
+            ]}
+          />
+        </Heading>
 
-        <p className="text-xl leading-10 text-primary-4">
+        <p className="text-lg leading-10 text-primary-4 md:text-xl">
           Create a link, accept payment with Belize’s E-Wallets, get paid. It’s that easy! We’re the easiest, fastest,
           and most secure way to sell anything online in Belize.
         </p>

@@ -6,6 +6,11 @@ module.exports = {
       ...config.resolve.alias,
       '~': path.resolve(__dirname, '../app/'),
     };
+    config.module.rules.push({
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: 'javascript/auto',
+    });
     return config;
   },
 
