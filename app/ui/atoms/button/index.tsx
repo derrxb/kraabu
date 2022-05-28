@@ -91,7 +91,7 @@ export const Button = ({
     <button
       type="button"
       className={clsx(
-        `inline-flex cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
+        `inline-flex w-fit cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
         {
           [modes.primary]: color === ButtonColors.Primary,
           [modes.secondary]: color === ButtonColors.Text,

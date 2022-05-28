@@ -5,7 +5,7 @@ import { Krabuu } from '~/ui/atoms/krabuu';
 
 export const SiteNav = ({ className }: { className?: string }) => {
   return (
-    <nav className={`flex h-[96px] flex-row items-center px-4 md:px-24 ${className}`}>
+    <nav className={`flex h-[96px] w-full flex-row items-center px-4 md:px-24 ${className}`}>
       <div className="mr-auto">
         <Krabuu size="large" />
       </div>
