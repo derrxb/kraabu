@@ -46,3 +46,11 @@ ButtonLink.args = {
   label: 'Pay with E-Kyash App',
   color: ButtonColors.EKyash,
 };
+
+export const CTA = Template.bind({});
+CTA.args = {
+  size: 'medium',
+  variant: 'button',
+  label: `Join waitlist - it's free`,
+  color: ButtonColors.Primary,
+};
