@@ -8,11 +8,11 @@ import { ListItemAppearance } from '~/ui/molecules/list-item';
 
 export const HeroFold = () => {
   return (
-    <div className="flex h-[100vh] w-full flex-row px-4 md:px-24">
-      <div className=" flex w-1/2 flex-col justify-center space-y-4">
+    <div className="md:12  flex h-[100vh] w-full flex-col px-4  md:flex-row lg:px-24">
+      <div className=" order-2 flex flex-col justify-center space-y-4 md:order-1 md:w-1/2 ">
         <Tag appearance={TagAppearance.Gray}>Coming Soon</Tag>
 
-        <h1 className="text-5xl font-extrabold text-primary-3">
+        <h1 className="text-3xl font-extrabold text-primary-3 md:text-4xl lg:text-5xl">
           Sell anything online in Belize, <span className="text-primary-1">without the hassle</span>
         </h1>
 
@@ -35,8 +35,8 @@ export const HeroFold = () => {
         />
       </div>
 
-      <div className="flex w-1/2 items-center justify-center">
-        <img src={heroMain} alt="hero-main" className="mb-12 h-[400px] w-[420px]" />
+      <div className="order-1 flex flex-col items-center justify-center md:order-2 md:w-1/2">
+        <img src={heroMain} alt="hero-main" className="mb-12 h-[280px] w-[280px] lg:h-[400px] lg:w-[420px]" />
       </div>
     </div>
   );
