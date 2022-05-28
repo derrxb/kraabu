@@ -20,6 +20,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.13.0",
     "@remix-run/express": "^1.4.3",
     "@remix-run/react": "^1.4.3",

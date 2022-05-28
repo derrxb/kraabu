@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import { Button, ButtonColors } from '.';
@@ -47,10 +48,11 @@ ButtonLink.args = {
   color: ButtonColors.EKyash,
 };
 
-export const CTA = Template.bind({});
-CTA.args = {
-  size: 'medium',
+export const CTAWithIcon = Template.bind({});
+CTAWithIcon.args = {
+  size: 'small',
   variant: 'button',
   label: `Join waitlist - it's free`,
   color: ButtonColors.Primary,
+  icon: <ChevronRightIcon className="h-4 w-4" />,
 };

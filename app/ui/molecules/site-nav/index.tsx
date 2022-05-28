@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import noop from 'lodash/noop';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Krabuu } from '~/ui/atoms/krabuu';
@@ -15,7 +16,8 @@ export const SiteNav = ({ className }: { className?: string }) => {
           variant="button"
           color={ButtonColors.Primary}
           onClick={noop}
-          size="medium"
+          size="small"
+          icon={<ChevronRightIcon className="h-4 w-4" />}
         />
       </div>
     </nav>

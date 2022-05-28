@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import type { ReactNode } from 'react';
 import React from 'react';
 
 export enum ButtonColors {
@@ -32,12 +33,17 @@ interface ButtonProps {
    * Optional click handler
    */
   onClick?: () => void;
+
+  /**
+   * A right aligned icon to display with your button
+   */
+  icon?: ReactNode;
 }
 
 const sizes = {
   small: 'text-xs px-2 py-2 md:px-[10px] px-2 py-2 md:py-[16px]',
-  medium: 'text-sm px-2 py-3 md:px-[11px] px-2 py-3 md:py-[20px]',
-  large: 'text-base px-4 py-4 md:px-[12px] px-4 py-4 md:py-[24px]',
+  medium: 'text-sm px-2 py-3 md:px-[11px] px-2 py-3 md:py-5',
+  large: 'text-base px-6 py-4 md:px-[12px] px-4 py-4 md:py-6',
 };
 
 const modes = {
@@ -75,6 +81,8 @@ export const Button = ({
         rel="noreferrer"
       >
         {label}
+
+        {props.icon ? <span className="ml-2">props.icon</span> : null}
       </a>
     );
   }
@@ -82,14 +90,19 @@ export const Button = ({
   return (
     <button
       type="button"
-      className={clsx(`inline-block cursor-pointer rounded-sm border-0 font-bold leading-4 ${sizes[size]}`, {
-        [modes.primary]: color === ButtonColors.Primary,
-        [modes.secondary]: color === ButtonColors.Text,
-        [modes.ekyash]: color === ButtonColors.EKyash,
-      })}
+      className={clsx(
+        `inline-flex cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
+        {
+          [modes.primary]: color === ButtonColors.Primary,
+          [modes.secondary]: color === ButtonColors.Text,
+          [modes.ekyash]: color === ButtonColors.EKyash,
+        },
+      )}
       {...props}
     >
       {label}
+
+      {props.icon ? <span className="ml-2">{props.icon}</span> : null}
     </button>
   );
 };
