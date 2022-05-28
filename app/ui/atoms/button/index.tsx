@@ -35,9 +35,9 @@ interface ButtonProps {
 }
 
 const sizes = {
-  small: 'font-xs px-[10px] py-[16px]',
-  medium: 'font-sm px-[11px] py-[20px]',
-  large: 'font-base px-[12px] py-[24px]',
+  small: 'text-xs px-2 py-2 md:px-[10px] px-2 py-2 md:py-[16px]',
+  medium: 'text-sm px-2 py-3 md:px-[11px] px-2 py-3 md:py-[20px]',
+  large: 'text-base px-4 py-4 md:px-[12px] px-4 py-4 md:py-[24px]',
 };
 
 const modes = {
