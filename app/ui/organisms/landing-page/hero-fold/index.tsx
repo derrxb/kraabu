@@ -16,16 +16,19 @@ export const HeroFold = () => {
 
         <Heading variant="h1">
           Sell anything online in Belize,{' '}
+          <span key={1} className="text-primary-1">
+            without the
+          </span>
           <FadeInOutItems
             messages={[
               <span key={1} className="text-primary-1">
-                without the hassle
+                hassle
               </span>,
               <span key={2} className="text-primary-1">
-                without the scams
+                scams
               </span>,
               <span key={2} className="text-primary-1">
-                without credit cards
+                credit cards
               </span>,
             ]}
           />
