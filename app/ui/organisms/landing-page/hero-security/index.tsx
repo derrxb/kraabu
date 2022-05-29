@@ -9,7 +9,7 @@ import { Heading } from '~/ui/atoms/heading';
  */
 export const HeroSecurity = () => {
   return (
-    <div className="flex h-[640px] w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
+    <div className="flex h-fit w-full flex-col items-center px-4 py-12 md:h-[640px] md:flex-row lg:px-24">
       <div className="flex flex-col justify-center space-y-8 md:w-1/2">
         <Heading variant="h1">
           Your money’s safety is our{' '}
