@@ -18,17 +18,14 @@ export const HeroFold = () => {
           Sell anything online in Belize,{' '}
           <span key={1} className="text-primary-1">
             without the
-          </span>
+          </span>{' '}
           <FadeInOutItems
             messages={[
               <span key={1} className="text-primary-1">
-                hassle
+                hassle.
               </span>,
               <span key={2} className="text-primary-1">
-                scams
-              </span>,
-              <span key={2} className="text-primary-1">
-                credit cards
+                scams.
               </span>,
             ]}
           />
