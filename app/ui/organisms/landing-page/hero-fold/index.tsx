@@ -10,7 +10,7 @@ import { ListItemAppearance } from '~/ui/molecules/list-item';
 
 export const HeroFold = () => {
   return (
-    <div className="md:12  flex h-[100vh] w-full flex-col px-4  md:flex-row lg:px-24">
+    <div className="md:12  flex h-[80vh] w-full flex-col px-4  md:flex-row lg:px-24">
       <div className=" order-2 flex flex-col justify-center space-y-4 md:order-1 md:w-1/2 ">
         <Tag appearance={TagAppearance.Gray}>Coming Soon</Tag>
 
