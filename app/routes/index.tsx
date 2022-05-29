@@ -1,6 +1,7 @@
 import type { MetaFunction } from 'remix';
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { HeroFold } from '~/ui/organisms/landing-page/hero-fold';
+import { HeroSecurity } from '~/ui/organisms/landing-page/hero-security';
 import { HeroSpeed } from '~/ui/organisms/landing-page/hero-speed';
 
 export const meta: MetaFunction = () => {
@@ -17,6 +18,7 @@ export default function Index() {
 
       <HeroFold />
       <HeroSpeed />
+      <HeroSecurity />
     </div>
   );
 }
