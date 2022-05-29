@@ -51,7 +51,7 @@ export const HeroFold = () => {
       </div>
 
       <div className="order-1 flex flex-col items-center justify-center md:order-2 md:w-1/2">
-        <img src={heroMain} alt="hero-main" className="mb-12 h-[280px] w-[280px] lg:h-[400px] lg:w-[420px]" />
+        <img src={heroMain} alt="hero-main" className="mb-12 h-[280px] w-[280px] lg:h-[285px] lg:w-[380px]" />
       </div>
     </div>
   );
