@@ -1,19 +1,19 @@
 import React from 'react';
 import heroRemembered from '~/assets/images/hero-remembered.png';
-import { Heading } from '~/ui/atoms/heading';
+import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
 /**
  * Hero describing how easy it is to sell anything online.
  */
 export const HeroRemembered = () => {
   return (
-    <div className="flex h-fit w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
+    <div className="flex h-fit min-h-[480px] w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
       <div className="flex flex-col items-center justify-center md:w-1/2">
         <img src={heroRemembered} alt="hero-business" />
       </div>
 
       <div className="flex flex-col justify-center space-y-4  md:w-1/2 ">
-        <Heading variant="h1">
+        <Heading variant={HeadingVariant.H1}>
           Let your brand be
           <span key={1} className="text-primary-2">
             {' '}

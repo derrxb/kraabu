@@ -2,7 +2,7 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import React from 'react';
 import heroBusiness from '~/assets/images/hero-business.png';
 import { Button, ButtonColors } from '~/ui/atoms/button';
-import { Heading } from '~/ui/atoms/heading';
+import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 import { FadeInOutItems } from '~/ui/molecules/fade-in-out-items';
 import { List } from '~/ui/molecules/list';
 import { ListItemAppearance } from '~/ui/molecules/list-item';
@@ -18,7 +18,7 @@ export const HeroSpeed = () => {
       </div>
 
       <div className="flex flex-col justify-center space-y-4  md:w-1/2 ">
-        <Heading variant="h1">
+        <Heading variant={HeadingVariant.H1}>
           The{' '}
           <FadeInOutItems
             messages={[

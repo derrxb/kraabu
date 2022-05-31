@@ -2,16 +2,16 @@ import React from 'react';
 import heroSecurity from '~/assets/images/hero-security.png';
 import walletDigi from '~/assets/images/wallets/digiwallet.png';
 import walletEKyash from '~/assets/images/wallets/ekyash.png';
-import { Heading } from '~/ui/atoms/heading';
+import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
 /**
  * Hero describing how easy it is to sell anything online.
  */
 export const HeroSecurity = () => {
   return (
-    <div className="flex h-fit w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
+    <div className="flex h-fit min-h-[480px] w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
       <div className="flex flex-col justify-center space-y-8 md:w-1/2">
-        <Heading variant="h1">
+        <Heading variant={HeadingVariant.H1}>
           Your money’s safety is our{' '}
           <span key={1} className="text-primary-2">
             #1 priority!

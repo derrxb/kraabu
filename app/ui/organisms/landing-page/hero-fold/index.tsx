@@ -2,7 +2,7 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import React from 'react';
 import heroMain from '~/assets/images/hero-home.png';
 import { Button, ButtonColors } from '~/ui/atoms/button';
-import { Heading } from '~/ui/atoms/heading';
+import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 import { Tag, TagAppearance } from '~/ui/atoms/tag';
 import { FadeInOutItems } from '~/ui/molecules/fade-in-out-items';
 import { List } from '~/ui/molecules/list';
@@ -14,7 +14,7 @@ export const HeroFold = () => {
       <div className=" order-2 flex flex-col justify-center space-y-4 md:order-1 md:w-1/2 ">
         <Tag appearance={TagAppearance.Gray}>Coming Soon</Tag>
 
-        <Heading variant="h1">
+        <Heading variant={HeadingVariant.H1}>
           Sell anything online in Belize,{' '}
           <span key={1} className="text-primary-1">
             without the
