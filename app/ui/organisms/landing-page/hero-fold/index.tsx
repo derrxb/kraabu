@@ -32,8 +32,7 @@ export const HeroFold = () => {
         </Heading>
 
         <p className="text-lg leading-10 text-primary-4 md:text-xl">
-          Create a link, accept payment with Belize’s E-Wallets, get paid. It’s that easy! We’re the easiest, fastest,
-          and most secure way to sell anything online in Belize.
+          Create a link, accept payment with Belize’s E-Wallets, get paid. It’s that easy!
         </p>
 
         <Button
