@@ -89,7 +89,7 @@ export const Button = ({
 
   return (
     <button
-      type="button"
+      type={variant}
       className={clsx(
         `inline-flex w-fit cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
         {

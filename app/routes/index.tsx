@@ -1,4 +1,3 @@
-import noop from 'lodash/noop';
 import type { MetaFunction } from 'remix';
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { HeroFold } from '~/ui/organisms/landing-page/hero-fold';
@@ -18,12 +17,11 @@ export default function Index() {
   return (
     <div className="h-full w-full">
       <SiteNav className="" />
-
       <HeroFold />
       <HeroSpeed />
       <HeroSecurity />
       <HeroRemembered />
-      <Newsletter onSubmit={noop} />
+      <Newsletter />
     </div>
   );
 }

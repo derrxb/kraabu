@@ -1,16 +1,22 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { Newsletter } from '.';
+
+const Dummy = () => null;
 
 export default {
   title: 'Organisms/LandingPage/Newsletter',
-  component: Newsletter,
+  component: Dummy,
   argTypes: {},
-} as ComponentMeta<typeof Newsletter>;
+} as ComponentMeta<typeof Dummy>;
 
-const Template: ComponentStory<typeof Newsletter> = (args) => (
+const Template: ComponentStory<typeof Dummy> = (args) => (
   <div className="h-[100vh] w-full">
-    <Newsletter {...(args as any)} />
+    <h1>
+      Not Implemented Yet, see{' '}
+      <a href="https://github.com/remix-run/remix/discussions/2481" className="text-primary-1">
+        https://github.com/remix-run/remix/discussions/2481
+      </a>
+    </h1>
   </div>
 );
 
