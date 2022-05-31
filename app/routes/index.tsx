@@ -8,7 +8,7 @@ import { Newsletter } from '~/ui/organisms/landing-page/newsletter';
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Krabuu | Online Payments made simple',
+    title: 'Krabuu | Sell anything online in Belize, without the hassle',
     description: 'Sell anything online in Belize, without the hassle',
   };
 };
