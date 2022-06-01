@@ -43,10 +43,7 @@ export const HeroFold = () => {
           icon={<ChevronRightIcon className="h-4 w-4" />}
         />
 
-        <List
-          appearance={ListItemAppearance.Secondary}
-          items={['No credit card required', 'No time limit on free plan']}
-        />
+        <List appearance={ListItemAppearance.Secondary} items={['No credit card required', 'No website needed']} />
       </div>
 
       <div className="order-1 flex flex-col items-center justify-center md:order-2 md:w-1/2">
