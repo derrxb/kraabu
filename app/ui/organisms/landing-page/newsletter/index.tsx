@@ -9,7 +9,7 @@ import { Heading, HeadingVariant } from '~/ui/atoms/heading';
  */
 export const Newsletter = () => {
   return (
-    <div className="flex min-h-[480px] flex-col items-center justify-center rounded-xl bg-primary-2 py-4 px-8 text-center">
+    <div className="flex min-h-[480px] flex-col items-center justify-center bg-primary-2 py-4 px-8 text-center md:rounded-xl">
       <Heading
         variant={HeadingVariant.H2}
         className="bg-gradient-to-br from-primary-1 to-[#EF268E] bg-clip-text pb-4 text-transparent"

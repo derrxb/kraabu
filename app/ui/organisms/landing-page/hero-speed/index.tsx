@@ -22,10 +22,10 @@ export const HeroSpeed = () => {
           The{' '}
           <FadeInOutItems
             messages={[
-              <span key={1} className="text-primary-2">
+              <span key={1} className="inline-flex w-[10.5rem] text-primary-2">
                 easiest
               </span>,
-              <span key={1} className="text-primary-2">
+              <span key={1} className="inline-flex w-[10.5rem] text-primary-2">
                 fastest
               </span>,
             ]}
