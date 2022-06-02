@@ -25,6 +25,22 @@ export const Newsletter = () => {
       <Form className="py-4" method="post" action="/api/join-waitlist">
         <div className="flex flex-row items-center">
           <div className="flex flex-col">
+            <label htmlFor="firstName" className="sr-only">
+              First Name
+            </label>
+
+            <input
+              required
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="First Name"
+              autoComplete="given-name"
+              className="mr-4 w-fit rounded-md border-2 border-transparent border-white py-[14px] px-4 text-base outline-none outline focus:border-transparent focus:ring-4 focus:ring-primary-1 md:w-56"
+            />
+          </div>
+
+          <div className="flex flex-col">
             <label htmlFor="email" className="sr-only">
               Email
             </label>
@@ -36,7 +52,7 @@ export const Newsletter = () => {
               name="email"
               placeholder="Email"
               autoComplete="email"
-              className="mr-4 w-fit rounded-md border-2 border-white py-[14px] px-4 text-base focus:ring-2 focus:ring-indigo-600 md:w-[480px]"
+              className="mr-4 w-fit rounded-md border-2 border-transparent border-white py-[14px] px-4 text-base outline-none outline focus:border-transparent focus:ring-4 focus:ring-primary-1 md:w-80"
             />
           </div>
 
