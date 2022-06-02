@@ -1,5 +1,6 @@
 import type { ActionFunction } from 'remix';
 import { json, redirect } from 'remix';
+import { SubscribeToNewsletter } from '~/domain/orders/services/subscribe-to-newsletter';
 import { HTTP_CODE } from '~/representers/http-response-representer';
 
 /**
@@ -8,6 +9,8 @@ import { HTTP_CODE } from '~/representers/http-response-representer';
  */
 export const action: ActionFunction = async ({ request }) => {
   try {
+    await new SubscribeToNewsletter(request).call();
+
     return redirect('/');
   } catch (e) {
     return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);

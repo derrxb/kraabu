@@ -35,6 +35,7 @@ export const Newsletter = () => {
               id="email"
               name="email"
               placeholder="Email"
+              autoComplete="email"
               className="mr-4 w-fit rounded-md border-2 border-white py-[14px] px-4 text-base focus:ring-2 focus:ring-indigo-600 md:w-[480px]"
             />
           </div>
