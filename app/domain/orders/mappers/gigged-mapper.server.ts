@@ -1,9 +1,9 @@
-import { Currency } from '@prisma/client';
+import { Currency, OrderStatus } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import superagent from 'superagent';
 import Failure from '~/lib/failure';
 import type { EKyashEntity } from '../entities/ekyash';
-import { OrderEntity, OrderStatus } from '../entities/order';
+import { OrderEntity } from '../entities/order';
 import type { SupplierEntity } from '../entities/supplier';
 import type { CompletedPaymentCallbackData } from '../library/ekyash-api';
 import { isCallbackRequestValid } from '../library/ekyash-api';
