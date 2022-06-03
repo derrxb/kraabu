@@ -17,7 +17,7 @@ export default class GetPayment {
     const params = new URL(this.request.url).searchParams;
 
     const { invoiceNo, paymentKey } = await getGiggedBzPaymentSchema.validateAsync({
-      invoiceNo: params.get('invoiceNo'),
+      invoiceNo: params.get('invoiceno'),
       paymentKey: params.get('paykey'),
     });
 
