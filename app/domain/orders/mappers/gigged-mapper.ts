@@ -50,10 +50,11 @@ class GiggedMapper {
   }
 
   getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): OrderEntity {
-    return new OrderEntity({
+    console.log('Order status: ', OrderStatus, OrderStatus?.Pending);
+    const order = new OrderEntity({
       supplier: supplier,
       supplierId: supplier.id,
-      status: OrderStatus.Pending,
+      status: OrderStatus?.Pending,
       amount: Number(data.total) * 100,
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
       description: 'A GiggedBZ Order via EKyash',
@@ -64,6 +65,10 @@ class GiggedMapper {
         paymentKey: nanoid(),
       },
     });
+
+    console.log(order);
+
+    return order;
   }
 
   /**
