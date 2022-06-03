@@ -21,6 +21,8 @@ export default class CreatePayment {
   async verifyParams(): Promise<GiggedOrderHandshake> {
     const body = await this.request.json();
 
+    console.log(body);
+
     return await createdPendingGiggedPaymentSchema.validateAsync({
       ...body,
       total: Number(body.total).toString(),
