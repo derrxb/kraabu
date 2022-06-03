@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, ButtonColors } from '~/ui/atoms/button';
+import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
 import { OrDivider } from '~/ui/atoms/or-divider';
 
@@ -16,7 +17,11 @@ export type PaymentPayCodeProps = {
 export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodeProps) => {
   return (
     <div className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32">
-      <h1 className="pb-2 pt-5 text-xl font-bold text-gray-800 sm:text-3xl">
+      <Heading
+        variant={HeadingVariant.H3}
+        appearance={HeadingAppearance.Primary}
+        className="pb-2 pt-5 text-xl font-bold text-gray-800 sm:text-3xl"
+      >
         Confirm your order by completing payment with your{' '}
         <a
           href={paymentMethod.url}
@@ -28,7 +33,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
           {paymentMethod.name}
         </a>{' '}
         App.
-      </h1>
+      </Heading>
 
       <span className="text-medium pb:4 text-base text-gray-500 md:pb-8">
         Scan the QR code to complete payment with your E-Kyash app.

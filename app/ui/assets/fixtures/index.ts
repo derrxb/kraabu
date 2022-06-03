@@ -7,9 +7,9 @@ import type { SupplierDTO } from '~/domain/orders/entities/supplier';
 
 export const mockOrderItem: OrderItemDTO = {
   currency: Currency.BZD,
-  description: faker.lorem.lines(1),
-  name: faker.commerce.product(),
-  price: Number(faker.commerce.price(25, 100, 2)),
+  description: faker.lorem.lines(2),
+  name: 'Kawasaki Ninja 400 deep cleaning session',
+  price: Number(faker.commerce.price(200, 250, 2)),
   quantity: 1,
   id: 1,
 };
@@ -17,9 +17,9 @@ export const mockOrderItem: OrderItemDTO = {
 export const mockSupplier: SupplierDTO = {
   homepage: faker.internet.url(),
   id: 1,
-  logoUrl: faker.image.technics(240, 120, false),
+  logoUrl: 'https://i.imgur.com/tfWgyRJ.png',
   name: faker.company.companyName(),
-  tag: faker.company.catchPhrase(),
+  tag: 'Riding big bikes in Belize should be easy!',
   username: faker.company.catchPhraseNoun(),
 };
 
@@ -50,5 +50,5 @@ export const mockOrder: OrderDTO = {
       name: faker.internet.userName(),
     },
   },
-  eKyashTransaction: mockEKyashTransaction,
+  ekyashTransaction: mockEKyashTransaction,
 };

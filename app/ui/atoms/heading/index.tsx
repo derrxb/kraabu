@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 export enum HeadingVariant {
   H1,
   H2,
+  H3,
 }
 
 export enum HeadingAppearance {
@@ -29,6 +30,7 @@ export const Heading = ({ children, appearance = HeadingAppearance.Primary, vari
           'text-primary-2': HeadingAppearance.Secondary === appearance,
           'text-3xl md:text-4xl lg:text-5xl': HeadingVariant.H1 === variant,
           'text-2xl md:text-3xl lg:text-4xl': HeadingVariant.H2 === variant,
+          'text-xl md:text-2xl lg:text-3xl': HeadingVariant.H3 === variant,
         },
         className,
       )}

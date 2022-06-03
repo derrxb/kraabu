@@ -6,8 +6,7 @@ import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
-import { PaymentPayCode } from '~/ui/molecules/payment-pay-code';
-import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
+import { PendingPayment } from '~/ui/organisms/pending-payment';
 
 export const meta: MetaFunction = () => {
   return {
@@ -53,31 +52,5 @@ export default function Index() {
     };
   }, [data.payment.invoice, navigate]);
 
-  return (
-    <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
-      <div className="h-full w-full lg:w-1/2">
-        <PaymentPayDetails payment={data.payment} vendor={data.payment.supplier} />
-      </div>
-
-      <div className="h-full w-full lg:w-1/2">
-        {data.payment.additionalData.qrCodeUrl ? (
-          <PaymentPayCode
-            qr={data.payment.ekyashTransaction?.qrCodeUrl as string}
-            paymentMethod={{
-              name: 'E-Kyash',
-              color: '#39ae49',
-              url: 'https://www.e-kyash.com/',
-            }}
-            deepLink={data.payment.ekyashTransaction?.deepLinkUrl as string}
-          />
-        ) : (
-          <div className="w-full rounded-md bg-red-200 py-2 px-4 pb-4">
-            <span className="text-red-700">
-              Oh, no! Something unexpected happened. Don't worry, your wallet has not been charged.
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  return <PendingPayment payment={data.payment} />;
 }
