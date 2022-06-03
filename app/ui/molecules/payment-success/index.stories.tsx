@@ -11,7 +11,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof PaymentSuccess> = (args) => (
-  <div className="h-[100vh]">
+  <div className="h-[100vh] w-full">
     <PaymentSuccess {...(args as any)} />
   </div>
 );

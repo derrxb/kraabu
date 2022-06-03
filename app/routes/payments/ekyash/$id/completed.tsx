@@ -1,6 +1,6 @@
 import type { LoaderFunction, MetaFunction } from 'remix';
 import { json, redirect, useLoaderData } from 'remix';
-import type { OrderEntity } from '~/domain/orders/entities/order';
+import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
     switch (payment.status) {
       case OrderStatus.Completed:
-        return json({ payment });
+        return json({ payment: payment.json() });
       case OrderStatus.Failed:
         return redirect(`/payments/ekyash/${payment.invoice}/failed`);
       case OrderStatus.Pending:
@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function Completed() {
-  const data = useLoaderData() as { payment: OrderEntity };
+  const data = useLoaderData() as { payment: OrderDTO };
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
