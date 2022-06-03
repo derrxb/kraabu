@@ -54,7 +54,7 @@ class GiggedMapper {
       supplier: supplier,
       supplierId: supplier.id,
       status: OrderStatus.Pending,
-      amount: Number(data.total),
+      amount: Number(data.total) * 100,
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
       description: 'A GiggedBZ Order via EKyash',
       invoice: data.invoiceno,
