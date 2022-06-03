@@ -50,7 +50,6 @@ class GiggedMapper {
   }
 
   getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): OrderEntity {
-    console.log('Order status: ', OrderStatus, OrderStatus?.Pending);
     const order = new OrderEntity({
       supplier: supplier,
       supplierId: supplier.id,
@@ -65,8 +64,6 @@ class GiggedMapper {
         paymentKey: nanoid(),
       },
     });
-
-    console.log(order);
 
     return order;
   }
