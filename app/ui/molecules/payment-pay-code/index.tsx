@@ -18,7 +18,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
   return (
     <div className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32">
       <Heading
-        variant={HeadingVariant.H3}
+        variant={HeadingVariant.H4}
         appearance={HeadingAppearance.Primary}
         className="pb-2 pt-5 text-xl font-bold text-gray-800 sm:text-3xl"
       >
@@ -26,7 +26,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
         <a
           href={paymentMethod.url}
           className="font-semibold"
-          style={{ color: paymentMethod.color }}
+          style={{ color: paymentMethod.color, fontSize: 'inherit', fontWeight: 'inherit' }}
           target="_blank"
           rel="noreferrer"
         >
