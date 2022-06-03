@@ -1,6 +1,5 @@
 import React from 'react';
 import heroSecurity from '~/assets/images/hero-security.png';
-import walletDigi from '~/assets/images/wallets/digiwallet.png';
 import walletEKyash from '~/assets/images/wallets/ekyash.png';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
@@ -24,7 +23,7 @@ export const HeroSecurity = () => {
 
         <div className="flex flex-row items-center space-x-8">
           <img src={walletEKyash} alt="ekyash wallet" className="h-8 w-32" />
-          <img src={walletDigi} alt="digiwallet" className="h-8 w-32" />
+          {/* <img src={walletDigi} alt="digiwallet" className="h-8 w-32" /> */}
         </div>
       </div>
 
