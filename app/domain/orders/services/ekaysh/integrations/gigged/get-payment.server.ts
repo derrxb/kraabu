@@ -1,7 +1,7 @@
 import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
 import type { OrderEntity } from '~/domain/orders/entities/order';
 import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
-import GiggedMapper from '~/domain/orders/mappers/gigged-mapper';
+import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/requests/get-gigged-bz-payment';

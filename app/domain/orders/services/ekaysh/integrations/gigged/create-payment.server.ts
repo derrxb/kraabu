@@ -1,7 +1,7 @@
 import type { OrderEntity } from '~/domain/orders/entities/order';
 import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
-import GiggedMapper from '~/domain/orders/mappers/gigged-mapper';
+import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import { SupplierRepository } from '~/domain/orders/repositories/supplier-repository';
 import Failure from '~/lib/failure';

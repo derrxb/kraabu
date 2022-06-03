@@ -5,7 +5,7 @@ import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekya
 import type { EKyashEntity } from '../../entities/ekyash';
 import type { CompletedPaymentCallbackData } from '../../library/ekyash-api';
 import { TransactionStatus } from '../../library/ekyash-api';
-import GiggedMapper from '../../mappers/gigged-mapper';
+import GiggedMapper from '../../mappers/gigged-mapper.server';
 
 /**
  * This uses the data obtained from EKyash to mark a payment as completed

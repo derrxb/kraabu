@@ -1,8 +1,11 @@
 import type { Order as OrderORM } from '@prisma/client';
-import { Currency, OrderStatus } from '@prisma/client';
+import { Currency as CurrencyORM, OrderStatus as OrderStatusORM } from '@prisma/client';
 import type { EKyashTransactionDTO, EKyashTransactionEntity } from './ekyash-transaction';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
 import type { SupplierDTO, SupplierEntity } from './supplier';
+
+const OrderStatus = OrderStatusORM;
+const Currency = CurrencyORM;
 
 export { OrderStatus, Currency };
 
