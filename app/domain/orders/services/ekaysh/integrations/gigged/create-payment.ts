@@ -21,8 +21,6 @@ export default class CreatePayment {
   async verifyParams(): Promise<GiggedOrderHandshake> {
     const body = await this.request.json();
 
-    console.log(body);
-
     return await createdPendingGiggedPaymentSchema.validateAsync({
       ...body,
       total: Number(body.total).toString(),
@@ -47,13 +45,18 @@ export default class CreatePayment {
   }
 
   async call(): Promise<OrderEntity> {
-    const order = await this.verifyParams();
-    const supplier = await SupplierRepository.findSupplierByUsername(GIGGED_USERNAME);
+    try {
+      const order = await this.verifyParams();
+      const supplier = await SupplierRepository.findSupplierByUsername(GIGGED_USERNAME);
 
-    if (!supplier) {
-      throw new Failure('not_found', `There is no supplier with the username: ` + GIGGED_USERNAME);
+      if (!supplier) {
+        throw new Failure('not_found', `There is no supplier with the username: ` + GIGGED_USERNAME);
+      }
+
+      return await this.createPayment(supplier, order);
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
-
-    return await this.createPayment(supplier, order);
   }
 }
