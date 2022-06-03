@@ -51,6 +51,7 @@ class GiggedMapper {
   }
 
   getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): OrderEntity {
+    console.log(OrderStatus, Currency);
     const order = new OrderEntity({
       supplier: supplier,
       supplierId: supplier.id,
