@@ -40,7 +40,6 @@ export default class CreatePayment {
 
       return payment;
     } catch (e) {
-      console.log(e);
       throw new Failure('internal_error', 'Something unexpected occurred while creating pending payment.');
     }
   }
@@ -56,7 +55,6 @@ export default class CreatePayment {
 
       return await this.createPayment(supplier, order);
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }
