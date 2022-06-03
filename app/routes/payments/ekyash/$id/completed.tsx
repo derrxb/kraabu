@@ -7,9 +7,12 @@ import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction = ({ data }) => {
+  const payment = data.payment as OrderDTO;
+
   return {
-    title: 'Order Success | Giggedbz - Make life easier by hiring a Gigger to help',
+    title: `Payment Successful | ${payment?.supplier?.name} - ${payment?.supplier?.tag}`,
+    description: `${payment.orderItems?.[0].description}`,
   };
 };
 
@@ -29,6 +32,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       default:
         break;
     }
+
+    return { payment: payment.json() };
   } catch (e) {
     return json(
       {
