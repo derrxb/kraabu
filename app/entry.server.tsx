@@ -4,9 +4,10 @@ import type { EntryContext } from 'remix';
 import { RemixServer } from 'remix';
 import { handlers } from '../mocks/handlers';
 
-const mswServer = setupServer(...handlers);
-
-mswServer.listen({ onUnhandledRequest: 'bypass' });
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  const mswServer = setupServer(...handlers);
+  mswServer.listen({ onUnhandledRequest: 'bypass' });
+}
 
 export default function handleRequest(
   request: Request,
