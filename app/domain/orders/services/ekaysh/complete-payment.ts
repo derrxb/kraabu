@@ -14,7 +14,6 @@ import GiggedMapper from '../../mappers/gigged-mapper.server';
 export default class CompletePayment {
   private request: Request;
   private payment: OrderEntity | null;
-  private invoice: string | null = null;
   private paymentStatus: CompletedPaymentCallbackData | null;
 
   constructor(request: Request) {
@@ -25,8 +24,6 @@ export default class CompletePayment {
 
   async verifyPaymentParams() {
     const body = await this.request.json();
-    console.log(body);
-
     const validatedParams = await completePendingEkyashPaymentSchema.validateAsync({
       ...body,
     });
@@ -48,8 +45,8 @@ export default class CompletePayment {
   }
 
   async setPayment() {
-    if (this.invoice) {
-      this.payment = (await PaymentRepository.getPaymentByInvoice(this.invoice)) ?? null;
+    if (this.paymentStatus?.orderId) {
+      this.payment = (await PaymentRepository.getPaymentByInvoice(this.paymentStatus?.orderId)) ?? null;
     } else {
       throw new Failure('not_found', 'No payment request with the given invoice found.');
     }
