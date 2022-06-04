@@ -11,6 +11,7 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     await new CompletePayment(request).call();
   } catch (e) {
+    console.log(e);
     return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
   }
 };
