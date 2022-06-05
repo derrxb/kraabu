@@ -36,7 +36,7 @@ export default function Index() {
       async () => {
         const result = await axios.get(`/payments/ekyash/${data.payment.invoice}/status`);
 
-        if (result.data?.status === OrderStatus.Completed) {
+        if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
           navigate(`/payments/ekyash/integrations/gigged/${data.payment.invoice}`, {
             replace: true,
           });
