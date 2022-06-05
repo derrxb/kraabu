@@ -9,7 +9,9 @@ import { HTTP_CODE } from '~/representers/http-response-representer';
  */
 export const action: ActionFunction = async ({ request }) => {
   try {
-    await new CompletePayment(request).call();
+    const order = await new CompletePayment(request).call();
+
+    return { payment: order?.json() };
   } catch (e) {
     return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
   }
