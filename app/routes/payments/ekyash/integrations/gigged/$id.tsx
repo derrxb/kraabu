@@ -11,12 +11,16 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     switch (payment.status) {
       case OrderStatus.Pending:
-        return redirect('/');
+        return redirect(
+          `/payments/ekyash/integrations/gigged?invoiceno=${payment.invoice}&paykey=${payment.additionalData?.paymentKey}`,
+        );
       case OrderStatus.Completed:
       case OrderStatus.Failed:
         return redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${payment.invoice}`);
       default:
-        return redirect('/');
+        return redirect(
+          `/payments/ekyash/integrations/gigged?invoiceno=${payment.invoice}&paykey=${payment.additionalData?.paymentKey}`,
+        );
     }
   } catch (e) {
     return json({ message: 'There was an error loading your order.' }, HTTP_CODE.bad_request);
