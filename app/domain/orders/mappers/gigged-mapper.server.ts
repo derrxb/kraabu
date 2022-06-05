@@ -117,7 +117,7 @@ class GiggedMapper {
   async updateOrderStatus(data: OrderEntity) {
     console.log('ORDER TO UPDATE => ', data);
     console.log('UPDATE TO: ', {
-      invoiceno: data.invoice,
+      invoiceNo: data.invoice,
       hashkey: data.additionalData.hashkey,
       gateway: data.additionalData.hashkey,
       paykey: data.additionalData.paymentKey,
@@ -125,13 +125,19 @@ class GiggedMapper {
     });
 
     try {
-      await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
+      const response = await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
         invoiceNo: data.invoice,
         hashkey: data.additionalData.hashkey,
         gateway: data.additionalData.hashkey,
         paykey: data.additionalData.paymentKey,
         status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'error' : '',
       });
+
+      console.log(response.text);
+
+      try {
+        console.log('RESPONSE: ', JSON.parse(response.text));
+      } catch (e) {}
     } catch (e) {
       throw new Failure('bad_request', "Could not update GiggedBz's order status.");
     }
