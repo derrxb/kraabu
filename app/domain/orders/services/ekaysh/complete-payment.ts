@@ -1,3 +1,4 @@
+import { OrderStatus } from '@prisma/client';
 import type { OrderEntity } from '~/domain/orders/entities/order';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
@@ -53,25 +54,39 @@ export default class CompletePayment {
   }
 
   async setKrabuuPaymentAsAcceptedOrRejected() {
+    let updatedOrder: OrderEntity | undefined = this.payment ?? undefined;
+
     switch (this.paymentStatus?.statusPay) {
       case TransactionStatus.New:
         return;
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        await PaymentRepository.setPaymentAsCompleted(this.payment as OrderEntity);
+        updatedOrder = await PaymentRepository.setPaymentAsCompleted(this.payment as OrderEntity);
         break;
       case TransactionStatus.Declined:
-        await PaymentRepository.setPaymentAsRejected(this.payment as OrderEntity);
+        updatedOrder = await PaymentRepository.setPaymentAsRejected(this.payment as OrderEntity);
         break;
       default:
         throw new Failure('bad_request', 'Could not complete this request as an unknown `statusPay` was provided.');
+    }
+
+    // Update current payment to match the updated one.
+    if (updatedOrder && this.payment) {
+      this.payment.status = updatedOrder.status;
     }
   }
 
   async setGiggedPaymentAsAcceptedOrRejected() {
     if (typeof this.payment?.status === 'undefined') {
       throw new Failure('cannot_process', 'The payment is missing the status field.');
+    }
+
+    if (this.payment?.status === OrderStatus.Pending) {
+      throw new Failure(
+        'cannot_process',
+        'Expected `payment` to be either `completed` or `failed` but got `pending`. Did you forget to call `setKrabuuPaymentAsAcceptedOrRejected`?',
+      );
     }
 
     await new GiggedMapper(
@@ -88,8 +103,8 @@ export default class CompletePayment {
       throw new Failure('forbidden', 'The payment hash is invalid.');
     }
 
-    await this.setGiggedPaymentAsAcceptedOrRejected();
     await this.setKrabuuPaymentAsAcceptedOrRejected();
+    await this.setGiggedPaymentAsAcceptedOrRejected();
 
     return this.payment;
   }
