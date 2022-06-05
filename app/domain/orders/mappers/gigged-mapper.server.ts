@@ -80,6 +80,8 @@ class GiggedMapper {
       const response = await superagent.get(`${url.toString()}?${query.toString()}`);
       const order = JSON.parse(response.text) as OrderDetails;
 
+      console.log('GIGGED ORDER => ', order);
+
       // Get all the totals from PayeesInfo and adds them up.
       const payees = order?.PayeeInfos?.[0];
       const total = order?.PayeeInfos?.map((item) => item.Total).reduce((prev, curr) => {
@@ -113,6 +115,15 @@ class GiggedMapper {
   }
 
   async updateOrderStatus(data: OrderEntity) {
+    console.log('ORDER TO UPDATE => ', data);
+    console.log('UPDATE TO: ', {
+      invoiceno: data.invoice,
+      hashkey: data.additionalData.hashkey,
+      gateway: data.additionalData.hashkey,
+      paykey: data.additionalData.paymentKey,
+      status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'error' : '',
+    });
+
     try {
       await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
         invoiceno: data.invoice,
