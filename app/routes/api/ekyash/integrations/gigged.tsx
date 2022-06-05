@@ -1,5 +1,6 @@
 import type { ActionFunction } from 'remix';
-import { json } from 'remix';
+import { json, redirect } from 'remix';
+import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import CompletePayment from '~/domain/orders/services/ekaysh/complete-payment';
 import { HTTP_CODE } from '~/representers/http-response-representer';
 
@@ -11,7 +12,7 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const order = await new CompletePayment(request).call();
 
-    return json({ payment: order?.json() }, HTTP_CODE.ok);
+    return redirect(`${GiggedRoutes.TransactionStatus}?invoiceNo=${order?.invoice}`);
   } catch (e) {
     console.log('Something happened: ', e);
     return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
