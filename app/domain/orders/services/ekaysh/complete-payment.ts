@@ -53,6 +53,7 @@ export default class CompletePayment {
   }
 
   async setKrabuuPaymentAsAcceptedOrRejected() {
+    console.log(this.payment, TransactionStatus);
     switch (this.paymentStatus?.statusPay) {
       case TransactionStatus.Pending:
         return;
