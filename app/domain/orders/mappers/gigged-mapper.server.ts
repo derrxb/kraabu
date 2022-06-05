@@ -130,7 +130,7 @@ class GiggedMapper {
         hashkey: data.additionalData.hashkey,
         gateway: data.additionalData.gateway,
         paykey: data.additionalData.paymentKey,
-        status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'error' : '',
+        status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'failed' : '',
       });
 
       console.log(response.text);
