@@ -126,7 +126,7 @@ class GiggedMapper {
 
     try {
       await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
-        invoiceno: data.invoice,
+        invoiceNo: data.invoice,
         hashkey: data.additionalData.hashkey,
         gateway: data.additionalData.hashkey,
         paykey: data.additionalData.paymentKey,
