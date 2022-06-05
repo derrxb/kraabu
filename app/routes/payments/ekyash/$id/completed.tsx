@@ -16,7 +16,7 @@ export const meta: MetaFunction = ({ data }) => {
   };
 };
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader: LoaderFunction = async ({ params }) => {
   try {
     const payment = await new GetPayment(params).call();
 
