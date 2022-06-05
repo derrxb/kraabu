@@ -212,6 +212,7 @@ const uploadInvoiceImage = async (data: UploadInvoiceImageData, kyash: EKyashEnt
 };
 
 export enum TransactionStatus {
+  New,
   Pending,
   Declined,
   Accepted,
