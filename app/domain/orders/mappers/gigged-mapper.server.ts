@@ -139,6 +139,7 @@ class GiggedMapper {
         console.log('RESPONSE: ', JSON.parse(response.text));
       } catch (e) {}
     } catch (e) {
+      console.log('Something happened updating: ', e);
       throw new Failure('bad_request', "Could not update GiggedBz's order status.");
     }
   }
