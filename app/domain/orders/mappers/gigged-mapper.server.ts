@@ -119,7 +119,7 @@ class GiggedMapper {
     console.log('UPDATE TO: ', {
       invoiceNo: data.invoice,
       hashkey: data.additionalData.hashkey,
-      gateway: data.additionalData.hashkey,
+      gateway: data.additionalData.gateway,
       paykey: data.additionalData.paymentKey,
       status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'failed' : '',
     });
