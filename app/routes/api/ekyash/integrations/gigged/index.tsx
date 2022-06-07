@@ -13,6 +13,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     return json({ payment: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
+    console.log('EKyash callback: ', e);
     return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
   }
 };
