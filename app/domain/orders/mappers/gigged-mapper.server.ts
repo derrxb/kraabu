@@ -86,14 +86,6 @@ class GiggedMapper {
       return Number(prev) + Number(curr);
     }, 0);
 
-    console.log(
-      'RESPONSE: ',
-      order,
-      order.PayeeInfos,
-      order.PayeeInfos[0].Items,
-      JSON.stringify(order.PayeeInfos[0].Items),
-    );
-
     return {
       amount: parseInt((Number(total) * 100).toString(), 10),
       currency: Currency[payees.Currency as Currency],
@@ -104,7 +96,7 @@ class GiggedMapper {
       orderItems: order.PayeeInfos[0].Items.map((item) => ({
         name: item.Name,
         description: item.Description,
-        price: parseInt((item.Price * 100).toString(), 10),
+        price: parseInt((item.Price * 100).toString(), 10) * item.Quantity,
         quantity: item.Quantity,
         currency: Currency.BZD,
       })),
