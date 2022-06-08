@@ -111,19 +111,14 @@ class GiggedMapper {
 
   async updateOrderStatus(data: OrderEntity) {
     try {
-      const response = await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
+      await superagent.post(`${GiggedRoutes.TransactionStatus}`).send({
         invoiceNo: data.invoice,
         hashkey: data.additionalData.hashkey,
         gateway: data.additionalData.gateway,
         paykey: data.additionalData.paymentKey,
         status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'failed' : '',
       });
-
-      try {
-        console.log('RESPONSE: ', response.status, response.statusCode, JSON.parse(response.text), response);
-      } catch (e) {}
     } catch (e) {
-      console.log('Something happened updating: ', e);
       throw new Failure('bad_request', getErrorMessage(e));
     }
   }

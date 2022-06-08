@@ -1,6 +1,7 @@
 import type { ActionFunction } from 'remix';
 import { json } from 'remix';
 import CompletePayment from '~/domain/orders/services/ekaysh/complete-payment';
+import { getErrorMessage } from '~/lib/error-messages';
 import { HTTP_CODE } from '~/representers/http-response-representer';
 
 /**
@@ -13,7 +14,6 @@ export const action: ActionFunction = async ({ request }) => {
 
     return json({ payment: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
-    console.log('EKyash callback: ', e);
-    return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
+    return json({ message: getErrorMessage(e) || 'Something unexpected happened' }, HTTP_CODE.bad_request);
   }
 };
