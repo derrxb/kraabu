@@ -20,8 +20,8 @@
     "start": "cross-env NODE_ENV=production node ./build/index.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test:local": "run-s db:migrate:test test:coverage:enabled",
-    "test:ci": "run-s db:migrate:test npm run test:coverage",
+    "test:local": "run-s db:migrate:test test:coverage:disabled",
+    "test:ci": "run-s db:migrate:test npm run test:coverage:enabled",
     "test:coverage:enabled": "dotenv -e .env.test -- vitest --coverage",
     "test:coverage:disabled": "dotenv -e .env.test -- vitest"
   },

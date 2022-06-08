@@ -1,15 +1,16 @@
 import faker from '@faker-js/faker';
 import { rest } from 'msw';
 import { nanoid } from 'nanoid';
+import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 
 export const handlers = [
+  // Mocks the transaction update
+  rest.post(GiggedRoutes.TransactionStatus, (req, res, ctx) => {
+    return res(ctx.json({ success: true }));
+  }),
   // Mocks the payment details
-  rest.get('https://giggedbz.arcadier.io/user/checkout/order-details', (req, res, ctx) => {
+  rest.get(GiggedRoutes.OrderDetails, (req, res, ctx) => {
     const { invoiceNo } = req.params;
-
-    // if (!invoiceNo) {
-    //   return res(ctx.status(403));
-    // }
 
     const orderId = nanoid();
     const total = faker.finance.amount(50, 150);

@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { mockOrderItem } from 'mocks/fixtures';
 import React from 'react';
-import { mockOrderItem } from '~/ui/assets/fixtures';
 import type { OrderItemListProps } from '.';
 import { OrderItemList } from '.';
 

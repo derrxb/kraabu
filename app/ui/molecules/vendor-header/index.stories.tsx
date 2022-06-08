@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { mockSupplier } from 'mocks/fixtures';
 import React from 'react';
-import { mockSupplier } from '~/ui/assets/fixtures';
 import type { VendorHeaderProps } from '.';
 import { VendorHeader } from '.';
 

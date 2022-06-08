@@ -4,6 +4,15 @@ import type { EKyashTransactionDTO } from '~/domain/orders/entities/ekyash-trans
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
 import type { SupplierDTO } from '~/domain/orders/entities/supplier';
+import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
+
+export const mockGiggedOrderHandshake: GiggedOrderHandshake = {
+  currency: Currency.BZD,
+  gateway: 'random-gateway',
+  hashkey: faker.random.alphaNumeric(100),
+  invoiceno: faker.random.alphaNumeric(12),
+  total: String(100), // $100.00
+};
 
 export const mockOrderItem: OrderItemDTO = {
   currency: Currency.BZD,

@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { mockOrder } from 'mocks/fixtures';
 import React from 'react';
-import { mockOrder } from '~/ui/assets/fixtures';
 import type { PaymentPayDetailsProps } from '.';
 import { PaymentPayDetails } from '.';
 

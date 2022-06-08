@@ -5,8 +5,9 @@ import { RemixServer } from 'remix';
 import { handlers } from '../mocks/handlers';
 
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  console.log('Starting MSW...');
   const mswServer = setupServer(...handlers);
-  mswServer.listen({ onUnhandledRequest: 'bypass' });
+  mswServer.listen({ onUnhandledRequest: 'warn' });
 }
 
 export default function handleRequest(
