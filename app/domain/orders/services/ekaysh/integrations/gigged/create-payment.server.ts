@@ -5,6 +5,7 @@ import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import { SupplierRepository } from '~/domain/orders/repositories/supplier-repository';
 import Failure from '~/lib/failure';
+import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
 import createdPendingGiggedPaymentSchema from '~/requests/create-pending-gigged-payment';
 import { GIGGED_USERNAME } from '.';
 
@@ -29,10 +30,14 @@ export default class CreatePayment {
 
   async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
+      const startTime = Date.now();
       const payment = await PaymentRepository.createPending(
         new GiggedMapper(order.gateway, order.hashkey).getPaymentFromHandshake(order, supplier),
         supplier,
       );
+      const endTime = Date.now();
+
+      logLongTasks(startTime, endTime, LONG_TASKS_THRESHOLD, 'CreatePendingPayment');
 
       if (!payment) {
         throw new Failure('cannot_process', 'Something unexpected occurred while creating pending payment.');
