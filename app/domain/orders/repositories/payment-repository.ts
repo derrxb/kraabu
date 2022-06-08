@@ -73,7 +73,6 @@ export default class PaymentRepository {
         currency: orderDetails?.currency,
         additionalData: {
           ...payment.additionalData,
-          qrCodeUrl: invoice?.qrUrl,
           payer: orderDetails?.payer,
         },
         ekyashTransaction: {
