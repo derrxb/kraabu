@@ -25,6 +25,7 @@ export default class CompletePayment {
 
   async verifyPaymentParams() {
     const body = await this.request.json();
+    console.log('COMPLETED PAYMENT => ', body);
     const validatedParams = await completePendingEkyashPaymentSchema.validateAsync({
       ...body,
     });
