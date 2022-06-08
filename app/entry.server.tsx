@@ -2,7 +2,7 @@ import { setupServer } from 'msw/node';
 import { renderToString } from 'react-dom/server';
 import type { EntryContext } from 'remix';
 import { RemixServer } from 'remix';
-import { handlers } from '../mocks/handlers';
+import { handlers } from '~/mocks/handlers';
 
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   console.log('Starting MSW...');

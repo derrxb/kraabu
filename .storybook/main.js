@@ -5,6 +5,7 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '~': path.resolve(__dirname, '../app/'),
+      '@': path.relative(__dirname, '../'),
     };
     config.module.rules.push({
       test: /\.mjs$/,

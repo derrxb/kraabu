@@ -1,8 +1,8 @@
 import { OrderStatus } from '@prisma/client';
-import { mockGiggedOrderHandshake, mockSupplier } from 'mocks/fixtures';
 import { beforeEach, expect, it } from 'vitest';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
+import { mockGiggedOrderHandshake, mockSupplier } from '~/mocks/fixtures';
 import { GIGGED_USERNAME } from '.';
 import CreatePayment from './create-payment.server';
 

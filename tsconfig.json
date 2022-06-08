@@ -38,6 +38,9 @@
       "~/services/*": [
         "app/domain/orders/services/*"
       ],
+      "~/mocks": [
+        "app/mocks/*"
+      ]
     },
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
