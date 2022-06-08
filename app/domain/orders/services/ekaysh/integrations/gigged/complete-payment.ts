@@ -29,6 +29,8 @@ export default class CompletePayment {
       ...body,
     });
 
+    console.log('CALLBACK: ', body);
+
     this.paymentStatus = {
       ...validatedParams,
     };
@@ -64,13 +66,13 @@ export default class CompletePayment {
       case TransactionStatus.Accepted:
         updatedOrder = await PaymentRepository.setEkyashPaymentAsCompleted(this.payment as OrderEntity, {
           status: EKyashStatus.Success,
-          transactionId: this.paymentStatus?.transactionID,
+          transactionId: this.paymentStatus?.transactionId,
         });
         break;
       case TransactionStatus.Declined:
         updatedOrder = await PaymentRepository.setEkyashPaymentAsRejected(this.payment as OrderEntity, {
           status: EKyashStatus.Canceled,
-          transactionId: this.paymentStatus?.transactionID,
+          transactionId: this.paymentStatus?.transactionId,
         });
         break;
       default:
