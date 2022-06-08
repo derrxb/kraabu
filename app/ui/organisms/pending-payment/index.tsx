@@ -1,16 +1,21 @@
 import type { OrderDTO } from '~/domain/orders/entities/order';
-import { PaymentPayCode } from '~/ui/molecules/payment-pay-code';
+import { PaymentPayCode } from '~/ui/molecules/payment-methods/ekyash';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 
 export type PendingPaymentProps = {
   payment: OrderDTO;
+  hasOrderItemsDisplayed: boolean;
 };
 
-export const PendingPayment = ({ payment }: PendingPaymentProps) => {
+export const PendingPayment = ({ payment, hasOrderItemsDisplayed }: PendingPaymentProps) => {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full lg:w-1/2">
-        <PaymentPayDetails payment={payment} vendor={payment.supplier} />
+        <PaymentPayDetails
+          payment={payment}
+          vendor={payment.supplier}
+          hasOrderItemsDisplayed={hasOrderItemsDisplayed}
+        />
       </div>
 
       <div className="h-full w-full lg:w-1/2">

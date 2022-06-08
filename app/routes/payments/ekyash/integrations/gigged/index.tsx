@@ -7,6 +7,7 @@ import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
 import { getFormattedFailureResponse } from '~/representers/http-response-failure';
+import { HTTP_CODE } from '~/representers/http-response-representer';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
 
 export const meta: MetaFunction = () => {
@@ -21,9 +22,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   try {
     const payment = await new GetPayment(request).call();
 
-    return json({
-      payment: payment?.json(),
-    });
+    return json({ payment: payment?.json() }, HTTP_CODE.ok);
   } catch (e) {
     return getFormattedFailureResponse(e);
   }
@@ -57,5 +56,5 @@ export default function Index() {
     };
   }, [data.payment.invoice, navigate]);
 
-  return <PendingPayment payment={data.payment} />;
+  return <PendingPayment payment={data.payment} hasOrderItemsDisplayed={false} />;
 }

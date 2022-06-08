@@ -5,21 +5,27 @@ import type { PaymentPayDetailsProps } from '.';
 import { PaymentPayDetails } from '.';
 
 export default {
-  title: 'Molecules/PaymentPayDetails',
+  title: 'Molecules/OrderDetails',
   component: PaymentPayDetails,
   argTypes: {},
 } as ComponentMeta<typeof PaymentPayDetails>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof PaymentPayDetails> = (args) => (
   <div className="h-[100vh]">
-    <PaymentPayDetails {...(args as any)} />
+    <PaymentPayDetails {...args} />
   </div>
 );
 
-export const Default = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
+export const WithOrderItems = Template.bind({});
+WithOrderItems.args = {
   payment: mockOrder,
   vendor: mockOrder.supplier,
+  hasOrderItemsDisplayed: true,
+} as PaymentPayDetailsProps;
+
+export const WithoutOrderItems = Template.bind({});
+WithoutOrderItems.args = {
+  payment: mockOrder,
+  vendor: mockOrder.supplier,
+  hasOrderItemsDisplayed: false,
 } as PaymentPayDetailsProps;

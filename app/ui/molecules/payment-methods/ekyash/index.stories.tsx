@@ -4,7 +4,7 @@ import type { PaymentPayCodeProps } from '.';
 import { PaymentPayCode } from '.';
 
 export default {
-  title: 'Molecules/PaymentPayCode',
+  title: 'Molecules/PaymentMethods/EKyash',
   component: PaymentPayCode,
   argTypes: {},
 } as ComponentMeta<typeof PaymentPayCode>;
