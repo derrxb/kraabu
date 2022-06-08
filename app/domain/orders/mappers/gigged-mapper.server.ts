@@ -86,9 +86,13 @@ class GiggedMapper {
       return Number(prev) + Number(curr);
     }, 0);
 
-    // NOTE: This might change so we need to update this to
-    // get the only item with a valid `Sku` value.
-    const purchasedItem = order.PayeeInfos[0].Items[0];
+    console.log(
+      'RESPONSE: ',
+      order,
+      order.PayeeInfos,
+      order.PayeeInfos[0].Items,
+      JSON.stringify(order.PayeeInfos[0].Items),
+    );
 
     return {
       amount: parseInt((Number(total) * 100).toString(), 10),
@@ -97,15 +101,13 @@ class GiggedMapper {
         name: order.PayeeInfos[0].Name,
         email: order.PayeeInfos[0].Email,
       },
-      orderItems: [
-        {
-          name: purchasedItem.Name,
-          description: purchasedItem.Description,
-          price: parseInt((purchasedItem.Price * 100).toString(), 10),
-          quantity: purchasedItem.Quantity,
-          currency: Currency.BZD,
-        },
-      ],
+      orderItems: order.PayeeInfos[0].Items.map((item) => ({
+        name: item.Name,
+        description: item.Description,
+        price: parseInt((item.Price * 100).toString(), 10),
+        quantity: item.Quantity,
+        currency: Currency.BZD,
+      })),
     };
   }
 

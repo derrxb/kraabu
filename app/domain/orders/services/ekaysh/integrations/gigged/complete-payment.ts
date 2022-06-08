@@ -29,8 +29,6 @@ export default class CompletePayment {
       ...body,
     });
 
-    console.log('CALLBACK: ', body);
-
     this.paymentStatus = {
       ...validatedParams,
     };
