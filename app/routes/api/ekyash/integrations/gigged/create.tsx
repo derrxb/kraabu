@@ -10,6 +10,6 @@ export const action: ActionFunction = async ({ request }) => {
 
     return json(payment.additionalData?.paymentKey, HTTP_CODE.ok);
   } catch (e) {
-    return getFormattedFailureResponse(e);
+    return getFormattedFailureResponse(e, request);
   }
 };

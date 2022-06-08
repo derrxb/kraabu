@@ -24,7 +24,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     return json({ payment: payment?.json() }, HTTP_CODE.ok);
   } catch (e) {
-    return getFormattedFailureResponse(e);
+    return getFormattedFailureResponse(e, request);
   }
 };
 

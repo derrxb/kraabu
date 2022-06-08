@@ -5,7 +5,7 @@ import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
 import { getFormattedFailureResponse } from '~/representers/http-response-failure';
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   try {
     const payment = await new GetPayment(params).call();
 
@@ -23,6 +23,6 @@ export const loader: LoaderFunction = async ({ params }) => {
         );
     }
   } catch (e) {
-    return getFormattedFailureResponse(e);
+    return getFormattedFailureResponse(e, request);
   }
 };

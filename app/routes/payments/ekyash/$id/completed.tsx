@@ -17,7 +17,7 @@ export const meta: MetaFunction = ({ data }) => {
   };
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
   try {
     const payment = await new GetPayment(params).call();
 
@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     return { payment: payment.json() };
   } catch (e) {
-    return getFormattedFailureResponse(e);
+    return getFormattedFailureResponse(e, request);
   }
 };
 

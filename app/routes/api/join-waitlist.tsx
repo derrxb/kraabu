@@ -13,6 +13,6 @@ export const action: ActionFunction = async ({ request }) => {
 
     return redirect('/');
   } catch (e) {
-    return getFormattedFailureResponse(e);
+    return getFormattedFailureResponse(e, request);
   }
 };
