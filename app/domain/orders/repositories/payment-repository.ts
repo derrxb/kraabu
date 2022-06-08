@@ -1,5 +1,6 @@
 import { EKyashStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
+import type { EKyashTransactionEntity } from '../entities/ekyash-transaction';
 import { OrderEntity, OrderStatus } from '../entities/order';
 import type { SupplierEntity } from '../entities/supplier';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
@@ -105,14 +106,17 @@ export default class PaymentRepository {
     return this.rebuildEntity(result);
   }
 
-  static async setPaymentAsCompleted(payment: OrderEntity) {
+  static async setEkyashPaymentAsCompleted(
+    payment: OrderEntity,
+    transaction: Pick<EKyashTransactionEntity, 'transactionId' | 'status'>,
+  ) {
     const result = await prisma.order.update({
       data: {
         status: OrderStatus.Completed,
         ekyashTransaction: {
           update: {
-            transactionId: payment.ekyashTransaction?.transactionId,
-            status: payment.ekyashTransaction?.status,
+            transactionId: transaction.transactionId,
+            status: transaction.status,
           },
         },
       },
@@ -122,14 +126,17 @@ export default class PaymentRepository {
     return this.rebuildEntity(result);
   }
 
-  static async setPaymentAsRejected(payment: OrderEntity) {
+  static async setEkyashPaymentAsRejected(
+    payment: OrderEntity,
+    transaction: Pick<EKyashTransactionEntity, 'transactionId' | 'status'>,
+  ) {
     const result = await prisma.order.update({
       data: {
         status: OrderStatus.Failed,
         ekyashTransaction: {
           update: {
-            transactionId: payment.ekyashTransaction?.transactionId,
-            status: payment.ekyashTransaction?.status,
+            transactionId: transaction.transactionId,
+            status: transaction.status,
           },
         },
       },

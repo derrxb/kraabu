@@ -1,8 +1,8 @@
 import type { ActionFunction } from 'remix';
 import { json } from 'remix';
-import CompletePayment from '~/domain/orders/services/ekaysh/complete-payment';
 import { getErrorMessage } from '~/lib/error-messages';
 import { HTTP_CODE } from '~/representers/http-response-representer';
+import CompletePayment from '~/services/ekaysh/integrations/gigged/complete-payment';
 
 /**
  * This route is called by EKyash and it marks a payment as completed.

@@ -1,16 +1,16 @@
-import { OrderStatus } from '@prisma/client';
+import { EKyashStatus, OrderStatus } from '@prisma/client';
+import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
 import type { OrderEntity } from '~/domain/orders/entities/order';
+import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
+import { TransactionStatus } from '~/domain/orders/library/ekyash-api';
+import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
 import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekyash-payment';
-import type { EKyashEntity } from '../../entities/ekyash';
-import type { CompletedPaymentCallbackData } from '../../library/ekyash-api';
-import { TransactionStatus } from '../../library/ekyash-api';
-import GiggedMapper from '../../mappers/gigged-mapper.server';
 
 /**
  * This uses the data obtained from EKyash to mark a payment as completed
- * using the callback options provided by EKyash.
+ * using the callback options provided by EKyash. This is an integration specific to Gigged and E-Kyash.
  */
 export default class CompletePayment {
   private request: Request;
@@ -62,10 +62,16 @@ export default class CompletePayment {
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        updatedOrder = await PaymentRepository.setPaymentAsCompleted(this.payment as OrderEntity);
+        updatedOrder = await PaymentRepository.setEkyashPaymentAsCompleted(this.payment as OrderEntity, {
+          status: EKyashStatus.Success,
+          transactionId: this.paymentStatus?.transactionID,
+        });
         break;
       case TransactionStatus.Declined:
-        updatedOrder = await PaymentRepository.setPaymentAsRejected(this.payment as OrderEntity);
+        updatedOrder = await PaymentRepository.setEkyashPaymentAsRejected(this.payment as OrderEntity, {
+          status: EKyashStatus.Canceled,
+          transactionId: this.paymentStatus?.transactionID,
+        });
         break;
       default:
         throw new Failure('bad_request', 'Could not complete this request as an unknown `statusPay` was provided.');
