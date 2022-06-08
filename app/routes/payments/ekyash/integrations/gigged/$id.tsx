@@ -1,9 +1,9 @@
 import { OrderStatus } from '@prisma/client';
 import type { LoaderFunction } from 'remix';
-import { json, redirect } from 'remix';
+import { redirect } from 'remix';
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
-import { HTTP_CODE } from '~/representers/http-response-representer';
+import { getFormattedFailureResponse } from '~/representers/http-response-failure';
 
 export const loader: LoaderFunction = async ({ params }) => {
   try {
@@ -23,6 +23,6 @@ export const loader: LoaderFunction = async ({ params }) => {
         );
     }
   } catch (e) {
-    return json({ message: 'There was an error loading your order.' }, HTTP_CODE.bad_request);
+    return getFormattedFailureResponse(e);
   }
 };

@@ -1,6 +1,7 @@
 import type { LoaderFunction } from 'remix';
 import { json } from 'remix';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
+import { getFormattedFailureResponse } from '~/representers/http-response-failure';
 import { HTTP_CODE } from '~/representers/http-response-representer';
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -9,6 +10,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     return json(payment.json(), HTTP_CODE.ok);
   } catch (e) {
-    return json({ message: 'No payment with the given ID found.' }, HTTP_CODE.not_found);
+    return getFormattedFailureResponse(e);
   }
 };

@@ -1,7 +1,7 @@
 import type { ActionFunction } from 'remix';
-import { json, redirect } from 'remix';
+import { redirect } from 'remix';
 import { SubscribeToNewsletter } from '~/domain/orders/services/subscribe-to-newsletter';
-import { HTTP_CODE } from '~/representers/http-response-representer';
+import { getFormattedFailureResponse } from '~/representers/http-response-failure';
 
 /**
  * This route is called by EKyash and it marks a payment as completed.
@@ -13,6 +13,6 @@ export const action: ActionFunction = async ({ request }) => {
 
     return redirect('/');
   } catch (e) {
-    return json({ message: 'Something unexpected happened' }, HTTP_CODE.bad_request);
+    return getFormattedFailureResponse(e);
   }
 };

@@ -6,6 +6,7 @@ import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
+import { getFormattedFailureResponse } from '~/representers/http-response-failure';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
 
 export const meta: MetaFunction = () => {
@@ -17,11 +18,15 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const payment = await new GetPayment(request).call();
+  try {
+    const payment = await new GetPayment(request).call();
 
-  return json({
-    payment: payment?.json(),
-  });
+    return json({
+      payment: payment?.json(),
+    });
+  } catch (e) {
+    return getFormattedFailureResponse(e);
+  }
 };
 
 export default function Index() {

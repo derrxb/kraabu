@@ -1,6 +1,6 @@
 import type { ActionFunction } from 'remix';
 import { json } from 'remix';
-import { getErrorMessage } from '~/lib/error-messages';
+import { getFormattedFailureResponse } from '~/representers/http-response-failure';
 import { HTTP_CODE } from '~/representers/http-response-representer';
 import CompletePayment from '~/services/ekaysh/integrations/gigged/complete-payment';
 
@@ -14,6 +14,6 @@ export const action: ActionFunction = async ({ request }) => {
 
     return json({ payment: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
-    return json({ message: getErrorMessage(e) || 'Something unexpected happened' }, HTTP_CODE.bad_request);
+    return getFormattedFailureResponse(e);
   }
 };
