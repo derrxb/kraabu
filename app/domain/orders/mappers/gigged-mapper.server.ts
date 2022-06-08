@@ -115,7 +115,7 @@ class GiggedMapper {
   }
 
   async updateOrderStatus(data: OrderEntity) {
-    console.log('ORDER TO UPDATE => ', JSON.stringify(data));
+    console.log('ORDER TO UPDATE => ', data);
     console.log('UPDATE TO: ', {
       invoiceNo: data.invoice,
       hashkey: data.additionalData.hashkey,
