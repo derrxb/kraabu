@@ -25,7 +25,7 @@ export default class CompletePayment {
 
   async verifyPaymentParams() {
     const body = await this.request.json();
-    console.log('COMPLETED PAYMENT => ', body);
+    console.log('EKyash callback data: ', body);
     const validatedParams = await completePendingEkyashPaymentSchema.validateAsync({
       ...body,
     });
@@ -102,6 +102,11 @@ export default class CompletePayment {
 
     if (await this.validateHashKey()) {
       throw new Failure('forbidden', 'The payment hash is invalid.');
+    }
+
+    // Leave early if payment has been changed from `pending`.
+    if (!this.payment?.isPending()) {
+      return this.payment;
     }
 
     await this.setKrabuuPaymentAsAcceptedOrRejected();
