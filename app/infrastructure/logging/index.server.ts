@@ -1,3 +1,4 @@
+import type { Level } from 'rollbar';
 import Rollbar from 'rollbar';
 
 const rollbar = new Rollbar({
@@ -13,7 +14,7 @@ const rollbar = new Rollbar({
  * @param args
  */
 const getLogger =
-  (type: 'error' | 'log') =>
+  (type: Level) =>
   (...args: Rollbar.LogArgument[]) => {
     if (process.env.NODE_ENV === 'production') {
       rollbar?.[type](args);
@@ -25,6 +26,7 @@ const getLogger =
   };
 
 const logError = getLogger('error');
-const logger = getLogger('log');
+const logger = getLogger('info');
+const logWarning = getLogger('warning');
 
-export { logError, logger };
+export { logError, logger, logWarning };
