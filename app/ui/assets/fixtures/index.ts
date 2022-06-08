@@ -9,7 +9,8 @@ export const mockOrderItem: OrderItemDTO = {
   currency: Currency.BZD,
   description: faker.lorem.lines(2),
   name: 'Kawasaki Ninja 400 deep cleaning session',
-  price: Number(faker.commerce.price(200, 250, 2)),
+  // convert to cents
+  price: Number(faker.commerce.price(200, 250, 2)) * 100,
   quantity: 1,
   id: 1,
 };

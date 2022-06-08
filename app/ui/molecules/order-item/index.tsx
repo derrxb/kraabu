@@ -13,7 +13,7 @@ export const OrderItem = ({ name, currency, quantity, description, price }: Orde
         <div className="flex flex-row items-end text-lg text-indigo-500">
           {price > 0 ? (
             <>
-              <span className="mr-2 font-bold">{price > 0 ? `$${price}` : 'FREE'}</span>
+              <span className="mr-2 font-bold">{price > 0 ? `$${Math.floor(price / 100)}` : 'FREE'}</span>
               <span className="font-medium">{currency}</span>
             </>
           ) : (
