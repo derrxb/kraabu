@@ -22,6 +22,10 @@ export default class CreatePayment {
   async verifyParams(): Promise<GiggedOrderHandshake> {
     const body = await this.request.json();
 
+    if (!body.total) {
+      throw new Failure('bad_request', '`total` is required.');
+    }
+
     return await createdPendingGiggedPaymentSchema.validateAsync({
       ...body,
       total: Number(body.total).toString(),
