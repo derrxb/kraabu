@@ -108,7 +108,15 @@ export default class PaymentRepository {
 
   static async setPaymentAsCompleted(payment: OrderEntity) {
     const result = await prisma.order.update({
-      data: { status: OrderStatus.Completed },
+      data: {
+        status: OrderStatus.Completed,
+        ekyashTransaction: {
+          update: {
+            transactionId: payment.ekyashTransaction?.transactionId,
+            status: payment.ekyashTransaction?.status,
+          },
+        },
+      },
       where: { id: payment.id },
     });
 
@@ -117,7 +125,15 @@ export default class PaymentRepository {
 
   static async setPaymentAsRejected(payment: OrderEntity) {
     const result = await prisma.order.update({
-      data: { status: OrderStatus.Failed },
+      data: {
+        status: OrderStatus.Failed,
+        ekyashTransaction: {
+          update: {
+            transactionId: payment.ekyashTransaction?.transactionId,
+            status: payment.ekyashTransaction?.status,
+          },
+        },
+      },
       where: { id: payment.id },
     });
 
