@@ -16,12 +16,16 @@ const rollbar = new Rollbar({
 const getLogger =
   (type: Level) =>
   (...args: Rollbar.LogArgument[]) => {
-    if (process.env.NODE_ENV === 'production') {
-      rollbar?.[type](args);
-    } else if (process.env.NODE_ENV === 'development') {
-      console.log(args);
-    } else {
-      console.warn(args);
+    try {
+      if (process.env.NODE_ENV === 'production') {
+        rollbar?.[type](...args);
+      } else if (process.env.NODE_ENV === 'development') {
+        console.log(args);
+      } else {
+        console.warn(args);
+      }
+    } catch (e) {
+      console.error('Failed to log to Rollbar', args);
     }
   };
 
