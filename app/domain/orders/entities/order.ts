@@ -10,7 +10,6 @@ const Currency = CurrencyORM;
 export { OrderStatus, Currency };
 
 export type GiggedOrderDetails = {
-  qrCodeUrl?: string;
   gateway?: string;
   hashkey?: string;
   paymentKey?: string;
