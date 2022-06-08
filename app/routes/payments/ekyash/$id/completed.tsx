@@ -46,7 +46,11 @@ export default function Completed() {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full md:w-1/2">
-        <PaymentPayDetails payment={data.payment} vendor={data.payment.supplier as SupplierEntity} />
+        <PaymentPayDetails
+          payment={data.payment}
+          vendor={data.payment.supplier as SupplierEntity}
+          hasOrderItemsDisplayed
+        />
       </div>
 
       <div className="h-full w-full md:w-1/2">
