@@ -35,6 +35,8 @@ export default class CompletePayment {
   }
 
   async validateHashKey() {
+    console.log('payment', this.payment);
+
     if (this.paymentStatus) {
       return await new GiggedMapper(
         this.payment?.additionalData.gateway as string,
