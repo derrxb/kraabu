@@ -71,6 +71,10 @@ export const mockGiggedOrderEntity = new OrderEntity({
   invoice: mockInvoice,
   status: OrderStatus.Pending,
   supplierId: mockSupplierEntity.id,
+  supplier: mockSupplierEntity,
+  orderItems: [mockOrderItemEntity],
+  ekyashTransaction: mockEKyashTransactionEntity,
+  id: 1,
   additionalData: {
     gateway: '',
     hashkey: '',
