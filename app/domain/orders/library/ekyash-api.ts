@@ -2,6 +2,17 @@ import { enc, HmacSHA256 } from 'crypto-js';
 import superagent from 'superagent';
 import type { EKyashEntity } from '../entities/ekyash';
 
+export enum EKyashAPIBase {
+  StagingBase = '',
+  ProductionBase = '',
+}
+
+export enum EKyashRoutes {
+  Authorization = '/authorization',
+  CreateInvoice = '/create-new-invoice',
+  UploadInvoiceImage = '/upload-image',
+}
+
 const headers = {
   'Content-Type': 'application/json',
   'Accept-Language': 'en',
@@ -9,6 +20,14 @@ const headers = {
   WL: 'bibi',
   appVersion: '99.1.1',
   operatingSystem: 'Android',
+};
+
+const getEKyashApiBase = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return EKyashAPIBase.ProductionBase;
+  }
+
+  return EKyashAPIBase.StagingBase;
 };
 
 /**
@@ -67,7 +86,7 @@ const getAuthorization = async (authInfo: AuthorizationBody, data: EKyashEntity)
   const jwt = await getJWTToken(data);
 
   const response = await superagent
-    .post(`${data.api}/authorization`)
+    .post(`${getEKyashApiBase()}/${EKyashRoutes.Authorization}`)
     .send(authInfo)
     .set({
       ...headers,
@@ -173,7 +192,7 @@ const createNewInvoice = async (data: NewInvoiceData, kyash: EKyashEntity): Prom
   const jwt = await getJWTToken(kyash);
 
   const response = await superagent
-    .post(`${kyash.api}/create-new-invoice`)
+    .post(`${getEKyashApiBase()}/${EKyashRoutes.CreateInvoice}`)
     .send({ ...data })
     .set({
       ...headers,
@@ -206,7 +225,7 @@ type UploadInvoiceImageResponse = {
 };
 
 const uploadInvoiceImage = async (data: UploadInvoiceImageData, kyash: EKyashEntity) => {
-  const response = await superagent.post(`${kyash.api}/upload-image`).send({ ...data });
+  const response = await superagent.post(`${getEKyashApiBase()}/${EKyashRoutes.UploadInvoiceImage}`).send({ ...data });
 
   return JSON.parse(response.text) as UploadInvoiceImageResponse;
 };
