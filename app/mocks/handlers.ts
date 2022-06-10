@@ -6,6 +6,7 @@ import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 export const handlers = [
   // Mocks the transaction update
   rest.post(GiggedRoutes.TransactionStatus, (req, res, ctx) => {
+    console.log('Request');
     return res(ctx.json({ success: true }));
   }),
   // Mocks the payment details
