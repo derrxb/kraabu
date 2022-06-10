@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
-import { mockSupplier } from '~/mocks/fixtures';
+import { mockSupplierEntity } from '~/mocks/fixtures';
 import type { VendorHeaderProps } from '.';
 import { VendorHeader } from '.';
 
@@ -14,5 +13,5 @@ const Template: ComponentStory<typeof VendorHeader> = (args) => <VendorHeader {.
 
 export const Default = Template.bind({});
 Default.args = {
-  ...mockSupplier,
+  ...mockSupplierEntity.json(),
 } as VendorHeaderProps;
