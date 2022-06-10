@@ -31,7 +31,7 @@ export default class GetPayment {
     const payment = await PaymentRepository.getPaymentByInvoice(invoice);
 
     if (!payment) {
-      throw new Failure('not_found', 'No payment with the provided `invoiceNo` exists.');
+      throw new Failure('not_found', 'No order with the provided `invoiceNo` exists.');
     }
 
     return payment;
