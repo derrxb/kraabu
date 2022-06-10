@@ -7,7 +7,6 @@ export class EKyashRepository {
     }
 
     return new EKyashEntity({
-      api: data.api,
       id: data.id,
       phone: data.phone,
       pinEncoded: data.pinEncoded,

@@ -22,7 +22,6 @@ model Ekyash {
   id         Int       @id @default(autoincrement())
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-  api        String    @db.VarChar(255)
   sid        BigInt    @db.BigInt
   pinHash    String    @db.VarChar(255)
   pinEncoded String    @db.VarChar(255)

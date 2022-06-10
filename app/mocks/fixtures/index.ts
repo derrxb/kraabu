@@ -29,7 +29,6 @@ const mockPinEncoded = 'INVALID_44c80bbde592aed7e2138b67ec71e94a5a22d39bc36d66c3
  */
 export const mockEkyashEntity = new EKyashEntity({
   id: 1,
-  api: 'ekyash.api',
   apiKey: mockEKyashAPIKey,
   phone: mockEKyashPhoneNumber,
   pinEncoded: mockPinEncoded,

@@ -2,7 +2,6 @@ import type { Ekyash as EkyashORM } from '@prisma/client';
 
 export class EKyashEntity {
   id: EkyashORM['id'];
-  api: EkyashORM['api'];
   pinHash: EkyashORM['pinHash'];
   pinEncoded: EkyashORM['pinEncoded'];
   phone: EkyashORM['phone'];
@@ -10,9 +9,8 @@ export class EKyashEntity {
   pushKey: string;
   apiKey: string;
 
-  constructor({ id, api, pinHash, pinEncoded, phone, sid, apiKey }: Omit<EkyashORM, 'createdAt' | 'updatedAt'>) {
+  constructor({ id, pinHash, pinEncoded, phone, sid, apiKey }: Omit<EkyashORM, 'createdAt' | 'updatedAt'>) {
     this.id = id;
-    this.api = api;
     this.pinHash = pinHash;
     this.pinEncoded = pinEncoded;
     this.phone = phone;
