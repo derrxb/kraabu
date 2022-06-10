@@ -1,5 +1,5 @@
 import Failure from '~/lib/failure';
-import subscribeToNewsletterSchema from '~/requests/subscribe-to-newsletter';
+import subscribeToNewsletterSchema from '~/presentation/requests/subscribe-to-newsletter';
 import type { Subscriber } from '../mappers/convert-kit-mapper';
 import { ConvertKit } from '../mappers/convert-kit-mapper';
 

@@ -3,7 +3,7 @@ import type { LoaderFunction } from 'remix';
 import { redirect } from 'remix';
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
-import { getFormattedFailureResponse } from '~/representers/http-response-failure';
+import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   try {

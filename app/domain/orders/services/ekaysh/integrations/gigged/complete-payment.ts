@@ -6,7 +6,7 @@ import { TransactionStatus } from '~/domain/orders/library/ekyash-api';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
-import completePendingEkyashPaymentSchema from '~/requests/complete-pending-ekyash-payment';
+import completePendingEkyashPaymentSchema from '~/presentation/requests/complete-pending-ekyash-payment';
 
 /**
  * This uses the data obtained from EKyash to mark a payment as completed

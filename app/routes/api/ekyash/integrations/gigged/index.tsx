@@ -1,7 +1,7 @@
 import type { ActionFunction } from 'remix';
 import { json } from 'remix';
-import { getFormattedFailureResponse } from '~/representers/http-response-failure';
-import { HTTP_CODE } from '~/representers/http-response-representer';
+import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
+import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import CompletePayment from '~/services/ekaysh/integrations/gigged/complete-payment';
 
 /**

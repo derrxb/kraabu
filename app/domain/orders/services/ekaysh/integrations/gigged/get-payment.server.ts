@@ -4,7 +4,7 @@ import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import Failure from '~/lib/failure';
-import getGiggedBzPaymentSchema from '~/requests/get-gigged-bz-payment';
+import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 
 export default class GetPayment {
   private request: Request;

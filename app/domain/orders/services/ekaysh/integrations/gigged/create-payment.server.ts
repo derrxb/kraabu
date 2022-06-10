@@ -6,7 +6,7 @@ import PaymentRepository from '~/domain/orders/repositories/payment-repository';
 import { SupplierRepository } from '~/domain/orders/repositories/supplier-repository';
 import Failure from '~/lib/failure';
 import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
-import createdPendingGiggedPaymentSchema from '~/requests/create-pending-gigged-payment';
+import createdPendingGiggedPaymentSchema from '~/presentation/requests/create-pending-gigged-payment';
 import { GIGGED_USERNAME } from '.';
 
 /**

@@ -4,7 +4,7 @@ import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import type { SupplierEntity } from '~/domain/orders/entities/supplier';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
-import { getFormattedFailureResponse } from '~/representers/http-response-failure';
+import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
 

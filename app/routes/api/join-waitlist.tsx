@@ -1,7 +1,7 @@
 import type { ActionFunction } from 'remix';
 import { redirect } from 'remix';
 import { SubscribeToNewsletter } from '~/domain/orders/services/subscribe-to-newsletter';
-import { getFormattedFailureResponse } from '~/representers/http-response-failure';
+import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 /**
  * This route is called by EKyash and it marks a payment as completed.

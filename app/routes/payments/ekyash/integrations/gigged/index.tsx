@@ -6,8 +6,8 @@ import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
-import { getFormattedFailureResponse } from '~/representers/http-response-failure';
-import { HTTP_CODE } from '~/representers/http-response-representer';
+import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
+import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
 
 export const meta: MetaFunction = () => {
