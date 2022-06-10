@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
-import { mockOrder } from '~/mocks/fixtures';
+import { mockGiggedOrderEntity } from '~/mocks/fixtures';
 import type { PaymentPayDetailsProps } from '.';
 import { PaymentPayDetails } from '.';
 
@@ -18,14 +17,14 @@ const Template: ComponentStory<typeof PaymentPayDetails> = (args) => (
 
 export const WithOrderItems = Template.bind({});
 WithOrderItems.args = {
-  payment: mockOrder,
-  vendor: mockOrder.supplier,
+  payment: mockGiggedOrderEntity.json(),
+  vendor: mockGiggedOrderEntity.json().supplier,
   hasOrderItemsDisplayed: true,
 } as PaymentPayDetailsProps;
 
 export const WithoutOrderItems = Template.bind({});
 WithoutOrderItems.args = {
-  payment: mockOrder,
-  vendor: mockOrder.supplier,
+  payment: mockGiggedOrderEntity.json(),
+  vendor: mockGiggedOrderEntity.json().supplier,
   hasOrderItemsDisplayed: false,
 } as PaymentPayDetailsProps;

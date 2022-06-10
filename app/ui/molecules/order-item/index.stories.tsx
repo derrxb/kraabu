@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
-import { mockOrderItem } from '~/mocks/fixtures';
+import { mockOrderItemEntity } from '~/mocks/fixtures';
 import type { OrderItemProps } from '.';
 import { OrderItem } from '.';
 
@@ -16,21 +15,21 @@ const Template: ComponentStory<typeof OrderItem> = (args) => <OrderItem {...(arg
 export const QuantityOne = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 QuantityOne.args = {
-  ...mockOrderItem,
+  ...mockOrderItemEntity.json(),
   quantity: 1,
 } as OrderItemProps;
 
 export const QuantityMultiple = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 QuantityMultiple.args = {
-  ...mockOrderItem,
+  ...mockOrderItemEntity.json(),
   quantity: 10,
 } as OrderItemProps;
 
 export const FreeItem = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 FreeItem.args = {
-  ...mockOrderItem,
+  ...mockOrderItemEntity.json(),
   price: 0,
   currency: 'BZD',
 } as OrderItemProps;

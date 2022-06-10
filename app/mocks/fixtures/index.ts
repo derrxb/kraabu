@@ -2,11 +2,9 @@ import faker from '@faker-js/faker';
 import type { Ekyash } from '@prisma/client';
 import { Currency, OrderStatus } from '@prisma/client';
 import { EKyashEntity } from '~/domain/orders/entities/ekyash';
-import type { EKyashTransactionDTO } from '~/domain/orders/entities/ekyash-transaction';
 import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transaction';
-import type { GiggedOrderDetails, OrderDTO } from '~/domain/orders/entities/order';
+import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { OrderEntity } from '~/domain/orders/entities/order';
-import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
 import { OrderItemEntity } from '~/domain/orders/entities/order-item';
 import { SupplierEntity } from '~/domain/orders/entities/supplier';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
@@ -44,7 +42,7 @@ export const mockSupplierEntity = new SupplierEntity({
   ekyashId: mockEkyashEntity.id,
 });
 
-const mockOrderItemEntity = new OrderItemEntity({
+export const mockOrderItemEntity = new OrderItemEntity({
   currency: Currency.BZD,
   description: faker.lorem.lines(2),
   name: 'Kawasaki Ninja 400 deep cleaning session',
@@ -55,7 +53,7 @@ const mockOrderItemEntity = new OrderItemEntity({
   orderId: 1,
 });
 
-const mockEKyashTransactionEntity = new EKyashTransactionEntity({
+export const mockEKyashTransactionEntity = new EKyashTransactionEntity({
   deepLinkUrl: 'N/A',
   id: 1,
   invoiceId: mockInvoice,
@@ -66,7 +64,7 @@ const mockEKyashTransactionEntity = new EKyashTransactionEntity({
   transactionId: mockTransactionId,
 });
 
-const mockGiggedOrderEntity = new OrderEntity({
+export const mockGiggedOrderEntity = new OrderEntity({
   amount: 10_000,
   currency: Currency.BZD,
   description: 'A mock order with payment',
@@ -131,44 +129,4 @@ export const mockedSuccessGiggedEKyashOrderCallback: CompletedPaymentCallbackDat
   orderId: mockOrderId,
   statusPay: TransactionStatus.Accepted,
   transactionId: mockTransactionId,
-};
-
-export const mockOrderItem: OrderItemDTO = {
-  currency: Currency.BZD,
-  description: faker.lorem.lines(2),
-  name: 'Kawasaki Ninja 400 deep cleaning session',
-  // convert to cents
-  price: Number(faker.commerce.price(200, 250, 2)) * 100,
-  quantity: 1,
-  id: 1,
-};
-
-export const mockEKyashTransaction: EKyashTransactionDTO = {
-  deepLinkUrl: 'N/A',
-  id: 1,
-  invoiceId: 'invoice-001',
-  invoiceUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
-  qrCodeUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
-  orderId: 1,
-  status: OrderStatus.Pending,
-  transactionId: null,
-};
-
-export const mockOrder: OrderDTO = {
-  currency: Currency.BZD,
-  description: faker.commerce.productDescription(),
-  invoice: faker.finance.bic(),
-  orderItems: [mockOrderItem],
-  status: OrderStatus.Pending,
-  supplier: mockSupplierEntity.json(),
-  createdAt: faker.date.recent(),
-  amount: mockOrderItem.price,
-  additionalData: {
-    paymentKey: faker.finance.bic(),
-    payer: {
-      email: faker.internet.email(),
-      name: faker.internet.userName(),
-    },
-  },
-  ekyashTransaction: mockEKyashTransaction,
 };

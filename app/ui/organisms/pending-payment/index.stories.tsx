@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
-import { mockOrder } from '~/mocks/fixtures';
+import { mockGiggedOrderEntity } from '~/mocks/fixtures';
 import { PendingPayment } from '.';
 
 export default {
@@ -19,5 +18,5 @@ const Template: ComponentStory<typeof PendingPayment> = (args) => (
 export const EKyash = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 EKyash.args = {
-  payment: mockOrder,
+  payment: mockGiggedOrderEntity.json(),
 };

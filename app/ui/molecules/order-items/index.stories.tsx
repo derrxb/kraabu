@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
-import { mockOrderItem } from '~/mocks/fixtures';
+import { mockOrderItemEntity } from '~/mocks/fixtures';
 import type { OrderItemListProps } from '.';
 import { OrderItemList } from '.';
 
@@ -17,8 +16,8 @@ export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
   items: [
-    { ...mockOrderItem, quantity: 1 },
-    { ...mockOrderItem, quantity: 2 },
+    { ...mockOrderItemEntity.json(), quantity: 1 },
+    { ...mockOrderItemEntity.json(), quantity: 2 },
   ],
 } as OrderItemListProps;
 
