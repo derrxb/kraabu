@@ -38,7 +38,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
         Scan the QR code to complete payment with your E-Kyash app.
       </span>
 
-      <img src={qr} alt="payment qr code" className="h-48 w-48 self-center md:h-64 md:w-64" />
+      <img src={qr} alt="payment qr code" className="h-44 w-44 self-center md:h-56 md:w-56" />
 
       <OrDivider />
 
