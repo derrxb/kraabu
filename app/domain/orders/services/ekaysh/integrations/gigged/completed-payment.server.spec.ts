@@ -4,8 +4,8 @@ import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyas
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
 import {
-  mockedFailedGiggedEKyashOrderCallback,
   mockEkyashEntity,
+  mockFailedGiggedEKyashOrderCallback,
   mockGiggedOrderHandshake,
   mockSupplierEntity,
 } from '~/mocks/fixtures';
@@ -46,7 +46,7 @@ it.skip('Ensures that cancelled payments are correctly marked as cancelled', asy
   const cancelledPaymentRequest = new Request('/', {
     method: 'POST',
     body: JSON.stringify({
-      ...mockedFailedGiggedEKyashOrderCallback,
+      ...mockFailedGiggedEKyashOrderCallback,
       invoiceId: payment.invoice,
       orderId: payment.invoice,
     } as CompletedPaymentCallbackData),

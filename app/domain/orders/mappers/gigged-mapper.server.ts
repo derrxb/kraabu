@@ -93,7 +93,8 @@ class GiggedMapper {
         name: order.PayeeInfos[0].Name,
         email: order.PayeeInfos[0].Email,
       },
-      orderItems: order.PayeeInfos[0].Items.map((item) => ({
+      // Note: Admin Fee is used to omit the admin fee from the items.
+      orderItems: order.PayeeInfos[0].Items.filter((item) => !item.Id.includes('Admin Fee')).map((item) => ({
         name: item.Name,
         description: item.Description,
         price: parseInt((item.Price * 100).toString(), 10) * item.Quantity,

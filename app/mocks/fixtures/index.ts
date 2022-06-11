@@ -15,6 +15,11 @@ const mockKrabuuInvoiceId = 'i63wodfkb5gzu0k';
 const mockOrderId = 'wq9dw3k8e3spvb2';
 const mockPaymentKey = 'uzuk5gz00bk';
 
+// GiggedArcadierSpecific
+const mockGiggedArcadierGateway = 'www.fake.com';
+const mockGiggedArcadierHash =
+  '7hd0ygxqcizn7nh2r06dvo5a6enpmvdymlvij0kgx7ovdgmys4mpitx1h22du4ugogma1fc0jhkvvo6xjyid3xfidq6qew13hhg8';
+
 // E-Kyash specific mocks
 const mockEkyashInternalInvoiceId = '8e3spvb2gzu0k';
 const mockEKyashTransactionId = 'cjgps6o73oks22i';
@@ -92,8 +97,8 @@ export const mockGiggedOrderEntity = new OrderEntity({
   ekyashTransaction: mockEKyashTransactionEntity,
   id: 1,
   additionalData: {
-    gateway: '',
-    hashkey: '',
+    gateway: mockGiggedArcadierGateway,
+    hashkey: mockGiggedArcadierHash,
     payer: {
       email: 'user@example.com',
       name: 'test user',
@@ -116,7 +121,7 @@ export const mockGiggedOrderHandshake: GiggedOrderHandshake = {
 /**
  * A base Gigged BZ specific failed ekyash callback response.
  */
-export const mockedFailedGiggedEKyashOrderCallback: CompletedPaymentCallbackData = {
+export const mockFailedGiggedEKyashOrderCallback: CompletedPaymentCallbackData = {
   hash: getAuthenticatedHash(
     {
       hash: mockHash,
@@ -135,7 +140,7 @@ export const mockedFailedGiggedEKyashOrderCallback: CompletedPaymentCallbackData
 /**
  * A base Gigged BZ specific success ekyash callback response.
  */
-export const mockedSuccessGiggedEKyashOrderCallback: CompletedPaymentCallbackData = {
+export const mockSuccessGiggedEKyashOrderCallback: CompletedPaymentCallbackData = {
   hash: getAuthenticatedHash(
     {
       hash: mockHash,
