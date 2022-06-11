@@ -1,13 +1,10 @@
-import { setupServer } from 'msw/node';
 import { renderToString } from 'react-dom/server';
 import type { EntryContext } from 'remix';
 import { RemixServer } from 'remix';
-import { handlers } from '~/mocks/handlers';
+import { mswServer } from './mocks/server';
 
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-  console.log('Starting MSW...');
-  const mswServer = setupServer(...handlers);
-  mswServer.listen({ onUnhandledRequest: 'warn' });
+if (process.env.NODE_ENV === 'development') {
+  mswServer.listen({ onUnhandledRequest: 'error' });
 }
 
 export default function handleRequest(
