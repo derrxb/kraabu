@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { ButtonProps } from '.';
 import { Button, ButtonColors } from '.';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -19,24 +19,24 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Primary.args = {
-  label: 'Button',
+  children: 'Button',
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  label: 'Button',
+  children: 'Button',
 };
 
 export const Large = Template.bind({});
 Large.args = {
   size: 'large',
-  label: 'Button',
+  children: 'Button',
 };
 
 export const Small = Template.bind({});
 Small.args = {
   size: 'small',
-  label: 'Button',
+  children: 'Button',
 };
 
 export const ButtonLink = Template.bind({});
@@ -44,15 +44,49 @@ ButtonLink.args = {
   size: 'small',
   variant: 'link',
   href: 'https://ekyash.page.link/GQTJ',
-  label: 'Pay with E-Kyash App',
-  color: ButtonColors.EKyash,
+  children: 'Button link',
+  color: ButtonColors.Primary,
 };
 
 export const CTAWithIcon = Template.bind({});
 CTAWithIcon.args = {
   size: 'small',
   variant: 'button',
-  label: `Join waitlist - it's free`,
+  children: `Join waitlist - it's free`,
   color: ButtonColors.Primary,
   icon: <ChevronRightIcon className="h-4 w-4" />,
 };
+
+export const EKyashButton = Template.bind({});
+EKyashButton.args = {
+  size: 'small',
+  variant: 'button',
+  children: `Pay with E-Kyash`,
+  color: ButtonColors.EKyash,
+} as ButtonProps;
+
+export const EKyashButtonLink = Template.bind({});
+EKyashButtonLink.args = {
+  size: 'small',
+  children: `Pay with E-Kyash`,
+  color: ButtonColors.EKyash,
+  variant: 'link',
+  href: 'https://ekyash.page.link/GQTJ',
+} as ButtonProps;
+
+export const DigiWalletButton = Template.bind({});
+DigiWalletButton.args = {
+  size: 'small',
+  variant: 'button',
+  children: `Pay with DigiWallet`,
+  color: ButtonColors.DigiWallet,
+} as ButtonProps;
+
+export const DigiWalletButtonLink = Template.bind({});
+DigiWalletButtonLink.args = {
+  size: 'small',
+  children: `Pay with DigiWallet`,
+  color: ButtonColors.DigiWallet,
+  variant: 'link',
+  href: 'https://ekyash.page.link/GQTJ',
+} as ButtonProps;

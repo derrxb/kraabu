@@ -1,14 +1,16 @@
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
-import React from 'react';
+import digiWalletWhite from '~/assets/images/wallets/digiwallet-white.png';
+import ekyashWhite from '~/assets/images/wallets/ekaysh-white.png';
 
 export enum ButtonColors {
   Primary,
   Text,
   EKyash,
+  DigiWallet,
 }
 
-interface ButtonProps {
+export type ButtonProps = {
   /**
    * Where to redirect the user to
    */
@@ -26,19 +28,22 @@ interface ButtonProps {
    */
   size?: 'small' | 'medium' | 'large';
   /**
-   * Button contents
-   */
-  label: string;
-  /**
    * Optional click handler
    */
   onClick?: () => void;
-
+  /**
+   * Button should take up the full width of its container.
+   */
+  isFullWidth?: boolean;
   /**
    * A right aligned icon to display with your button
    */
   icon?: ReactNode;
-}
+  /**
+   * Text to show inside button
+   */
+  children: ReactNode;
+};
 
 const sizes = {
   small: 'text-xs px-2 py-2 md:px-[10px] px-2 py-2 md:py-[16px]',
@@ -48,8 +53,9 @@ const sizes = {
 
 const modes = {
   secondary: 'text-gray-900 bg-transparent shadow-md',
-  ekyash: 'bg-[#39ae49] text-gray-100 hover:text-white hover:bg-[#2d8b3a]',
+  ekyash: 'bg-ekyash-1 text-gray-100 hover:text-white hover:bg-ekyash-2',
   primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
+  digiWallet: 'bg-digi-1 text-gray-100 hover:text-white hover:bg-digi-2',
 };
 /**
  * Primary UI component for user interaction
@@ -57,8 +63,9 @@ const modes = {
 export const Button = ({
   color = ButtonColors.Primary,
   size = 'medium',
-  label,
+  children,
   variant = 'button',
+  isFullWidth = false,
   ...props
 }: ButtonProps) => {
   if (variant === 'link' && typeof variant === 'undefined') {
@@ -71,16 +78,24 @@ export const Button = ({
         target="_blank"
         href={props.href}
         className={clsx(
-          `inline-block cursor-pointer rounded-sm border-0 text-center font-bold leading-4 ${sizes[size]}`,
+          `inline-flex cursor-pointer items-center rounded-sm border-0 text-center font-bold leading-4 ${sizes[size]}`,
           {
             [modes.primary]: color === ButtonColors.Primary,
             [modes.secondary]: color === ButtonColors.Text,
             [modes.ekyash]: color === ButtonColors.EKyash,
+            [modes.digiWallet]: color === ButtonColors.DigiWallet,
+            'w-full justify-center': isFullWidth,
+            'w-fit': !isFullWidth,
           },
         )}
         rel="noreferrer"
       >
-        {label}
+        {color === ButtonColors.EKyash ? <img src={ekyashWhite} alt="ekyash" className="mr-2 -mb-1 h-6 w-24" /> : null}
+        {color === ButtonColors.DigiWallet ? (
+          <img src={digiWalletWhite} alt="digiwallet" className="mr-4 h-6 w-24" />
+        ) : null}
+
+        {children}
 
         {props.icon ? <span className="ml-2">props.icon</span> : null}
       </a>
@@ -91,16 +106,24 @@ export const Button = ({
     <button
       type={variant}
       className={clsx(
-        `inline-flex w-fit cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
+        `inline-flex cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
         {
           [modes.primary]: color === ButtonColors.Primary,
           [modes.secondary]: color === ButtonColors.Text,
           [modes.ekyash]: color === ButtonColors.EKyash,
+          [modes.digiWallet]: color === ButtonColors.DigiWallet,
+          'w-full justify-center': isFullWidth,
+          'w-fit': !isFullWidth,
         },
       )}
       {...props}
     >
-      {label}
+      {color === ButtonColors.EKyash ? <img src={ekyashWhite} alt="ekyash" className="mr-2 -mb-1 h-6 w-24" /> : null}
+      {color === ButtonColors.DigiWallet ? (
+        <img src={digiWalletWhite} alt="digiwallet" className="mr-2 h-5 w-20" />
+      ) : null}
+
+      {children}
 
       {props.icon ? <span className="ml-2">{props.icon}</span> : null}
     </button>

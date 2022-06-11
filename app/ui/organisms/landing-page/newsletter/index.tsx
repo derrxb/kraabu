@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form } from 'remix';
 import { Button } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
@@ -56,7 +55,7 @@ export const Newsletter = () => {
             />
           </div>
 
-          <Button variant="submit" label="Join wait list" />
+          <Button variant="submit">Join wait list</Button>
         </div>
       </Form>
     </div>

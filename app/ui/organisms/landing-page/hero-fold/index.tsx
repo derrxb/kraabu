@@ -1,5 +1,4 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import React from 'react';
 import heroMain from '~/assets/images/hero-home.png';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
@@ -38,10 +37,11 @@ export const HeroFold = () => {
         <Button
           size="small"
           variant="button"
-          label="Join waitlist - it's free"
           color={ButtonColors.Primary}
           icon={<ChevronRightIcon className="h-4 w-4" />}
-        />
+        >
+          Join waitlist - it's free
+        </Button>
 
         <List appearance={ListItemAppearance.Secondary} items={['No credit card required', 'No website needed']} />
       </div>

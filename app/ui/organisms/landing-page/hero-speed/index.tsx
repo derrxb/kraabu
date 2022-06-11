@@ -1,5 +1,4 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import React from 'react';
 import heroBusiness from '~/assets/images/hero-business.png';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
@@ -55,10 +54,11 @@ export const HeroSpeed = () => {
         <Button
           size="small"
           variant="button"
-          label="Join waitlist - it's free"
           color={ButtonColors.Primary}
           icon={<ChevronRightIcon className="h-4 w-4" />}
-        />
+        >
+          Join waitlist - it's free
+        </Button>
       </div>
     </div>
   );

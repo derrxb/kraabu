@@ -6,6 +6,7 @@ export enum HeadingVariant {
   H2,
   H3,
   H4,
+  H5,
 }
 
 export enum HeadingAppearance {
@@ -25,7 +26,7 @@ export const Heading = ({ children, appearance = HeadingAppearance.Primary, vari
   return (
     <h1
       className={clsx(
-        ' font-extrabold ',
+        'font-extrabold ',
         {
           'text-primary-3': HeadingAppearance.Primary === appearance,
           'text-primary-2': HeadingAppearance.Secondary === appearance,
@@ -33,6 +34,7 @@ export const Heading = ({ children, appearance = HeadingAppearance.Primary, vari
           'text-2xl md:text-3xl lg:text-4xl': HeadingVariant.H2 === variant,
           'text-xl md:text-2xl lg:text-3xl': HeadingVariant.H3 === variant,
           'text-lg md:text-xl lg:text-2xl': HeadingVariant.H4 === variant,
+          'text-base md:text-lg lg:text-xl': HeadingVariant.H5 === variant,
         },
         className,
       )}

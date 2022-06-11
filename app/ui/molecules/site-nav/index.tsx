@@ -12,13 +12,14 @@ export const SiteNav = ({ className }: { className?: string }) => {
 
       <div className="ml-auto">
         <Button
-          label="Join waitlist - it's free"
           variant="button"
           color={ButtonColors.Primary}
           onClick={noop}
           size="small"
           icon={<ChevronRightIcon className="h-4 w-4" />}
-        />
+        >
+          Join waitlist - it's free
+        </Button>
       </div>
     </nav>
   );

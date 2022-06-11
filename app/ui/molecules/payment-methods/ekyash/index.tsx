@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
@@ -43,7 +42,9 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
 
       <OrDivider />
 
-      <Button variant="link" label="Pay with E-Kyash App" color={ButtonColors.EKyash} href={deepLink} size="small" />
+      <Button variant="link" color={ButtonColors.EKyash} href={deepLink} size="small" isFullWidth>
+        Open and Pay with E-Kyash App
+      </Button>
 
       <div className="mt-auto ml-auto">
         <KrabuuTag />
