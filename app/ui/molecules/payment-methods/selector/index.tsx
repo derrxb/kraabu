@@ -1,5 +1,6 @@
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
+import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
 
 export type PaymentMethodSelectorProps = {
   onClick: (method: 'ekyash' | 'digiwallet') => void;
@@ -7,7 +8,7 @@ export type PaymentMethodSelectorProps = {
 
 export const PaymentMethodSelector = (props: PaymentMethodSelectorProps) => {
   return (
-    <div className="max-w-[480px]">
+    <div className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32">
       <Heading variant={HeadingVariant.H4} appearance={HeadingAppearance.UnStyled} className="mb-2">
         Confirm order by completing payment with one of the supported e-wallets.
       </Heading>
@@ -41,6 +42,10 @@ export const PaymentMethodSelector = (props: PaymentMethodSelectorProps) => {
           </Button>
         </li>
       </ul>
+
+      <div className="mt-auto ml-auto">
+        <KrabuuTag />
+      </div>
     </div>
   );
 };
