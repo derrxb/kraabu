@@ -38,6 +38,7 @@ export class SupplierEntity {
       tag: this.tag,
       logoUrl: this.logoUrl,
       homepage: this.homepage,
+      username: this.username,
     } as SupplierDTO;
   }
 }
