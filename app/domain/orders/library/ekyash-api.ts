@@ -3,14 +3,14 @@ import superagent from 'superagent';
 import type { EKyashEntity } from '../entities/ekyash';
 
 export enum EKyashAPIBase {
-  StagingBase = '',
+  StagingBase = 'https://mw-api-preprod.e-kyash.com/api/qrpos-app',
   ProductionBase = '',
 }
 
 export enum EKyashRoutes {
-  Authorization = '/authorization',
-  CreateInvoice = '/create-new-invoice',
-  UploadInvoiceImage = '/upload-image',
+  Authorization = 'authorization',
+  CreateInvoice = 'create-new-invoice',
+  UploadInvoiceImage = 'upload-image',
 }
 
 const headers = {
@@ -59,7 +59,7 @@ type AuthorizationBody = {
   pinHash: string;
 };
 
-type AuthorizationResponse = {
+export type AuthorizationResponse = {
   /**
    * This session ID that should be used for subsequent requests.
    */
@@ -161,7 +161,7 @@ export type NewInvoiceData = {
 
 export type NewInvoiceResponse = {
   /**
-   * @type AuthorizationResponse.Session
+   * @type Internal ekyash invoice id
    */
   invoiceId: number;
   /**
