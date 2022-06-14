@@ -1,5 +1,4 @@
-import React from 'react';
-import heroSecurity from '~/assets/images/hero-security.png';
+import heroSecurity from '~/assets/images/hero-security.svg';
 import walletEKyash from '~/assets/images/wallets/ekyash.png';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
@@ -28,7 +27,7 @@ export const HeroSecurity = () => {
       </div>
 
       <div className="flex flex-col items-center justify-center md:w-1/2">
-        <img src={heroSecurity} alt="hero-business" className="mb-12" />
+        <img src={heroSecurity} alt="hero-business" className="h-[560px]" />
       </div>
     </div>
   );

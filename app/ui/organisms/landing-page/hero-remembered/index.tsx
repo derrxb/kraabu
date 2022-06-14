@@ -1,4 +1,3 @@
-import React from 'react';
 import heroRemembered from '~/assets/images/hero-remembered.png';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 

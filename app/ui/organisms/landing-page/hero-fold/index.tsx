@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import heroMain from '~/assets/images/hero-home.png';
+import heroMain from '~/assets/images/hero-home.svg';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 import { Tag, TagAppearance } from '~/ui/atoms/tag';
@@ -47,7 +47,7 @@ export const HeroFold = () => {
       </div>
 
       <div className="order-1 flex flex-col items-center justify-center md:order-2 md:w-1/2">
-        <img src={heroMain} alt="hero-main" className="mb-12 h-[280px] w-[280px] lg:h-[285px] lg:w-[380px]" />
+        <img src={heroMain} alt="hero-main" className="mb-12 h-fit w-fit" />
       </div>
     </div>
   );

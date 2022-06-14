@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import heroBusiness from '~/assets/images/hero-business.png';
+import heroBusiness from '~/assets/images/hero-business.svg';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 import { FadeInOutItems } from '~/ui/molecules/fade-in-out-items';
@@ -13,7 +13,7 @@ export const HeroSpeed = () => {
   return (
     <div className="flex h-fit w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
       <div className="flex flex-col items-center justify-center md:w-1/2">
-        <img src={heroBusiness} alt="hero-business" className="mb-12 h-[280px] w-[280px] lg:h-[320px] lg:w-[320px]" />
+        <img src={heroBusiness} alt="hero-business" className="h-[480px]" />
       </div>
 
       <div className="flex flex-col justify-center space-y-4  md:w-1/2 ">
