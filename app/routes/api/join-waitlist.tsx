@@ -1,5 +1,5 @@
-import type { ActionFunction } from 'remix';
-import { redirect } from 'remix';
+import type { ActionFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { SubscribeToNewsletter } from '~/domain/orders/services/subscribe-to-newsletter';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 

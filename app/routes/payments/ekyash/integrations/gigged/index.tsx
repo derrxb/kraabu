@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import type { LoaderFunction, MetaFunction } from 'remix';
-import { json, useLoaderData, useNavigate } from 'remix';
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';

@@ -1,4 +1,4 @@
-import type { MetaFunction } from 'remix';
+import type { MetaFunction } from "@remix-run/node";
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { HeroFold } from '~/ui/organisms/landing-page/hero-fold';
 import { HeroRemembered } from '~/ui/organisms/landing-page/hero-remembered';

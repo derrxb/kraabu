@@ -1,6 +1,6 @@
 import { OrderStatus } from '@prisma/client';
-import type { LoaderFunction } from 'remix';
-import { redirect } from 'remix';
+import type { LoaderFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';

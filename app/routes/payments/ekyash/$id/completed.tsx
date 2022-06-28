@@ -1,5 +1,6 @@
-import type { LoaderFunction, MetaFunction } from 'remix';
-import { json, redirect, useLoaderData } from 'remix';
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import type { SupplierEntity } from '~/domain/orders/entities/supplier';

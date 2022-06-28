@@ -1,4 +1,4 @@
-import { Form } from 'remix';
+import { Form } from "@remix-run/react";
 import { Button } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
