@@ -13,7 +13,7 @@ beforeEach(truncateDB);
 it('Ensures that a gigged order fails to create when the GiggedBZ supplier is missing', async () => {
   // Arrange
   // create fake request
-  const request = new Request('/', {
+  const request = new Request('http://localhost:3000', {
     method: 'POST',
     body: JSON.stringify(mockGiggedOrderHandshake),
   });
@@ -27,7 +27,7 @@ it('Ensures that a gigged order fails to create when the GiggedBZ supplier is mi
 it('Ensures that an order fails to create when at least the required params are missing', async () => {
   // Arrange
   const getIncompleteRequest = (omittedItem: keyof GiggedOrderHandshake) =>
-    new Request('/', {
+    new Request('http://localhost:3000', {
       method: 'POST',
       body: JSON.stringify(omit(mockGiggedOrderHandshake, [omittedItem])),
     });
@@ -51,7 +51,7 @@ it('Ensures that the amount value is calculated correctly', async () => {
   const INITIAL_AMOUNT = '100'; // BZ$100
   const EXPECTED_AMOUNT_IN_CENTS = Number(INITIAL_AMOUNT) * 100;
 
-  const request = new Request('/', {
+  const request = new Request('http://localhost:3000', {
     method: 'POST',
     body: JSON.stringify({
       ...mockGiggedOrderHandshake,
@@ -77,7 +77,7 @@ it('Ensures that the amount value is calculated correctly', async () => {
 it('Ensures that a payment is created with a pending status', async () => {
   // Arrange
   // create fake request
-  const request = new Request('/', {
+  const request = new Request('http://localhost:3000', {
     method: 'POST',
     body: JSON.stringify(mockGiggedOrderHandshake),
   });
