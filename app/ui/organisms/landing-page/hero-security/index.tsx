@@ -27,7 +27,7 @@ export const HeroSecurity = () => {
       </div>
 
       <div className="flex flex-col items-center justify-center md:w-1/2">
-        <img src={heroSecurity} alt="hero-business" className="h-[560px]" />
+        <img src={heroSecurity} alt="hero-business" className="h-[480px] w-[480px]" />
       </div>
     </div>
   );

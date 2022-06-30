@@ -1,4 +1,4 @@
-import heroRemembered from '~/assets/images/hero-remembered.png';
+import heroRemembered from '~/assets/images/hero-remembered.svg';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
 /**
@@ -8,7 +8,7 @@ export const HeroRemembered = () => {
   return (
     <div className="flex h-fit min-h-[480px] w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
       <div className="flex flex-col items-center justify-center md:w-1/2">
-        <img src={heroRemembered} alt="hero-business" />
+        <img src={heroRemembered} alt="hero-business" className="h-[480px]" />
       </div>
 
       <div className="flex flex-col justify-center space-y-4  md:w-1/2 ">
