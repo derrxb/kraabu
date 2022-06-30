@@ -13,7 +13,7 @@ export const HeroSpeed = () => {
   return (
     <div className="flex h-fit w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
       <div className="flex flex-col items-center justify-center md:w-1/2">
-        <img src={heroBusiness} alt="hero-business" className="h-[480px] w-[480px]" />
+        <img src={heroBusiness} alt="hero-business" className="w-[calc(100%-30%)] lg:w-[calc(100%-35%)]" />
       </div>
 
       <div className="flex flex-col justify-center space-y-4  md:w-1/2 ">
@@ -21,10 +21,10 @@ export const HeroSpeed = () => {
           The{' '}
           <FadeInOutItems
             messages={[
-              <span key={1} className="inline-flex w-[10.5rem] text-primary-2">
+              <span key={1} className="inline-flex w-[6.75rem] text-primary-2 md:w-[10.5rem]">
                 easiest
               </span>,
-              <span key={1} className="inline-flex w-[10.5rem] text-primary-2">
+              <span key={1} className="inline-flex w-[6.75rem] text-primary-2 md:w-[10.5rem]">
                 fastest
               </span>,
             ]}

@@ -8,7 +8,7 @@ import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 export const HeroSecurity = () => {
   return (
     <div className="flex h-fit min-h-[480px] w-full flex-col items-center px-4 py-12 md:flex-row lg:px-24">
-      <div className="flex flex-col justify-center space-y-8 md:w-1/2">
+      <div className="order-2 flex flex-col justify-center space-y-8 md:order-1 md:w-1/2">
         <Heading variant={HeadingVariant.H1}>
           Your money’s safety is our{' '}
           <span key={1} className="text-primary-2">
@@ -22,12 +22,11 @@ export const HeroSecurity = () => {
 
         <div className="flex flex-row items-center space-x-8">
           <img src={walletEKyash} alt="ekyash wallet" className="h-8 w-32" />
-          {/* <img src={walletDigi} alt="digiwallet" className="h-8 w-32" /> */}
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center md:w-1/2">
-        <img src={heroSecurity} alt="hero-business" className="h-[480px] w-[480px]" />
+      <div className="order-1 flex flex-col items-center justify-center md:order-2 md:w-1/2">
+        <img src={heroSecurity} alt="hero-business" className="w-[calc(100%-30%)] lg:w-[calc(100%-35%)]" />
       </div>
     </div>
   );
