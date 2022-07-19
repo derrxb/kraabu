@@ -7,7 +7,7 @@ import {
   mockEkyashEntity,
   mockFailedGiggedEKyashOrderCallback,
   mockGiggedOrderHandshake,
-  mockSupplierEntity,
+  mockUserEntity,
 } from '~/mocks/fixtures';
 import { GIGGED_USERNAME } from '.';
 import CompletePayment from './complete-payment.server';
@@ -19,7 +19,7 @@ it.skip('Ensures that cancelled payments are correctly marked as cancelled', asy
   // Arrange
   const supplier = await prisma.supplier.create({
     data: {
-      ...omit(mockSupplierEntity.json(), ['id']),
+      ...omit(mockUserEntity.json(), ['id']),
       username: GIGGED_USERNAME,
     },
   });

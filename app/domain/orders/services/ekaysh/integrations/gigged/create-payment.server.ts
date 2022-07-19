@@ -1,9 +1,9 @@
 import type { OrderEntity } from '~/domain/orders/entities/order';
-import type { SupplierEntity } from '~/domain/orders/entities/supplier';
+import type { UserEntity } from '~/domain/orders/entities/user';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import PaymentRepository from '~/domain/orders/repositories/payment-repository';
-import { SupplierRepository } from '~/domain/orders/repositories/supplier-repository';
+import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
 import createdPendingGiggedPaymentSchema from '~/presentation/requests/create-pending-gigged-payment';
@@ -32,7 +32,7 @@ export default class CreatePayment {
     });
   }
 
-  async createPayment(supplier: SupplierEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
+  async createPayment(supplier: UserEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
       const startTime = Date.now();
       const payment = await PaymentRepository.createPending(
@@ -56,7 +56,7 @@ export default class CreatePayment {
   async call(): Promise<OrderEntity> {
     try {
       const order = await this.verifyParams();
-      const supplier = await SupplierRepository.findSupplierByUsername(GIGGED_USERNAME);
+      const supplier = await UserRepository.findUserByUsername(GIGGED_USERNAME);
 
       if (!supplier) {
         throw new Failure('not_found', `There is no supplier with the username: ` + GIGGED_USERNAME);

@@ -4,7 +4,7 @@ import { beforeEach, expect, it } from 'vitest';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
-import { mockGiggedOrderHandshake, mockSupplierEntity } from '~/mocks/fixtures';
+import { mockGiggedOrderHandshake, mockUserEntity } from '~/mocks/fixtures';
 import { GIGGED_USERNAME } from '.';
 import CreatePayment from './create-payment.server';
 
@@ -62,7 +62,7 @@ it('Ensures that the amount value is calculated correctly', async () => {
   // Create fake gigged supplier
   await prisma.supplier.create({
     data: {
-      ...mockSupplierEntity.json(),
+      ...mockUserEntity.json(),
       username: GIGGED_USERNAME,
     },
   });
@@ -85,7 +85,7 @@ it('Ensures that a payment is created with a pending status', async () => {
   // Create fake gigged supplier
   await prisma.supplier.create({
     data: {
-      ...mockSupplierEntity.json(),
+      ...mockUserEntity.json(),
       username: GIGGED_USERNAME,
     },
   });

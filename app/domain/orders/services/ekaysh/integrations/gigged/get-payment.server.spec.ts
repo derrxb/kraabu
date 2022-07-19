@@ -3,7 +3,7 @@ import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { Currency } from '~/domain/orders/entities/order';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma, { OrderStatus } from '~/infrastructure/database/index.server';
-import { mockEkyashEntity, mockGiggedOrderEntity, mockSupplierEntity } from '~/mocks/fixtures';
+import { mockEkyashEntity, mockGiggedOrderEntity, mockUserEntity } from '~/mocks/fixtures';
 import GetPayment from './get-payment.server';
 
 beforeEach(truncateDB);
@@ -42,11 +42,11 @@ it("Ensures that an order's details is loaded correctly", async () => {
 
   const supplier = await prisma.supplier.create({
     data: {
-      homepage: mockSupplierEntity.homepage,
-      logoUrl: mockSupplierEntity.logoUrl,
-      name: mockSupplierEntity.name,
-      username: mockSupplierEntity.username,
-      tag: mockSupplierEntity.tag,
+      homepage: mockUserEntity.homepage,
+      logoUrl: mockUserEntity.logoUrl,
+      name: mockUserEntity.name,
+      username: mockUserEntity.username,
+      tag: mockUserEntity.tag,
       ekyashId: ekyash.id,
     },
   });

@@ -41,7 +41,7 @@ export default class CompletePayment {
       return await new GiggedMapper(
         this.payment?.additionalData.gateway as string,
         this.payment?.additionalData.hashkey as string,
-      ).validatePaymentCallback(this.paymentStatus, this.payment?.supplier?.ekyash as EKyashEntity);
+      ).validatePaymentCallback(this.paymentStatus, this.payment?.user?.ekyash as EKyashEntity);
     }
 
     return false;

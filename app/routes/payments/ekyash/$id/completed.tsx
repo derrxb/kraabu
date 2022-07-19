@@ -1,9 +1,9 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunction, MetaFunction } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
-import type { SupplierEntity } from '~/domain/orders/entities/supplier';
+import type { UserEntity } from '~/domain/orders/entities/user';
 import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
@@ -13,7 +13,7 @@ export const meta: MetaFunction = ({ data }) => {
   const payment = data.payment as OrderDTO;
 
   return {
-    title: `Payment Successful | ${payment?.supplier?.name} - ${payment?.supplier?.tag}`,
+    title: `Payment Successful | ${payment?.user?.businessName} - ${payment?.user?.tag}`,
     description: `${payment.orderItems?.[0].description}`,
   };
 };
@@ -47,11 +47,7 @@ export default function Completed() {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full md:w-1/2">
-        <PaymentPayDetails
-          payment={data.payment}
-          vendor={data.payment.supplier as SupplierEntity}
-          hasOrderItemsDisplayed
-        />
+        <PaymentPayDetails payment={data.payment} vendor={data.payment.user as UserEntity} hasOrderItemsDisplayed />
       </div>
 
       <div className="h-full w-full md:w-1/2">

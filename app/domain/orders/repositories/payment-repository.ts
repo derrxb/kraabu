@@ -2,11 +2,11 @@ import { EKyashStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
 import type { EKyashTransactionEntity } from '../entities/ekyash-transaction';
 import { OrderEntity, OrderStatus } from '../entities/order';
-import type { SupplierEntity } from '../entities/supplier';
+import type { UserEntity } from '../entities/user';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
 import { EKyashTransactionRepository } from './e-kyash-transaction-repository';
 import OrderItemRepository from './order-item-repository';
-import { SupplierRepository } from './supplier-repository';
+import { UserRepository } from './user-repository';
 
 export default class PaymentRepository {
   static async rebuildEntity(data: any) {
@@ -14,13 +14,12 @@ export default class PaymentRepository {
       return undefined;
     }
 
-    const supplier = await SupplierRepository.rebuildEntity(data.supplier);
+    const user = await UserRepository.rebuildEntity(data.supplier);
     const orderItems = data.orderItems?.map((orderItem: any) => OrderItemRepository.rebuildEntity(orderItem)) || [];
     const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
 
     return new OrderEntity({
       orderItems,
-      supplier,
       additionalData: data?.additionalData,
       amount: data?.amount,
       currency: data.currency,
@@ -28,12 +27,15 @@ export default class PaymentRepository {
       id: data.id,
       invoice: data.invoice,
       status: data.status,
-      supplierId: supplier?.id as number,
       ekyashTransaction: ekyashTransaction,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      userId: user?.id as number,
+      productId: 1, // TODO: get productId from order
     });
   }
 
-  static async createPending(data: OrderEntity, supplier: SupplierEntity) {
+  static async createPending(data: OrderEntity, user: UserEntity) {
     const result = await prisma.order.create({
       data: {
         additionalData: data.additionalData,
@@ -42,9 +44,9 @@ export default class PaymentRepository {
         description: data.description,
         invoice: data.invoice,
         status: data.status,
-        supplier: {
+        user: {
           connect: {
-            id: supplier.id,
+            id: user.id,
           },
         },
       },
@@ -61,7 +63,7 @@ export default class PaymentRepository {
   static async getPaymentByInvoice(invoice: string) {
     const result = await prisma.order.findFirst({
       where: { invoice: invoice },
-      include: { ekyashTransaction: true, orderItems: true, supplier: { include: { ekyash: true } } },
+      include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
     });
 
     return await this.rebuildEntity(result);
@@ -100,7 +102,7 @@ export default class PaymentRepository {
           : undefined,
       },
       where: { id: payment.id },
-      include: { ekyashTransaction: true, orderItems: true, supplier: { include: { ekyash: true } } },
+      include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
     });
 
     return this.rebuildEntity(result);

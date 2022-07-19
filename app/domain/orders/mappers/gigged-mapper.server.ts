@@ -5,7 +5,7 @@ import { getErrorMessage } from '~/lib/error-messages';
 import Failure from '~/lib/failure';
 import type { EKyashEntity } from '../entities/ekyash';
 import { OrderEntity } from '../entities/order';
-import type { SupplierEntity } from '../entities/supplier';
+import type { UserEntity } from '../entities/user';
 import type { CompletedPaymentCallbackData } from '../library/ekyash-api';
 import { isCallbackRequestValid } from '../library/ekyash-api';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
@@ -51,10 +51,10 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): OrderEntity {
+  getPaymentFromHandshake(data: GiggedOrderHandshake, user: UserEntity): OrderEntity {
     const order = new OrderEntity({
-      supplier: supplier,
-      supplierId: supplier.id,
+      user: user,
+      userId: user.id,
       status: OrderStatus?.Pending,
       amount: Number(data.total) * 100,
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,

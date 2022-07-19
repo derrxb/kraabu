@@ -5,7 +5,7 @@ import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transac
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { OrderEntity } from '~/domain/orders/entities/order';
 import { OrderItemEntity } from '~/domain/orders/entities/order-item';
-import { SupplierEntity } from '~/domain/orders/entities/supplier';
+import { UserEntity } from '~/domain/orders/entities/user';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
 import { getAuthenticatedHash, TransactionStatus } from '~/domain/orders/library/ekyash-api';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
@@ -30,6 +30,22 @@ const mockPinHash = 'INVALID_8d4fd24a970f49292076bf74df011e9f8d0e7850273666fcf4d
 const mockPinEncoded = 'INVALID_44c80bbde592aed7e2138b67ec71e94a5a22d39bc36d66c3373c1ea33013d3as';
 
 /**
+ * A base fake supplier entity that does not yet exist in the database.
+ */
+export const mockUserEntity = new UserEntity({
+  id: 1,
+  password: 'test',
+  email: 'test@text.com',
+  website: faker.internet.url(),
+  businessName: "Dave's Bike Shop",
+  logoUrl: 'https://i.imgur.com/tfWgyRJ.png',
+  username: 'bikingwithdave',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  tag: 'Riding big bikes in Belize should be easy!',
+});
+
+/**
  * A base fake ekyash entity that does not yet exist in the database.
  */
 export const mockEkyashEntity = new EKyashEntity({
@@ -39,19 +55,7 @@ export const mockEkyashEntity = new EKyashEntity({
   pinEncoded: mockPinEncoded,
   pinHash: mockPinHash,
   sid: mockSid,
-});
-
-/**
- * A base fake supplier entity that does not yet exist in the database.
- */
-export const mockSupplierEntity = new SupplierEntity({
-  id: 1,
-  homepage: faker.internet.url(),
-  logoUrl: 'https://i.imgur.com/tfWgyRJ.png',
-  name: "Dave's Bike Shop",
-  username: 'bikingwithdave',
-  tag: 'Riding big bikes in Belize should be easy!',
-  ekyashId: mockEkyashEntity.id,
+  userId: mockUserEntity.id as number,
 });
 
 /**
@@ -91,8 +95,8 @@ export const mockGiggedOrderEntity = new OrderEntity({
   description: 'A mock order with payment',
   invoice: mockKrabuuInvoiceId,
   status: OrderStatus.Pending,
-  supplierId: mockSupplierEntity.id,
-  supplier: mockSupplierEntity,
+  userId: mockUserEntity.id as number,
+  user: mockUserEntity,
   orderItems: [mockOrderItemEntity],
   ekyashTransaction: mockEKyashTransactionEntity,
   id: 1,
