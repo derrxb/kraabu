@@ -4,7 +4,7 @@ import type { OrderEntity } from '~/domain/orders/entities/order';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
 import { TransactionStatus } from '~/domain/orders/library/ekyash-api';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
-import PaymentRepository from '~/domain/orders/repositories/payment-repository';
+import OrderRepository from '~/domain/orders/repositories/order-repository';
 import Failure from '~/lib/failure';
 import completePendingEkyashPaymentSchema from '~/presentation/requests/complete-pending-ekyash-payment';
 
@@ -49,7 +49,7 @@ export default class CompletePayment {
 
   async setPayment() {
     if (this.paymentStatus?.orderId) {
-      this.payment = (await PaymentRepository.getPaymentByInvoice(this.paymentStatus?.orderId)) ?? null;
+      this.payment = (await OrderRepository.getPaymentByInvoice(this.paymentStatus?.orderId)) ?? null;
     } else {
       throw new Failure('not_found', 'No payment request with the given invoice found.');
     }
@@ -64,13 +64,13 @@ export default class CompletePayment {
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        updatedOrder = await PaymentRepository.setEkyashPaymentAsCompleted(this.payment as OrderEntity, {
+        updatedOrder = await OrderRepository.setEkyashPaymentAsCompleted(this.payment as OrderEntity, {
           status: EKyashStatus.Success,
           transactionId: this.paymentStatus?.transactionId,
         });
         break;
       case TransactionStatus.Declined:
-        updatedOrder = await PaymentRepository.setEkyashPaymentAsRejected(this.payment as OrderEntity, {
+        updatedOrder = await OrderRepository.setEkyashPaymentAsRejected(this.payment as OrderEntity, {
           status: EKyashStatus.Canceled,
           transactionId: this.paymentStatus?.transactionId,
         });

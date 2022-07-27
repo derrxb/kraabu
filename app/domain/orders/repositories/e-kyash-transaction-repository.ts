@@ -7,7 +7,14 @@ export class EKyashTransactionRepository {
     }
 
     return new EKyashTransactionEntity({
-      ...data,
+      deepLinkUrl: data.deepLinkUrl,
+      id: data.id,
+      status: data.status,
+      invoiceId: data.invoiceId,
+      invoiceUrl: data.invoiceUrl,
+      orderId: data.orderId,
+      qrCodeUrl: data.qrCodeUrl,
+      transactionId: data.transactionId,
     });
   }
 }

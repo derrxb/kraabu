@@ -2,7 +2,7 @@ import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
 import type { OrderEntity } from '~/domain/orders/entities/order';
 import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
-import PaymentRepository from '~/domain/orders/repositories/payment-repository';
+import OrderRepository from '~/domain/orders/repositories/order-repository';
 import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 
@@ -28,7 +28,7 @@ export default class GetPayment {
   }
 
   async getPendingPayment(invoice: string) {
-    const payment = await PaymentRepository.getPaymentByInvoice(invoice);
+    const payment = await OrderRepository.getPaymentByInvoice(invoice);
 
     if (!payment) {
       throw new Failure('not_found', 'No order with the provided `invoiceNo` exists.');
@@ -75,7 +75,7 @@ export default class GetPayment {
     const orderDetails = await this.getPaymentOrderDetails(payment);
 
     if (!!invoice || !!orderDetails) {
-      return await PaymentRepository.setOrderDetailsAndPaymentCode(payment, invoice, orderDetails);
+      return await OrderRepository.setOrderDetailsAndPaymentCode(payment, invoice, orderDetails);
     }
 
     throw new Failure(

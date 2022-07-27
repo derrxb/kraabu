@@ -1,6 +1,6 @@
 import type { Params } from 'react-router';
 import type { OrderEntity } from '~/domain/orders/entities/order';
-import PaymentRepository from '~/domain/orders/repositories/payment-repository';
+import OrderRepository from '~/domain/orders/repositories/order-repository';
 import Failure from '~/lib/failure';
 
 export default class GetPayment {
@@ -17,7 +17,7 @@ export default class GetPayment {
       throw new Failure('cannot_process', 'A payment `invoice` is required.');
     }
 
-    const payment = await PaymentRepository.getPaymentByInvoice(id);
+    const payment = await OrderRepository.getPaymentByInvoice(id);
 
     if (payment) {
       return payment;

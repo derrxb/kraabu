@@ -1,6 +1,9 @@
+import type { Order, Product } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
 import { UserEntity } from '../entities/user';
 import { EKyashRepository } from './ekyash-repository';
+import OrderRepository from './order-repository';
+import ProductRepository from './product-repository';
 
 export class UserRepository {
   static async rebuildEntity(data: any) {
@@ -9,11 +12,15 @@ export class UserRepository {
     }
 
     const ekyash = await EKyashRepository.rebuildEntity(data.ekyash);
+    const products = data.products?.map((product: Product) =>  ProductRepository.rebuildEntity(product)) ?? [];
+    const orders = data.orders?.map((order: Order) =>  OrderRepository.rebuildEntity(order)) ?? [];
 
     return new UserEntity({
       ...data,
       ekyashId: ekyash?.id ?? null,
       ekyash: ekyash,
+      orders,
+      products,
     });
   }
 

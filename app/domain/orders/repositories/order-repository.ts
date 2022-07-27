@@ -1,3 +1,4 @@
+import type { OrderItem } from '@prisma/client';
 import { EKyashStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
 import type { EKyashTransactionEntity } from '../entities/ekyash-transaction';
@@ -6,16 +7,14 @@ import type { UserEntity } from '../entities/user';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
 import { EKyashTransactionRepository } from './e-kyash-transaction-repository';
 import OrderItemRepository from './order-item-repository';
-import { UserRepository } from './user-repository';
 
-export default class PaymentRepository {
+export default class OrderRepository {
   static async rebuildEntity(data: any) {
     if (!data || typeof data === 'undefined') {
       return undefined;
     }
 
-    const user = await UserRepository.rebuildEntity(data.supplier);
-    const orderItems = data.orderItems?.map((orderItem: any) => OrderItemRepository.rebuildEntity(orderItem)) || [];
+    const orderItems = data.orderItems?.map((orderItem: OrderItem) => OrderItemRepository.rebuildEntity(orderItem)) || [];
     const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
 
     return new OrderEntity({
@@ -30,8 +29,8 @@ export default class PaymentRepository {
       ekyashTransaction: ekyashTransaction,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
-      userId: user?.id as number,
-      productId: 1, // TODO: get productId from order
+      userId: data.userId,
+      productId: data.productId,
     });
   }
 

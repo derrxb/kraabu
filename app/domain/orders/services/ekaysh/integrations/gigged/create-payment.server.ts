@@ -2,7 +2,7 @@ import type { OrderEntity } from '~/domain/orders/entities/order';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
-import PaymentRepository from '~/domain/orders/repositories/payment-repository';
+import OrderRepository from '~/domain/orders/repositories/order-repository';
 import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
@@ -35,7 +35,7 @@ export default class CreatePayment {
   async createPayment(supplier: UserEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
       const startTime = Date.now();
-      const payment = await PaymentRepository.createPending(
+      const payment = await OrderRepository.createPending(
         new GiggedMapper(order.gateway, order.hashkey).getPaymentFromHandshake(order, supplier),
         supplier,
       );
