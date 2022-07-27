@@ -53,8 +53,8 @@ class GiggedMapper {
 
   getPaymentFromHandshake(data: GiggedOrderHandshake, user: UserEntity): OrderEntity {
     const order = new OrderEntity({
-      user: user,
-      userId: user.id,
+      productId: null,
+      userId: null,
       status: OrderStatus?.Pending,
       amount: Number(data.total) * 100,
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,

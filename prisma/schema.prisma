@@ -82,8 +82,8 @@ model Order {
   ekyashTransaction EKyashTransaction?
   product           Product?           @relation(fields: [productId], references: [id])
   productId         Int?               @unique
-  user              User               @relation(fields: [userId], references: [id])
-  userId            Int                @unique
+  user              User?              @relation(fields: [userId], references: [id])
+  userId            Int?               @unique
 }
 
 model OrderItem {
