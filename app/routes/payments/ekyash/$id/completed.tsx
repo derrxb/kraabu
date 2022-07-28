@@ -1,4 +1,4 @@
-import type { LoaderFunction, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
@@ -18,31 +18,28 @@ export const meta: MetaFunction = ({ data }) => {
   };
 };
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
   try {
     const order = await new GetOrder(params).call();
 
     switch (order.status) {
       case OrderStatus.Completed:
         return json({ order: order.json() });
-      case OrderStatus.Failed:
-        return redirect(`/payments/ekyash/${order.invoice}/failed`);
       case OrderStatus.Pending:
-        return redirect(
+        throw redirect(
           `/payments/ekyash/integrations/gigged?invoiceNo=${order.invoice}&paykey=${order.additionalData.paymentKey}`,
         );
+      case OrderStatus.Failed:
       default:
-        break;
+        throw redirect(`/payments/ekyash/${order.invoice}/failed`);
     }
-
-    return { order: order.json() };
   } catch (e) {
-    return getFormattedFailureResponse(e, request);
+    throw getFormattedFailureResponse(e, request);
   }
 };
 
 export default function Completed() {
-  const data = useLoaderData() as { order: OrderDTO };
+  const data = useLoaderData<typeof loader>();
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">

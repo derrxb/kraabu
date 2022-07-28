@@ -1,4 +1,4 @@
-import type { ActionFunction } from '@remix-run/node';
+import type { ActionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import CompleteOrder from '~/domain/orders/services/ekaysh/integrations/gigged/complete-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
@@ -8,12 +8,12 @@ import { HTTP_CODE } from '~/presentation/representers/http-response-representer
  * This route is called by EKyash and it marks an order as completed.
  * TODO: Do we move these to API an api folder to be explicit that we're dealing with an API.
  */
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: ActionArgs) => {
   try {
     const order = await new CompleteOrder(request).call();
 
     return json({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
-    return getFormattedFailureResponse(e, request);
+    throw getFormattedFailureResponse(e, request);
   }
 };

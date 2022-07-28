@@ -52,7 +52,7 @@ export class OrderEntity {
       additionalData: GiggedOrderDetails;
       orderItems?: OrderItemEntity[];
       ekyashTransaction?: EKyashTransactionEntity;
-      user?: UserEntity,
+      user?: UserEntity;
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -116,4 +116,4 @@ export class OrderEntity {
 export type OrderDTO = Pick<
   OrderEntity,
   'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
-> & { orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO, user?: UserDTO };
+> & { orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO; user?: UserDTO };

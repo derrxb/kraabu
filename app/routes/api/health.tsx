@@ -1,6 +1,6 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { LoaderArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
 
-export let loader: LoaderFunction = async ({ request }) => {
+export async function loader(args: LoaderArgs) {
   return json({ alive: true });
-};
+}

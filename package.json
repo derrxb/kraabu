@@ -28,9 +28,9 @@
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.14.0",
-    "@remix-run/express": "^1.6.1",
-    "@remix-run/node": "^1.6.1",
-    "@remix-run/react": "^1.6.1",
+    "@remix-run/express": "^1.6.5",
+    "@remix-run/node": "^1.6.5",
+    "@remix-run/react": "^1.6.5",
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "compression": "^1.7.4",
@@ -52,8 +52,8 @@
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@faker-js/faker": "^6.2.0",
-    "@remix-run/dev": "^1.6.1",
-    "@remix-run/eslint-config": "^1.6.1",
+    "@remix-run/dev": "^1.6.5",
+    "@remix-run/eslint-config": "^1.6.5",
     "@storybook/addon-actions": "^6.4.22",
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-interactions": "^6.4.22",

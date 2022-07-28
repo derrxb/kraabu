@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import type { LoaderFunction, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
@@ -19,18 +19,18 @@ export const meta: MetaFunction = () => {
   };
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: LoaderArgs) => {
   try {
     const order = await new GetOrder(request).call();
 
     return json({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
-    return getFormattedFailureResponse(e, request);
+    throw getFormattedFailureResponse(e, request);
   }
 };
 
 export default function Index() {
-  const data = useLoaderData() as { order: OrderDTO };
+  const data = useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
   useEffect(() => {
