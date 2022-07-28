@@ -5,7 +5,7 @@ import { getErrorMessage } from '~/lib/error-messages';
 import Failure from '~/lib/failure';
 import type { EKyashEntity } from '../entities/ekyash';
 import { OrderEntity } from '../entities/order';
-import type { SupplierEntity } from '../entities/supplier';
+import type { UserEntity } from '../entities/user';
 import type { CompletedPaymentCallbackData } from '../library/ekyash-api';
 import { isCallbackRequestValid } from '../library/ekyash-api';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
@@ -51,10 +51,10 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getPaymentFromHandshake(data: GiggedOrderHandshake, supplier: SupplierEntity): OrderEntity {
+  getOrderFromHandshake(data: GiggedOrderHandshake, user: UserEntity): OrderEntity {
     const order = new OrderEntity({
-      supplier: supplier,
-      supplierId: supplier.id,
+      productId: null,
+      userId: null,
       status: OrderStatus?.Pending,
       amount: Number(data.total) * 100,
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
@@ -71,10 +71,10 @@ class GiggedMapper {
   }
 
   /**
-   * Load a payment's order details from GiggedBZ's website.
+   * Load an order's payment details from GiggedBZ's website.
    * @returns The initial payment data send by arcadier
    */
-  async getPaymentOrderDetails(options: { invoiceNo: string; paykey: string }) {
+  async getOrderPaymentDetails(options: { invoiceNo: string; paykey: string }) {
     const url = new URL(GiggedRoutes.OrderDetails);
     const query = new URLSearchParams({ ...options, gateway: this.gateway, hashkey: this.hashkey });
     const response = await superagent.get(`${url.toString()}?${query.toString()}`);

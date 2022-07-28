@@ -27,6 +27,8 @@ export class EKyashEntity {
     return {
       id: this.id,
       phone: this.phone,
-    };
+    } as EkyashDTO;
   }
 }
+
+export type EkyashDTO = Pick<EKyashEntity, 'id' | 'phone'>;

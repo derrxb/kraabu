@@ -34,7 +34,7 @@ export const handlers = [
   rest.post(GiggedRoutes.TransactionStatus, (req, res, ctx) => {
     return res(ctx.json({ success: true }));
   }),
-  // Mocks the payment details
+  // Mocks the order details
   rest.get(GiggedRoutes.OrderDetails, (req, res, ctx) => {
     const { invoiceNo } = req.params;
     const total = mockGiggedOrderEntity.amount / 100; // convert to dollars

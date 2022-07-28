@@ -17,14 +17,14 @@ const Template: ComponentStory<typeof PaymentPayDetails> = (args) => (
 
 export const WithOrderItems = Template.bind({});
 WithOrderItems.args = {
-  payment: mockGiggedOrderEntity.json(),
-  vendor: mockGiggedOrderEntity.json().supplier,
+  order: mockGiggedOrderEntity.json(),
+  user: mockGiggedOrderEntity.json().user,
   hasOrderItemsDisplayed: true,
 } as PaymentPayDetailsProps;
 
 export const WithoutOrderItems = Template.bind({});
 WithoutOrderItems.args = {
-  payment: mockGiggedOrderEntity.json(),
-  vendor: mockGiggedOrderEntity.json().supplier,
+  order: mockGiggedOrderEntity.json(),
+  user: mockGiggedOrderEntity.json().user,
   hasOrderItemsDisplayed: false,
 } as PaymentPayDetailsProps;

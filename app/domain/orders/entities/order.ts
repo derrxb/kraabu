@@ -2,7 +2,7 @@ import type { Order as OrderORM } from '@prisma/client';
 import { Currency as CurrencyORM, OrderStatus as OrderStatusORM } from '@prisma/client';
 import type { EKyashTransactionDTO, EKyashTransactionEntity } from './ekyash-transaction';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
-import type { SupplierDTO, SupplierEntity } from './supplier';
+import type { UserDTO, UserEntity } from './user';
 
 const OrderStatus = OrderStatusORM;
 const Currency = CurrencyORM;
@@ -28,11 +28,11 @@ export class OrderEntity {
   id?: OrderORM['id'];
   invoice: OrderORM['invoice'];
   status: OrderORM['status'];
-  supplier?: SupplierEntity;
   additionalData: GiggedOrderDetails;
-  supplierId: OrderORM['supplierId'];
+  userId: OrderORM['userId'];
   orderItems: OrderItemEntity[];
   ekyashTransaction?: EKyashTransactionEntity;
+  user?: UserEntity;
 
   constructor({
     additionalData,
@@ -43,16 +43,16 @@ export class OrderEntity {
     id,
     invoice,
     status,
-    supplier,
-    supplierId,
+    userId,
     orderItems,
     ekyashTransaction,
+    user,
   }: Omit<OrderORM, 'id' | 'createdAt' | 'updatedAt'> &
     Partial<Pick<OrderORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
-      supplier?: SupplierEntity;
       orderItems?: OrderItemEntity[];
       ekyashTransaction?: EKyashTransactionEntity;
+      user?: UserEntity,
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -62,10 +62,10 @@ export class OrderEntity {
     this.id = id;
     this.invoice = invoice;
     this.status = status;
-    this.supplier = supplier;
-    this.supplierId = supplierId;
+    this.userId = userId;
     this.orderItems = orderItems ?? [];
     this.ekyashTransaction = ekyashTransaction;
+    this.user = user;
   }
 
   isValid() {
@@ -89,10 +89,6 @@ export class OrderEntity {
   }
 
   hasOrderDetails() {
-    if (!this.supplier || !this.supplier) {
-      return false;
-    }
-
     return this.orderItems && this.orderItems.length > 0;
   }
 
@@ -100,7 +96,7 @@ export class OrderEntity {
     return this.additionalData.paymentKey === paymentKey;
   }
 
-  json() {
+  json(): OrderDTO {
     return {
       invoice: this.invoice,
       description: this.description,
@@ -110,14 +106,14 @@ export class OrderEntity {
       amount: this.amount,
       createdAt: this.createdAt,
       id: this.id,
-      supplier: this.supplier?.json(),
       orderItems: this.orderItems.map((order) => order.json()),
       ekyashTransaction: this.ekyashTransaction?.json(),
-    } as OrderDTO;
+      user: this.user?.json(),
+    };
   }
 }
 
 export type OrderDTO = Pick<
   OrderEntity,
   'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
-> & { supplier: SupplierDTO; orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO };
+> & { orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO, user?: UserDTO };

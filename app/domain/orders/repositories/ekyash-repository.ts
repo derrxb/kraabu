@@ -13,6 +13,7 @@ export class EKyashRepository {
       pinHash: data.pinHash,
       sid: data.sid,
       apiKey: data.apiKey,
+      userId: data.userId,
     });
   }
 }

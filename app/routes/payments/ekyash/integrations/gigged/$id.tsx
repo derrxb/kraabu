@@ -1,25 +1,25 @@
 import { OrderStatus } from '@prisma/client';
-import type { LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import type { LoaderFunction } from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
-import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
+import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   try {
-    const payment = await new GetPayment(params).call();
+    const order = await new GetOrder(params).call();
 
-    switch (payment.status) {
+    switch (order.status) {
       case OrderStatus.Pending:
         return redirect(
-          `/payments/ekyash/integrations/gigged?invoiceno=${payment.invoice}&paykey=${payment.additionalData?.paymentKey}`,
+          `/payments/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
         );
       case OrderStatus.Completed:
       case OrderStatus.Failed:
-        return redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${payment.invoice}`);
+        return redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`);
       default:
         return redirect(
-          `/payments/ekyash/integrations/gigged?invoiceno=${payment.invoice}&paykey=${payment.additionalData?.paymentKey}`,
+          `/payments/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
         );
     }
   } catch (e) {

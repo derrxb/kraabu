@@ -1,26 +1,28 @@
+import type { OrderItem } from '@prisma/client';
 import { EKyashStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
 import type { EKyashTransactionEntity } from '../entities/ekyash-transaction';
 import { OrderEntity, OrderStatus } from '../entities/order';
-import type { SupplierEntity } from '../entities/supplier';
+import type { UserEntity } from '../entities/user';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
 import { EKyashTransactionRepository } from './e-kyash-transaction-repository';
 import OrderItemRepository from './order-item-repository';
-import { SupplierRepository } from './supplier-repository';
+import { UserRepository } from './user-repository';
 
-export default class PaymentRepository {
+export default class OrderRepository {
   static async rebuildEntity(data: any) {
     if (!data || typeof data === 'undefined') {
       return undefined;
     }
 
-    const supplier = await SupplierRepository.rebuildEntity(data.supplier);
-    const orderItems = data.orderItems?.map((orderItem: any) => OrderItemRepository.rebuildEntity(orderItem)) || [];
+    const user = await UserRepository.rebuildEntity(data.user);
+    const orderItems =
+      data.orderItems?.map((orderItem: OrderItem) => OrderItemRepository.rebuildEntity(orderItem)) || [];
     const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
 
     return new OrderEntity({
+      user,
       orderItems,
-      supplier,
       additionalData: data?.additionalData,
       amount: data?.amount,
       currency: data.currency,
@@ -28,12 +30,15 @@ export default class PaymentRepository {
       id: data.id,
       invoice: data.invoice,
       status: data.status,
-      supplierId: supplier?.id as number,
       ekyashTransaction: ekyashTransaction,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      userId: data.userId,
+      productId: data.productId,
     });
   }
 
-  static async createPending(data: OrderEntity, supplier: SupplierEntity) {
+  static async createPendingEkyashOrder(data: OrderEntity, user: UserEntity) {
     const result = await prisma.order.create({
       data: {
         additionalData: data.additionalData,
@@ -42,9 +47,9 @@ export default class PaymentRepository {
         description: data.description,
         invoice: data.invoice,
         status: data.status,
-        supplier: {
+        user: {
           connect: {
-            id: supplier.id,
+            id: user.id,
           },
         },
       },
@@ -54,26 +59,26 @@ export default class PaymentRepository {
   }
 
   /**
-   * Gets and returns a payment by invoice. Includes a payment's orderItems, supplier & their integrations
+   * Gets and returns an order by invoice. Includes an order's orderItems, supplier & their integrations
    * @param invoice
    * @returns
    */
-  static async getPaymentByInvoice(invoice: string) {
+  static async getByInvoice(invoice: string) {
     const result = await prisma.order.findFirst({
       where: { invoice: invoice },
-      include: { ekyashTransaction: true, orderItems: true, supplier: { include: { ekyash: true } } },
+      include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
     });
 
     return await this.rebuildEntity(result);
   }
 
-  static async setOrderDetailsAndPaymentCode(payment: OrderEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
+  static async setOrderDetailsAndPaymentCode(order: OrderEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
     const result = await prisma.order.update({
       data: {
         amount: orderDetails?.amount,
         currency: orderDetails?.currency,
         additionalData: {
-          ...payment.additionalData,
+          ...order.additionalData,
           payer: orderDetails?.payer,
         },
         ekyashTransaction: {
@@ -99,15 +104,15 @@ export default class PaymentRepository {
             }
           : undefined,
       },
-      where: { id: payment.id },
-      include: { ekyashTransaction: true, orderItems: true, supplier: { include: { ekyash: true } } },
+      where: { id: order.id },
+      include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
     });
 
     return this.rebuildEntity(result);
   }
 
   static async setEkyashPaymentAsCompleted(
-    payment: OrderEntity,
+    order: OrderEntity,
     transaction: Pick<EKyashTransactionEntity, 'transactionId' | 'status'>,
   ) {
     const result = await prisma.order.update({
@@ -120,14 +125,14 @@ export default class PaymentRepository {
           },
         },
       },
-      where: { id: payment.id },
+      where: { id: order.id },
     });
 
     return this.rebuildEntity(result);
   }
 
-  static async setEkyashPaymentAsRejected(
-    payment: OrderEntity,
+  static async setEkyashOrderAsRejected(
+    order: OrderEntity,
     transaction: Pick<EKyashTransactionEntity, 'transactionId' | 'status'>,
   ) {
     const result = await prisma.order.update({
@@ -140,7 +145,7 @@ export default class PaymentRepository {
           },
         },
       },
-      where: { id: payment.id },
+      where: { id: order.id },
     });
 
     return this.rebuildEntity(result);

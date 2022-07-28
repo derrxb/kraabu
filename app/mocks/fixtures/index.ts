@@ -5,7 +5,8 @@ import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transac
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { OrderEntity } from '~/domain/orders/entities/order';
 import { OrderItemEntity } from '~/domain/orders/entities/order-item';
-import { SupplierEntity } from '~/domain/orders/entities/supplier';
+import { ProductEntity } from '~/domain/orders/entities/product';
+import { UserEntity } from '~/domain/orders/entities/user';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
 import { getAuthenticatedHash, TransactionStatus } from '~/domain/orders/library/ekyash-api';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
@@ -39,19 +40,26 @@ export const mockEkyashEntity = new EKyashEntity({
   pinEncoded: mockPinEncoded,
   pinHash: mockPinHash,
   sid: mockSid,
+  userId: 1,
 });
 
 /**
  * A base fake supplier entity that does not yet exist in the database.
  */
-export const mockSupplierEntity = new SupplierEntity({
+export const mockUserEntity = new UserEntity({
   id: 1,
-  homepage: faker.internet.url(),
+  password: 'test',
+  email: 'test@text.com',
+  website: faker.internet.url(),
+  businessName: "Dave's Bike Shop",
   logoUrl: 'https://i.imgur.com/tfWgyRJ.png',
-  name: "Dave's Bike Shop",
   username: 'bikingwithdave',
+  createdAt: new Date(),
+  updatedAt: new Date(),
   tag: 'Riding big bikes in Belize should be easy!',
-  ekyashId: mockEkyashEntity.id,
+  orders: [],
+  products: [],
+  ekyash: mockEkyashEntity,
 });
 
 /**
@@ -82,17 +90,34 @@ export const mockEKyashTransactionEntity = new EKyashTransactionEntity({
   transactionId: mockEKyashTransactionId,
 });
 
+export const mockGiggedProductEntity = new ProductEntity({
+  coverImage:
+    'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
+  thumbnailImage:
+    'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
+
+  currency: 'BZD', // $500 BZD,
+  description: 'A used MacBook Pro',
+  id: 1,
+  name: 'Used MacBook Pro 14inches',
+  price: 1_000 * 100,
+  publicUrl: 'used-macbook-pro',
+  published: true,
+  userId: Number(mockUserEntity.id),
+});
+
 /**
  * A base fake gigged-liked-item entity that does not yet exist in the database.
  */
 export const mockGiggedOrderEntity = new OrderEntity({
+  productId: Number(mockGiggedProductEntity.id),
   amount: 10_000,
   currency: Currency.BZD,
   description: 'A mock order with payment',
   invoice: mockKrabuuInvoiceId,
   status: OrderStatus.Pending,
-  supplierId: mockSupplierEntity.id,
-  supplier: mockSupplierEntity,
+  userId: mockUserEntity.id as number,
+  user: mockUserEntity,
   orderItems: [mockOrderItemEntity],
   ekyashTransaction: mockEKyashTransactionEntity,
   id: 1,
