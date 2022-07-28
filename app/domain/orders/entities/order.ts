@@ -2,6 +2,7 @@ import type { Order as OrderORM } from '@prisma/client';
 import { Currency as CurrencyORM, OrderStatus as OrderStatusORM } from '@prisma/client';
 import type { EKyashTransactionDTO, EKyashTransactionEntity } from './ekyash-transaction';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
+import type { UserDTO, UserEntity } from './user';
 
 const OrderStatus = OrderStatusORM;
 const Currency = CurrencyORM;
@@ -31,6 +32,7 @@ export class OrderEntity {
   userId: OrderORM['userId'];
   orderItems: OrderItemEntity[];
   ekyashTransaction?: EKyashTransactionEntity;
+  user?: UserEntity;
 
   constructor({
     additionalData,
@@ -44,11 +46,13 @@ export class OrderEntity {
     userId,
     orderItems,
     ekyashTransaction,
+    user,
   }: Omit<OrderORM, 'id' | 'createdAt' | 'updatedAt'> &
     Partial<Pick<OrderORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
       orderItems?: OrderItemEntity[];
       ekyashTransaction?: EKyashTransactionEntity;
+      user?: UserEntity,
     }) {
     this.amount = amount;
     this.additionalData = additionalData;
@@ -61,6 +65,7 @@ export class OrderEntity {
     this.userId = userId;
     this.orderItems = orderItems ?? [];
     this.ekyashTransaction = ekyashTransaction;
+    this.user = user;
   }
 
   isValid() {
@@ -91,7 +96,7 @@ export class OrderEntity {
     return this.additionalData.paymentKey === paymentKey;
   }
 
-  json() {
+  json(): OrderDTO {
     return {
       invoice: this.invoice,
       description: this.description,
@@ -103,11 +108,12 @@ export class OrderEntity {
       id: this.id,
       orderItems: this.orderItems.map((order) => order.json()),
       ekyashTransaction: this.ekyashTransaction?.json(),
-    } as OrderDTO;
+      user: this.user?.json(),
+    };
   }
 }
 
 export type OrderDTO = Pick<
   OrderEntity,
   'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
-> & { orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO };
+> & { orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO, user?: UserDTO };

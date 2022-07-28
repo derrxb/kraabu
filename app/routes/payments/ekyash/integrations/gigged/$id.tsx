@@ -2,12 +2,12 @@ import { OrderStatus } from '@prisma/client';
 import type { LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
-import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
+import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   try {
-    const payment = await new GetPayment(params).call();
+    const payment = await new GetOrder(params).call();
 
     switch (payment.status) {
       case OrderStatus.Pending:

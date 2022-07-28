@@ -7,7 +7,7 @@ import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
 import { mockGiggedOrderHandshake, mockUserEntity } from '~/mocks/fixtures';
 import { GIGGED_USERNAME } from '.';
-import CreatePayment from './create-payment.server';
+import CreateOrder from './create-payment.server';
 
 beforeEach(truncateDB);
 
@@ -20,7 +20,7 @@ it('Ensures that a gigged order fails to create when the GiggedBZ supplier is mi
   });
 
   // Act & Assert
-  expect(async () => await new CreatePayment(request).call()).rejects.toThrowError(
+  expect(async () => await new CreateOrder(request).call()).rejects.toThrowError(
     /There is no supplier with the username: giggedbz/i,
   );
 });
@@ -40,11 +40,11 @@ it('Ensures that an order fails to create when at least the required params are 
   const gatewayMissingRequest = getIncompleteRequest('gateway');
 
   // Act & Assert
-  expect(async () => await new CreatePayment(invoiceMissingRequest).call()).rejects.toThrowError(/invoiceno/i);
-  expect(async () => await new CreatePayment(currencyMissingRequest).call()).rejects.toThrowError(/currency/i);
-  expect(async () => await new CreatePayment(gatewayMissingRequest).call()).rejects.toThrowError(/gateway/i);
-  expect(async () => await new CreatePayment(hashkeyMissingRequest).call()).rejects.toThrowError(/hashkey/i);
-  expect(async () => await new CreatePayment(totalMissingRequest).call()).rejects.toThrowError(/total/i);
+  expect(async () => await new CreateOrder(invoiceMissingRequest).call()).rejects.toThrowError(/invoiceno/i);
+  expect(async () => await new CreateOrder(currencyMissingRequest).call()).rejects.toThrowError(/currency/i);
+  expect(async () => await new CreateOrder(gatewayMissingRequest).call()).rejects.toThrowError(/gateway/i);
+  expect(async () => await new CreateOrder(hashkeyMissingRequest).call()).rejects.toThrowError(/hashkey/i);
+  expect(async () => await new CreateOrder(totalMissingRequest).call()).rejects.toThrowError(/total/i);
 });
 
 it('Ensures that the amount value is calculated correctly', async () => {
@@ -73,7 +73,7 @@ it('Ensures that the amount value is calculated correctly', async () => {
   });
 
   // Act
-  const payment = await new CreatePayment(request).call();
+  const payment = await new CreateOrder(request).call();
 
   // Assert
   expect(payment.amount).toEqual(EXPECTED_AMOUNT_IN_CENTS);
@@ -100,7 +100,7 @@ it('Ensures that a payment is created with a pending status', async () => {
   });
 
   // Act
-  const payment = await new CreatePayment(request).call();
+  const payment = await new CreateOrder(request).call();
 
   // Assert
   expect(payment.status).toEqual(OrderStatus.Pending);

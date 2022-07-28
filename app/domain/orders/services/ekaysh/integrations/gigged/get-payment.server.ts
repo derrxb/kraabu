@@ -31,7 +31,7 @@ export default class GetPayment {
   }
 
   async getPendingPayment(invoice: string) {
-    const payment = await OrderRepository.getPaymentByInvoice(invoice);
+    const payment = await OrderRepository.getByInvoice(invoice);
 
     if (!payment) {
       throw new Failure('not_found', 'No order with the provided `invoiceNo` exists.');

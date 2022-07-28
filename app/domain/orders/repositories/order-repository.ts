@@ -7,6 +7,7 @@ import type { UserEntity } from '../entities/user';
 import type { NewInvoiceResponse } from '../library/ekyash-api';
 import { EKyashTransactionRepository } from './e-kyash-transaction-repository';
 import OrderItemRepository from './order-item-repository';
+import { UserRepository } from './user-repository';
 
 export default class OrderRepository {
   static async rebuildEntity(data: any) {
@@ -14,10 +15,12 @@ export default class OrderRepository {
       return undefined;
     }
 
+    const user = await UserRepository.rebuildEntity(data.user);
     const orderItems = data.orderItems?.map((orderItem: OrderItem) => OrderItemRepository.rebuildEntity(orderItem)) || [];
     const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
 
     return new OrderEntity({
+      user,
       orderItems,
       additionalData: data?.additionalData,
       amount: data?.amount,
@@ -34,7 +37,7 @@ export default class OrderRepository {
     });
   }
 
-  static async createPending(data: OrderEntity, user: UserEntity) {
+  static async createPendingEkyashOrder(data: OrderEntity, user: UserEntity) {
     const result = await prisma.order.create({
       data: {
         additionalData: data.additionalData,
@@ -59,7 +62,7 @@ export default class OrderRepository {
    * @param invoice
    * @returns
    */
-  static async getPaymentByInvoice(invoice: string) {
+  static async getByInvoice(invoice: string) {
     const result = await prisma.order.findFirst({
       where: { invoice: invoice },
       include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
@@ -127,8 +130,8 @@ export default class OrderRepository {
     return this.rebuildEntity(result);
   }
 
-  static async setEkyashPaymentAsRejected(
-    payment: OrderEntity,
+  static async setEkyashOrderAsRejected(
+    order: OrderEntity,
     transaction: Pick<EKyashTransactionEntity, 'transactionId' | 'status'>,
   ) {
     const result = await prisma.order.update({
@@ -141,7 +144,7 @@ export default class OrderRepository {
           },
         },
       },
-      where: { id: payment.id },
+      where: { id: order.id },
     });
 
     return this.rebuildEntity(result);

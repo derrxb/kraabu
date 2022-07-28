@@ -3,7 +3,7 @@ import type { OrderEntity } from '~/domain/orders/entities/order';
 import OrderRepository from '~/domain/orders/repositories/order-repository';
 import Failure from '~/lib/failure';
 
-export default class GetPayment {
+export default class GetOrder {
   private params: Params;
 
   constructor(params: Params) {
@@ -14,15 +14,15 @@ export default class GetPayment {
     const { id } = this.params;
 
     if (!id) {
-      throw new Failure('cannot_process', 'A payment `invoice` is required.');
+      throw new Failure('cannot_process', 'An order `invoice` is required.');
     }
 
-    const payment = await OrderRepository.getPaymentByInvoice(id);
+    const order = await OrderRepository.getByInvoice(id);
 
-    if (payment) {
-      return payment;
+    if (order) {
+      return order;
     }
 
-    throw new Failure('not_found', 'A payment with the given `invoice` does not exist.');
+    throw new Failure('not_found', 'An order with the given `invoice` does not exist.');
   }
 }

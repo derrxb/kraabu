@@ -12,7 +12,7 @@ import { GIGGED_USERNAME } from '.';
 /**
  * Creates a bare payment record in the database with no order details nor payment url.
  */
-export default class CreatePayment {
+export default class CreateOrder {
   private request: Request;
 
   constructor(request: Request) {
@@ -35,7 +35,7 @@ export default class CreatePayment {
   async createPayment(supplier: UserEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
       const startTime = Date.now();
-      const payment = await OrderRepository.createPending(
+      const payment = await OrderRepository.createPendingEkyashOrder(
         new GiggedMapper(order.gateway, order.hashkey).getPaymentFromHandshake(order, supplier),
         supplier,
       );

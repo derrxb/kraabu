@@ -12,67 +12,65 @@ import completePendingEkyashPaymentSchema from '~/presentation/requests/complete
  * This uses the data obtained from EKyash to mark a payment as completed
  * using the callback options provided by EKyash. This is an integration specific to Gigged and E-Kyash.
  */
-export default class CompletePayment {
+export default class CompleteOrder {
   private request: Request;
-  private payment: OrderEntity | null;
-  private paymentStatus: CompletedPaymentCallbackData | null;
+  private order: OrderEntity | null;
+  private orderStatus: CompletedPaymentCallbackData | null;
 
   constructor(request: Request) {
     this.request = request;
-    this.payment = null;
-    this.paymentStatus = null;
+    this.order = null;
+    this.orderStatus = null;
   }
 
-  async verifyPaymentParams() {
+  async verifyOrderParams() {
     const body = await this.request.json();
     const validatedParams = await completePendingEkyashPaymentSchema.validateAsync({
       ...body,
     });
 
-    this.paymentStatus = {
+    this.orderStatus = {
       ...validatedParams,
     };
   }
 
   async validateHashKey() {
-    console.log('payment', this.payment);
-
-    if (this.paymentStatus) {
+    if (this.orderStatus) {
       return await new GiggedMapper(
-        this.payment?.additionalData.gateway as string,
-        this.payment?.additionalData.hashkey as string,
-      ).validatePaymentCallback(this.paymentStatus, this.payment?.user?.ekyash as EKyashEntity);
+        this.order?.additionalData.gateway as string,
+        this.order?.additionalData.hashkey as string,
+      ).validatePaymentCallback(this.orderStatus, this.order?.user?.ekyash as EKyashEntity);
     }
 
     return false;
   }
 
-  async setPayment() {
-    if (this.paymentStatus?.orderId) {
-      this.payment = (await OrderRepository.getPaymentByInvoice(this.paymentStatus?.orderId)) ?? null;
+  async setOrder() {
+    if (this.orderStatus?.orderId) {
+      this.order = (await OrderRepository.getByInvoice(this.orderStatus?.orderId)) ?? null;
     } else {
       throw new Failure('not_found', 'No payment request with the given invoice found.');
     }
   }
 
   async setKrabuuPaymentAsAcceptedOrRejected() {
-    let updatedOrder: OrderEntity | undefined = this.payment ?? undefined;
+    let updatedOrder: OrderEntity | undefined = this.order ?? undefined;
 
-    switch (this.paymentStatus?.statusPay) {
+    switch (this.orderStatus?.statusPay) {
       case TransactionStatus.New:
         return;
       case TransactionStatus.Pending:
         return;
       case TransactionStatus.Accepted:
-        updatedOrder = await OrderRepository.setEkyashPaymentAsCompleted(this.payment as OrderEntity, {
+        updatedOrder = await OrderRepository.setEkyashPaymentAsCompleted(this.order as OrderEntity, {
           status: EKyashStatus.Success,
-          transactionId: this.paymentStatus?.transactionId,
+          transactionId: this.orderStatus?.transactionId,
         });
         break;
       case TransactionStatus.Declined:
-        updatedOrder = await OrderRepository.setEkyashPaymentAsRejected(this.payment as OrderEntity, {
+        updatedOrder = await OrderRepository.setEkyashOrderAsRejected(this.order as OrderEntity, {
           status: EKyashStatus.Canceled,
-          transactionId: this.paymentStatus?.transactionId,
+          transactionId: this.orderStatus?.transactionId,
         });
         break;
       default:
@@ -80,17 +78,17 @@ export default class CompletePayment {
     }
 
     // Update current payment to match the updated one.
-    if (updatedOrder && this.payment) {
-      this.payment.status = updatedOrder.status;
+    if (updatedOrder && this.order) {
+      this.order.status = updatedOrder.status;
     }
   }
 
   async setGiggedPaymentAsAcceptedOrRejected() {
-    if (typeof this.payment?.status === 'undefined') {
+    if (typeof this.order?.status === 'undefined') {
       throw new Failure('cannot_process', 'The payment is missing the status field.');
     }
 
-    if (this.payment?.status === OrderStatus.Pending) {
+    if (this.order?.status === OrderStatus.Pending) {
       throw new Failure(
         'cannot_process',
         'Expected `payment` to be either `completed` or `failed` but got `pending`. Did you forget to call `setKrabuuPaymentAsAcceptedOrRejected`?',
@@ -98,27 +96,27 @@ export default class CompletePayment {
     }
 
     await new GiggedMapper(
-      this.payment?.additionalData.gateway as string,
-      this.payment?.additionalData.hashkey as string,
-    ).updateOrderStatus(this.payment);
+      this.order?.additionalData.gateway as string,
+      this.order?.additionalData.hashkey as string,
+    ).updateOrderStatus(this.order);
   }
 
   async call() {
-    await this.verifyPaymentParams();
-    await this.setPayment();
+    await this.verifyOrderParams();
+    await this.setOrder();
 
     if (await this.validateHashKey()) {
       throw new Failure('forbidden', 'The payment hash is invalid.');
     }
 
     // Leave early if payment has been changed from `pending`.
-    if (!this.payment?.isPending()) {
-      return this.payment;
+    if (!this.order?.isPending()) {
+      return this.order;
     }
 
     await this.setKrabuuPaymentAsAcceptedOrRejected();
     await this.setGiggedPaymentAsAcceptedOrRejected();
 
-    return this.payment;
+    return this.order;
   }
 }

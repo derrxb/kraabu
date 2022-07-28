@@ -1,6 +1,6 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import CompletePayment from '~/domain/orders/services/ekaysh/integrations/gigged/complete-payment.server';
+import CompleteOrder from '~/domain/orders/services/ekaysh/integrations/gigged/complete-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 
@@ -10,7 +10,7 @@ import { HTTP_CODE } from '~/presentation/representers/http-response-representer
  */
 export const action: ActionFunction = async ({ request }) => {
   try {
-    const order = await new CompletePayment(request).call();
+    const order = await new CompleteOrder(request).call();
 
     return json({ payment: order?.json() }, HTTP_CODE.ok);
   } catch (e) {

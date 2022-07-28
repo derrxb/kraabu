@@ -4,7 +4,7 @@ import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import type { UserEntity } from '~/domain/orders/entities/user';
-import GetPayment from '~/domain/orders/services/ekaysh/get-payment';
+import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
@@ -20,7 +20,7 @@ export const meta: MetaFunction = ({ data }) => {
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   try {
-    const payment = await new GetPayment(params).call();
+    const payment = await new GetOrder(params).call();
 
     switch (payment.status) {
       case OrderStatus.Completed:
