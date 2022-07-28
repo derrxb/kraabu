@@ -16,7 +16,8 @@ export default class OrderRepository {
     }
 
     const user = await UserRepository.rebuildEntity(data.user);
-    const orderItems = data.orderItems?.map((orderItem: OrderItem) => OrderItemRepository.rebuildEntity(orderItem)) || [];
+    const orderItems =
+      data.orderItems?.map((orderItem: OrderItem) => OrderItemRepository.rebuildEntity(orderItem)) || [];
     const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
 
     return new OrderEntity({
@@ -58,7 +59,7 @@ export default class OrderRepository {
   }
 
   /**
-   * Gets and returns a payment by invoice. Includes a payment's orderItems, supplier & their integrations
+   * Gets and returns an order by invoice. Includes an order's orderItems, supplier & their integrations
    * @param invoice
    * @returns
    */
@@ -71,13 +72,13 @@ export default class OrderRepository {
     return await this.rebuildEntity(result);
   }
 
-  static async setOrderDetailsAndPaymentCode(payment: OrderEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
+  static async setOrderDetailsAndPaymentCode(order: OrderEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
     const result = await prisma.order.update({
       data: {
         amount: orderDetails?.amount,
         currency: orderDetails?.currency,
         additionalData: {
-          ...payment.additionalData,
+          ...order.additionalData,
           payer: orderDetails?.payer,
         },
         ekyashTransaction: {
@@ -103,7 +104,7 @@ export default class OrderRepository {
             }
           : undefined,
       },
-      where: { id: payment.id },
+      where: { id: order.id },
       include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
     });
 
@@ -111,7 +112,7 @@ export default class OrderRepository {
   }
 
   static async setEkyashPaymentAsCompleted(
-    payment: OrderEntity,
+    order: OrderEntity,
     transaction: Pick<EKyashTransactionEntity, 'transactionId' | 'status'>,
   ) {
     const result = await prisma.order.update({
@@ -124,7 +125,7 @@ export default class OrderRepository {
           },
         },
       },
-      where: { id: payment.id },
+      where: { id: order.id },
     });
 
     return this.rebuildEntity(result);

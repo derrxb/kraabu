@@ -9,7 +9,7 @@ import Failure from '~/lib/failure';
 import completePendingEkyashPaymentSchema from '~/presentation/requests/complete-pending-ekyash-payment';
 
 /**
- * This uses the data obtained from EKyash to mark a payment as completed
+ * This uses the data obtained from EKyash to mark an order as completed
  * using the callback options provided by EKyash. This is an integration specific to Gigged and E-Kyash.
  */
 export default class CompleteOrder {
@@ -49,7 +49,7 @@ export default class CompleteOrder {
     if (this.orderStatus?.orderId) {
       this.order = (await OrderRepository.getByInvoice(this.orderStatus?.orderId)) ?? null;
     } else {
-      throw new Failure('not_found', 'No payment request with the given invoice found.');
+      throw new Failure('not_found', 'No order request with the given invoice found.');
     }
   }
 
@@ -77,7 +77,7 @@ export default class CompleteOrder {
         throw new Failure('bad_request', 'Could not complete this request as an unknown `statusPay` was provided.');
     }
 
-    // Update current payment to match the updated one.
+    // Update current order to match the updated one.
     if (updatedOrder && this.order) {
       this.order.status = updatedOrder.status;
     }
@@ -85,13 +85,13 @@ export default class CompleteOrder {
 
   async setGiggedPaymentAsAcceptedOrRejected() {
     if (typeof this.order?.status === 'undefined') {
-      throw new Failure('cannot_process', 'The payment is missing the status field.');
+      throw new Failure('cannot_process', 'The order is missing the status field.');
     }
 
     if (this.order?.status === OrderStatus.Pending) {
       throw new Failure(
         'cannot_process',
-        'Expected `payment` to be either `completed` or `failed` but got `pending`. Did you forget to call `setKrabuuPaymentAsAcceptedOrRejected`?',
+        'Expected `order` to be either `completed` or `failed` but got `pending`. Did you forget to call `setKrabuuPaymentAsAcceptedOrRejected`?',
       );
     }
 
@@ -106,10 +106,10 @@ export default class CompleteOrder {
     await this.setOrder();
 
     if (await this.validateHashKey()) {
-      throw new Failure('forbidden', 'The payment hash is invalid.');
+      throw new Failure('forbidden', 'The order hash is invalid.');
     }
 
-    // Leave early if payment has been changed from `pending`.
+    // Leave early if order has been changed from `pending`.
     if (!this.order?.isPending()) {
       return this.order;
     }

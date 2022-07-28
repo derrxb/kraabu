@@ -10,7 +10,6 @@ import { UserEntity } from '~/domain/orders/entities/user';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
 import { getAuthenticatedHash, TransactionStatus } from '~/domain/orders/library/ekyash-api';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
-import { EKyash } from '~/ui/organisms/pending-payment/index.stories';
 
 const mockHash = '7mpitx1h22du4ugogma1fc0jhkvvo6xjyid3xfidq6qew13hhg8hd0ygxqcizn7nh2r06dvo5a6enpmvdymlvij0kgx7ovdgmys4';
 const mockKrabuuInvoiceId = 'i63wodfkb5gzu0k';

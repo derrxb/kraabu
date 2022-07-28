@@ -18,5 +18,5 @@ const Template: ComponentStory<typeof Listing> = (args) => (
 export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
-  payment: mockGiggedOrderEntity.json(),
+  order: mockGiggedOrderEntity.json(),
 };

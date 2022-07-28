@@ -10,44 +10,44 @@ import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
 
 export const meta: MetaFunction = ({ data }) => {
-  const payment = data.payment as OrderDTO;
+  const order = data.order as OrderDTO;
 
   return {
-    title: `Payment Successful | ${payment?.user?.businessName} - ${payment?.user?.tag}`,
-    description: `${payment.orderItems?.[0].description}`,
+    title: `Payment Successful | ${order?.user?.businessName} - ${order?.user?.tag}`,
+    description: `${order.orderItems?.[0].description}`,
   };
 };
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   try {
-    const payment = await new GetOrder(params).call();
+    const order = await new GetOrder(params).call();
 
-    switch (payment.status) {
+    switch (order.status) {
       case OrderStatus.Completed:
-        return json({ payment: payment.json() });
+        return json({ order: order.json() });
       case OrderStatus.Failed:
-        return redirect(`/payments/ekyash/${payment.invoice}/failed`);
+        return redirect(`/payments/ekyash/${order.invoice}/failed`);
       case OrderStatus.Pending:
         return redirect(
-          `/payments/ekyash/integrations/gigged?invoiceNo=${payment.invoice}&paykey=${payment.additionalData.paymentKey}`,
+          `/payments/ekyash/integrations/gigged?invoiceNo=${order.invoice}&paykey=${order.additionalData.paymentKey}`,
         );
       default:
         break;
     }
 
-    return { payment: payment.json() };
+    return { order: order.json() };
   } catch (e) {
     return getFormattedFailureResponse(e, request);
   }
 };
 
 export default function Completed() {
-  const data = useLoaderData() as { payment: OrderDTO };
+  const data = useLoaderData() as { order: OrderDTO };
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full md:w-1/2">
-        <PaymentPayDetails payment={data.payment} vendor={data.payment.user as UserEntity} hasOrderItemsDisplayed />
+        <PaymentPayDetails order={data.order} user={data.order.user as UserEntity} hasOrderItemsDisplayed />
       </div>
 
       <div className="h-full w-full md:w-1/2">

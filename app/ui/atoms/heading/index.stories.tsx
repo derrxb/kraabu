@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { Heading } from '.';
+import { Heading, HeadingVariant } from '.';
 
 export default {
   title: 'Atoms/Heading',
@@ -11,6 +11,6 @@ const Template: ComponentStory<typeof Heading> = (args) => <Heading {...args} />
 
 export const Heading1 = Template.bind({});
 Heading1.args = {
-  variant: 'h1',
+  variant: HeadingVariant.H1,
   children: 'Heading 1',
 };

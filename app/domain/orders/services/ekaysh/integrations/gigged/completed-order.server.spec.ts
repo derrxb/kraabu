@@ -11,7 +11,7 @@ import {
 import { GIGGED_USERNAME } from '.';
 import CompleteOrder from './complete-order.server';
 import CreateOrder from './create-order.server';
-import GetPayment from './get-payment.server';
+import GetOrder from './get-order.server';
 
 beforeEach(truncateDB);
 
@@ -40,24 +40,24 @@ it('Ensures that cancelled payments are correctly marked as cancelled', async ()
     },
   });
 
-  // Create pending payment
-  const payment = await new CreateOrder(
+  // Create pending order
+  const order = await new CreateOrder(
     new Request('http://localhost:3000', {
       method: 'POST',
       body: JSON.stringify(mockGiggedOrderHandshake),
     }),
   ).call();
 
-  await new GetPayment(
-    new Request(`http://localhost:3000?invoiceno=${payment.invoice}&paykey=${payment.additionalData.paymentKey}`),
+  await new GetOrder(
+    new Request(`http://localhost:3000?invoiceno=${order.invoice}&paykey=${order.additionalData.paymentKey}`),
   ).call();
 
   const cancelledPaymentRequest = new Request('http://localhost:3000', {
     method: 'POST',
     body: JSON.stringify({
       ...mockFailedGiggedEKyashOrderCallback,
-      invoiceId: payment.invoice,
-      orderId: payment.invoice,
+      invoiceId: order.invoice,
+      orderId: order.invoice,
     } as CompletedPaymentCallbackData),
   });
 

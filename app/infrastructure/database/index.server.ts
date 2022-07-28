@@ -1,4 +1,4 @@
-import type { Ekyash as EkyashORM, Order as OrderORM, Supplier as SupplierORM } from '@prisma/client';
+import type { Ekyash as EkyashORM, Order as OrderORM, User as UserORM } from '@prisma/client';
 import { Currency, OrderStatus, PrismaClient } from '@prisma/client';
 
 // add prisma to the NodeJS global type
@@ -13,6 +13,6 @@ const prisma = global.prisma || new PrismaClient({ datasources: { db: { url: pro
 
 if (process.env.NODE_ENV === 'development') global.prisma = prisma;
 
-export { type EkyashORM, type OrderORM, type SupplierORM, Currency, OrderStatus };
+export { type EkyashORM, type OrderORM, type UserORM, Currency, OrderStatus };
 
 export default prisma;

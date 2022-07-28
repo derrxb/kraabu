@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import type { LoaderFunction, MetaFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
-import GetPayment from '~/domain/orders/services/ekaysh/integrations/gigged/get-payment.server';
+import GetOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
@@ -21,16 +21,16 @@ export const meta: MetaFunction = () => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
-    const payment = await new GetPayment(request).call();
+    const order = await new GetOrder(request).call();
 
-    return json({ payment: payment?.json() }, HTTP_CODE.ok);
+    return json({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
     return getFormattedFailureResponse(e, request);
   }
 };
 
 export default function Index() {
-  const data = useLoaderData() as { payment: OrderDTO };
+  const data = useLoaderData() as { order: OrderDTO };
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -39,10 +39,10 @@ export default function Index() {
     setIntervalAsync(
       timer,
       async () => {
-        const result = await axios.get(`/payments/ekyash/${data.payment.invoice}/status`);
+        const result = await axios.get(`/payments/ekyash/${data.order.invoice}/status`);
 
         if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
-          navigate(`/payments/ekyash/integrations/gigged/${data.payment.invoice}`, {
+          navigate(`/payments/ekyash/integrations/gigged/${data.order.invoice}`, {
             replace: true,
           });
         }
@@ -55,7 +55,7 @@ export default function Index() {
         clearTimeout(timer);
       }
     };
-  }, [data.payment.invoice, navigate]);
+  }, [data.order.invoice, navigate]);
 
-  return <PendingPayment payment={data.payment} hasOrderItemsDisplayed={false} />;
+  return <PendingPayment order={data.order} hasOrderItemsDisplayed={false} />;
 }

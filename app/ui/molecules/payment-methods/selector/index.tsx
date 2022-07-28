@@ -10,12 +10,10 @@ export const PaymentMethodSelector = (props: PaymentMethodSelectorProps) => {
   return (
     <div className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32">
       <Heading variant={HeadingVariant.H4} appearance={HeadingAppearance.UnStyled} className="mb-2">
-        Confirm order by completing payment with one of the supported e-wallets.
+        Confirm order by completing with one of the supported e-wallets.
       </Heading>
 
-      <p className="mb-8 text-sm text-gray-500">
-        Once selected payment we’ll send a payment request to your mobile app.
-      </p>
+      <p className="mb-8 text-sm text-gray-500">Once selected we’ll send a request to your mobile app.</p>
 
       <ul>
         <li className="mb-8">

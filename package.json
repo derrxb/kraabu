@@ -5,7 +5,7 @@
   "license": "ISC",
   "sideEffects": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production npm run build:css && cross-env NODE_ENV=production remix build",
+    "build": "yarn tsc && cross-env NODE_ENV=production npm run build:css && cross-env NODE_ENV=production remix build",
     "build:css": "tailwindcss -m -i ./styles/app.css -o app/styles/app.css",
     "build:deploy": "sh deploy.sh",
     "dev": "dotenv -e .env.dev -- run-p dev:*",

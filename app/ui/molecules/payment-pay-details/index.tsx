@@ -1,32 +1,30 @@
 import type { OrderDTO } from '~/domain/orders/entities/order';
-import type { SupplierDTO } from '~/domain/orders/entities/supplier';
+import type { UserDTO } from '~/domain/orders/entities/user';
 import { OrderTotal } from '~/ui/atoms/order-total';
 import { OrderStatus } from '../../atoms/order-status';
 import { OrderItemList } from '../order-items';
 import { VendorHeader } from '../vendor-header';
 
 export type PaymentPayDetailsProps = {
-  payment: OrderDTO;
-  vendor: SupplierDTO;
+  order: OrderDTO;
+  user?: UserDTO;
   hasOrderItemsDisplayed: boolean;
 };
 
-export const PaymentPayDetails = ({ vendor, payment, hasOrderItemsDisplayed }: PaymentPayDetailsProps) => {
+export const PaymentPayDetails = ({ user, order, hasOrderItemsDisplayed }: PaymentPayDetailsProps) => {
   return (
     <div className="flex h-full w-full flex-col bg-slate-100 px-8 py-4 md:px-16 md:py-10 xl:px-32">
-      <div className="mb-4 pb-4 md:mb-10">
-        <VendorHeader {...vendor} />
+      <div className="mb-4 pb-4 md:mb-10">{user ? <VendorHeader {...user} /> : null}</div>
+
+      <div className="mb-4">
+        <OrderTotal amount={order.amount} currency={order.currency} />
       </div>
 
       <div className="mb-4">
-        <OrderTotal amount={payment.amount} currency={payment.currency} />
+        <OrderStatus status={order.status} />
       </div>
 
-      <div className="mb-4">
-        <OrderStatus status={payment.status} />
-      </div>
-
-      {hasOrderItemsDisplayed ? <OrderItemList items={payment.orderItems} /> : null}
+      {hasOrderItemsDisplayed ? <OrderItemList items={order.orderItems} /> : null}
     </div>
   );
 };

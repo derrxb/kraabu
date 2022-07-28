@@ -51,7 +51,7 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getPaymentFromHandshake(data: GiggedOrderHandshake, user: UserEntity): OrderEntity {
+  getOrderFromHandshake(data: GiggedOrderHandshake, user: UserEntity): OrderEntity {
     const order = new OrderEntity({
       productId: null,
       userId: null,
@@ -71,10 +71,10 @@ class GiggedMapper {
   }
 
   /**
-   * Load a payment's order details from GiggedBZ's website.
+   * Load an order's payment details from GiggedBZ's website.
    * @returns The initial payment data send by arcadier
    */
-  async getPaymentOrderDetails(options: { invoiceNo: string; paykey: string }) {
+  async getOrderPaymentDetails(options: { invoiceNo: string; paykey: string }) {
     const url = new URL(GiggedRoutes.OrderDetails);
     const query = new URLSearchParams({ ...options, gateway: this.gateway, hashkey: this.hashkey });
     const response = await superagent.get(`${url.toString()}?${query.toString()}`);

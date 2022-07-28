@@ -72,13 +72,13 @@ it('Ensures that the amount value is calculated correctly', async () => {
   });
 
   // Act
-  const payment = await new CreateOrder(request).call();
+  const order = await new CreateOrder(request).call();
 
   // Assert
-  expect(payment.amount).toEqual(EXPECTED_AMOUNT_IN_CENTS);
+  expect(order.amount).toEqual(EXPECTED_AMOUNT_IN_CENTS);
 });
 
-it('Ensures that a payment is created with a pending status', async () => {
+it('Ensures that a order is created with a pending status', async () => {
   // Arrange
   // create fake request
   const request = new Request('http://localhost:3000', {
@@ -99,11 +99,11 @@ it('Ensures that a payment is created with a pending status', async () => {
   });
 
   // Act
-  const payment = await new CreateOrder(request).call();
+  const order = await new CreateOrder(request).call();
 
   // Assert
-  expect(payment.status).toEqual(OrderStatus.Pending);
-  expect(payment.amount).toEqual(Number(mockGiggedOrderHandshake.total) * 100);
-  expect(payment.additionalData.paymentKey).toBeTruthy();
-  expect(payment.invoice).toBeTruthy();
+  expect(order.status).toEqual(OrderStatus.Pending);
+  expect(order.amount).toEqual(Number(mockGiggedOrderHandshake.total) * 100);
+  expect(order.additionalData.paymentKey).toBeTruthy();
+  expect(order.invoice).toBeTruthy();
 });

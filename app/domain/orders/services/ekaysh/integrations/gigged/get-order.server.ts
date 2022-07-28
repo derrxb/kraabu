@@ -8,7 +8,7 @@ import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 
-export default class GetPayment {
+export default class GetOrder {
   private request: Request;
   private user?: UserEntity;
 
@@ -30,29 +30,29 @@ export default class GetPayment {
     };
   }
 
-  async getPendingPayment(invoice: string) {
-    const payment = await OrderRepository.getByInvoice(invoice);
+  async getPendingOrder(invoice: string) {
+    const order = await OrderRepository.getByInvoice(invoice);
 
-    if (!payment) {
+    if (!order) {
       throw new Failure('not_found', 'No order with the provided `invoiceNo` exists.');
     }
 
-    return payment;
+    return order;
   }
 
-  async getPaymentUser(payment: OrderEntity) {
-    this.user = await UserRepository.findByUserId(Number(payment.userId));
+  async getOrderUser(order: OrderEntity) {
+    this.user = await UserRepository.findByUserId(Number(order.userId));
   }
 
-  async getPaymentOrderDetails(payment: OrderEntity) {
-    if (payment.hasOrderDetails()) {
+  async getPaymentOrderDetails(order: OrderEntity) {
+    if (order.hasOrderDetails()) {
       return undefined;
     }
 
     return await new GiggedMapper(
-      payment.additionalData.gateway as string,
-      payment.additionalData.hashkey as string,
-    ).getPaymentOrderDetails({ invoiceNo: payment.invoice, paykey: payment.additionalData?.paymentKey as string });
+      order.additionalData.gateway as string,
+      order.additionalData.hashkey as string,
+    ).getOrderPaymentDetails({ invoiceNo: order.invoice, paykey: order.additionalData?.paymentKey as string });
   }
 
   async getPaymentQrCode(payment: OrderEntity) {
@@ -66,31 +66,31 @@ export default class GetPayment {
   }
 
   async call() {
-    let payment: OrderEntity | null = null;
+    let order: OrderEntity | null = null;
     const params = await this.verifyParams();
-    payment = await this.getPendingPayment(params.invoiceNo);
+    order = await this.getPendingOrder(params.invoiceNo);
 
-    if (!payment.isValidPaymentKey(params.paymentKey)) {
+    if (!order.isValidPaymentKey(params.paymentKey)) {
       throw new Failure('forbidden', "The payment key provided does not match this payment's records");
     }
 
-    if (payment.canBePaid()) {
-      return payment;
+    if (order.canBePaid()) {
+      return order;
     }
 
-    await this.getPaymentUser(payment);
+    await this.getOrderUser(order);
 
-    const invoice = await this.getPaymentQrCode(payment);
-    const orderDetails = await this.getPaymentOrderDetails(payment);
+    const invoice = await this.getPaymentQrCode(order);
+    const orderDetails = await this.getPaymentOrderDetails(order);
 
     if (!!invoice || !!orderDetails) {
-      return await OrderRepository.setOrderDetailsAndPaymentCode(payment, invoice, orderDetails);
+      return await OrderRepository.setOrderDetailsAndPaymentCode(order, invoice, orderDetails);
     }
 
     throw new Failure(
       'bad_request',
       `
-        Unexpected state reached: The payment has valid order details and a valid payment QR code URL.
+        Unexpected state reached: The order has valid order details and a valid payment QR code URL.
         This is more than likely a development error.
       `,
     );

@@ -18,5 +18,5 @@ const Template: ComponentStory<typeof PendingPayment> = (args) => (
 export const EKyash = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 EKyash.args = {
-  payment: mockGiggedOrderEntity.json(),
+  order: mockGiggedOrderEntity.json(),
 };

@@ -36,7 +36,7 @@ export default class CreateOrder {
     try {
       const startTime = Date.now();
       const order = await OrderRepository.createPendingEkyashOrder(
-        new GiggedMapper(orderHandshake.gateway, orderHandshake.hashkey).getPaymentFromHandshake(
+        new GiggedMapper(orderHandshake.gateway, orderHandshake.hashkey).getOrderFromHandshake(
           orderHandshake,
           supplier,
         ),

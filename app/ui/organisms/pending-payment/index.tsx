@@ -3,31 +3,27 @@ import { PaymentPayCode } from '~/ui/molecules/payment-methods/ekyash';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 
 export type PendingPaymentProps = {
-  payment: OrderDTO;
+  order: OrderDTO;
   hasOrderItemsDisplayed: boolean;
 };
 
-export const PendingPayment = ({ payment, hasOrderItemsDisplayed }: PendingPaymentProps) => {
+export const PendingPayment = ({ order, hasOrderItemsDisplayed }: PendingPaymentProps) => {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full lg:w-1/2">
-        <PaymentPayDetails
-          payment={payment}
-          vendor={payment.supplier}
-          hasOrderItemsDisplayed={hasOrderItemsDisplayed}
-        />
+        <PaymentPayDetails order={order} user={order.user} hasOrderItemsDisplayed={hasOrderItemsDisplayed} />
       </div>
 
       <div className="h-full w-full lg:w-1/2">
-        {payment.ekyashTransaction?.qrCodeUrl ? (
+        {order.ekyashTransaction?.qrCodeUrl ? (
           <PaymentPayCode
-            qr={payment.ekyashTransaction?.qrCodeUrl as string}
+            qr={order.ekyashTransaction?.qrCodeUrl as string}
             paymentMethod={{
               name: 'E-Kyash',
               color: '#39ae49',
               url: 'https://www.e-kyash.com/',
             }}
-            deepLink={payment.ekyashTransaction?.deepLinkUrl as string}
+            deepLink={order.ekyashTransaction?.deepLinkUrl as string}
           />
         ) : (
           <div className="w-full rounded-md bg-red-200 py-2 px-4 pb-4">
