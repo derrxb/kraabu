@@ -1,7 +1,7 @@
-import { beforeEach, it } from 'vitest';
+import { beforeEach, it, expect } from 'vitest';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
-import prisma from '~/infrastructure/database/index.server';
+import prisma, { OrderStatus } from '~/infrastructure/database/index.server';
 import {
   mockEkyashEntity,
   mockFailedGiggedEKyashOrderCallback,
@@ -11,6 +11,7 @@ import {
 import { GIGGED_USERNAME } from '.';
 import CompleteOrder from './complete-order.server';
 import CreateOrder from './create-order.server';
+import GetPayment from './get-payment.server';
 
 beforeEach(truncateDB);
 
@@ -47,6 +48,10 @@ it('Ensures that cancelled payments are correctly marked as cancelled', async ()
     }),
   ).call();
 
+  await new GetPayment(
+    new Request(`http://localhost:3000?invoiceno=${payment.invoice}&paykey=${payment.additionalData.paymentKey}`),
+  ).call();
+
   const cancelledPaymentRequest = new Request('http://localhost:3000', {
     method: 'POST',
     body: JSON.stringify({
@@ -60,5 +65,5 @@ it('Ensures that cancelled payments are correctly marked as cancelled', async ()
   const cancelledPayment = await new CompleteOrder(cancelledPaymentRequest).call();
 
   // Assert
-  console.log(cancelledPayment);
+  expect(cancelledPayment?.status).toBe(OrderStatus.Failed);
 });
