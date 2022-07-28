@@ -10,7 +10,7 @@ import {
 } from '~/mocks/fixtures';
 import { GIGGED_USERNAME } from '.';
 import CompleteOrder from './complete-order.server';
-import CreateOrder from './create-payment.server';
+import CreateOrder from './create-order.server';
 
 beforeEach(truncateDB);
 

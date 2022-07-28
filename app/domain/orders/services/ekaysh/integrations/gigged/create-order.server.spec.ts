@@ -1,13 +1,12 @@
 import { OrderStatus } from '@prisma/client';
 import { omit } from 'lodash';
 import { beforeEach, expect, it } from 'vitest';
-import type { User } from '@prisma/client';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
 import { mockGiggedOrderHandshake, mockUserEntity } from '~/mocks/fixtures';
 import { GIGGED_USERNAME } from '.';
-import CreateOrder from './create-payment.server';
+import CreateOrder from './create-order.server';
 
 beforeEach(truncateDB);
 

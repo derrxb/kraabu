@@ -1,6 +1,6 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import CreateOrder from '~/domain/orders/services/ekaysh/integrations/gigged/create-payment.server';
+import CreateOrder from '~/domain/orders/services/ekaysh/integrations/gigged/create-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 

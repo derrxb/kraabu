@@ -10,7 +10,7 @@ import createdPendingGiggedPaymentSchema from '~/presentation/requests/create-pe
 import { GIGGED_USERNAME } from '.';
 
 /**
- * Creates a bare payment record in the database with no order details nor payment url.
+ * Creates a bare order record in the database with no order details nor order url.
  */
 export default class CreateOrder {
   private request: Request;
@@ -32,24 +32,27 @@ export default class CreateOrder {
     });
   }
 
-  async createPayment(supplier: UserEntity, order: GiggedOrderHandshake): Promise<OrderEntity> {
+  async createOrder(supplier: UserEntity, orderHandshake: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
       const startTime = Date.now();
-      const payment = await OrderRepository.createPendingEkyashOrder(
-        new GiggedMapper(order.gateway, order.hashkey).getPaymentFromHandshake(order, supplier),
+      const order = await OrderRepository.createPendingEkyashOrder(
+        new GiggedMapper(orderHandshake.gateway, orderHandshake.hashkey).getPaymentFromHandshake(
+          orderHandshake,
+          supplier,
+        ),
         supplier,
       );
       const endTime = Date.now();
 
-      logLongTasks(startTime, endTime, LONG_TASKS_THRESHOLD, 'CreatePendingPayment');
+      logLongTasks(startTime, endTime, LONG_TASKS_THRESHOLD, 'CreatePendingOrder');
 
-      if (!payment) {
-        throw new Failure('cannot_process', 'Something unexpected occurred while creating pending payment.');
+      if (!order) {
+        throw new Failure('cannot_process', 'Something unexpected occurred while creating pending order.');
       }
 
-      return payment;
+      return order;
     } catch (e) {
-      throw new Failure('internal_error', 'Something unexpected occurred while creating pending payment.');
+      throw new Failure('internal_error', 'Something unexpected occurred while creating pending order.');
     }
   }
 
@@ -62,7 +65,7 @@ export default class CreateOrder {
         throw new Failure('not_found', `There is no supplier with the username: ` + GIGGED_USERNAME);
       }
 
-      return await this.createPayment(supplier, order);
+      return await this.createOrder(supplier, order);
     } catch (e) {
       throw e;
     }
