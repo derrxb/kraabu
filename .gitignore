@@ -12,3 +12,4 @@ app/styles
 build/index.js
 coverage/
 coverage
+.invalid
