@@ -12,8 +12,8 @@ export class UserRepository {
     }
 
     const ekyash = await EKyashRepository.rebuildEntity(data.ekyash);
-    const products = data.products?.map((product: Product) =>  ProductRepository.rebuildEntity(product)) ?? [];
-    const orders = data.orders?.map((order: Order) =>  OrderRepository.rebuildEntity(order)) ?? [];
+    const products = data.products?.map((product: Product) => ProductRepository.rebuildEntity(product)) ?? [];
+    const orders = data.orders?.map((order: Order) => OrderRepository.rebuildEntity(order)) ?? [];
 
     return new UserEntity({
       ...data,
@@ -22,6 +22,15 @@ export class UserRepository {
       orders,
       products,
     });
+  }
+
+  static async findByUserId(userId: number) {
+    const result = await prisma.user.findFirst({
+      where: { id: userId },
+      include: { ekyash: true },
+    });
+
+    return await this.rebuildEntity(result);
   }
 
   static async findUserByUsername(username: string) {

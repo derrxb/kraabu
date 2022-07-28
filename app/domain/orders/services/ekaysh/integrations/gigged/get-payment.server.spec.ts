@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { beforeEach, expect, it } from 'vitest';
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { Currency } from '~/domain/orders/entities/order';
@@ -30,24 +31,26 @@ it('Ensures an error is thrown when no order matching the given invoice exists',
 
 it("Ensures that an order's details is loaded correctly", async () => {
   // Arrange
-  const ekyash = await prisma.ekyash.create({
+  const user = await prisma.user.create({
+    data: {
+      businessName: mockUserEntity.businessName as string,
+      username: nanoid(),
+      password: 'test',
+      email: mockUserEntity.email as string,
+      logoUrl: mockUserEntity.logoUrl as string,
+      tag: mockUserEntity.tag as string,
+      website: mockUserEntity.website as string,
+    },
+  });
+
+  await prisma.ekyash.create({
     data: {
       apiKey: mockEkyashEntity.apiKey,
       phone: mockEkyashEntity.phone,
       pinEncoded: mockEkyashEntity.pinEncoded,
       pinHash: mockEkyashEntity.pinHash,
       sid: mockEkyashEntity.sid,
-    },
-  });
-
-  const supplier = await prisma.supplier.create({
-    data: {
-      homepage: mockUserEntity.homepage,
-      logoUrl: mockUserEntity.logoUrl,
-      name: mockUserEntity.name,
-      username: mockUserEntity.username,
-      tag: mockUserEntity.tag,
-      ekyashId: ekyash.id,
+      userId: user.id,
     },
   });
 
@@ -55,7 +58,7 @@ it("Ensures that an order's details is loaded correctly", async () => {
     data: {
       amount: 10_000,
       currency: Currency.BZD,
-      supplierId: supplier.id,
+      userId: user.id,
       description: 'Test description',
       invoice: mockGiggedOrderEntity.invoice,
       status: OrderStatus.Pending,

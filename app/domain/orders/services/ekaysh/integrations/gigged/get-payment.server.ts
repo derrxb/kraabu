@@ -1,13 +1,16 @@
 import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
 import type { OrderEntity } from '~/domain/orders/entities/order';
+import type { UserEntity } from '~/domain/orders/entities/user';
 import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import OrderRepository from '~/domain/orders/repositories/order-repository';
+import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 
 export default class GetPayment {
   private request: Request;
+  private user?: UserEntity;
 
   constructor(request: Request) {
     this.request = request;
@@ -37,6 +40,10 @@ export default class GetPayment {
     return payment;
   }
 
+  async getPaymentUser(payment: OrderEntity) {
+    this.user = await UserRepository.findByUserId(Number(payment.userId));
+  }
+
   async getPaymentOrderDetails(payment: OrderEntity) {
     if (payment.hasOrderDetails()) {
       return undefined;
@@ -53,7 +60,7 @@ export default class GetPayment {
       return undefined;
     }
 
-    const ekyashMapper = new EKyashMapper(payment?.supplier?.ekyash as EKyashEntity);
+    const ekyashMapper = new EKyashMapper(this.user?.ekyash as EKyashEntity);
     await ekyashMapper.initialize();
     return await ekyashMapper.createInvoice(payment);
   }
@@ -70,6 +77,8 @@ export default class GetPayment {
     if (payment.canBePaid()) {
       return payment;
     }
+
+    await this.getPaymentUser(payment);
 
     const invoice = await this.getPaymentQrCode(payment);
     const orderDetails = await this.getPaymentOrderDetails(payment);

@@ -1,6 +1,7 @@
 import { OrderStatus } from '@prisma/client';
 import { omit } from 'lodash';
 import { beforeEach, expect, it } from 'vitest';
+import type { User } from '@prisma/client';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
@@ -59,11 +60,15 @@ it('Ensures that the amount value is calculated correctly', async () => {
     } as GiggedOrderHandshake),
   });
 
-  // Create fake gigged supplier
-  await prisma.supplier.create({
+  await prisma.user.create({
     data: {
-      ...mockUserEntity.json(),
+      businessName: mockUserEntity.businessName as string,
       username: GIGGED_USERNAME,
+      password: 'test',
+      email: mockUserEntity.email as string,
+      logoUrl: mockUserEntity.logoUrl as string,
+      tag: mockUserEntity.tag as string,
+      website: mockUserEntity.website as string,
     },
   });
 
@@ -82,11 +87,15 @@ it('Ensures that a payment is created with a pending status', async () => {
     body: JSON.stringify(mockGiggedOrderHandshake),
   });
 
-  // Create fake gigged supplier
-  await prisma.supplier.create({
+  await prisma.user.create({
     data: {
-      ...mockUserEntity.json(),
+      businessName: mockUserEntity.businessName as string,
       username: GIGGED_USERNAME,
+      password: 'test',
+      email: mockUserEntity.email as string,
+      logoUrl: mockUserEntity.logoUrl as string,
+      tag: mockUserEntity.tag as string,
+      website: mockUserEntity.website as string,
     },
   });
 

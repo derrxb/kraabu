@@ -43,6 +43,8 @@ export const mockUserEntity = new UserEntity({
   createdAt: new Date(),
   updatedAt: new Date(),
   tag: 'Riding big bikes in Belize should be easy!',
+  orders: [],
+  products: [],
 });
 
 /**
