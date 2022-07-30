@@ -35,11 +35,6 @@ export class UserEntity {
     this.orders = user.orders;
     this.ekyash = user.ekyash;
   }
-
-  canViewEkyash(userId?: number) {
-    return userId === this.id;
-  }
-
   json(userId?: number) {
     return {
       businessName: this.businessName,
@@ -52,7 +47,7 @@ export class UserEntity {
       website: this.website,
       products: this.products?.map((product) => product.json()) ?? [],
       orders: this.orders.map((order) => order.json()) ?? [],
-      ekyash: this.canViewEkyash(userId) ? this.ekyash?.json() : undefined,
+      ekyash: this.ekyash?.json(),
     } as UserDTO;
   }
 }

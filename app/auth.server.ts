@@ -23,7 +23,7 @@ authenticator.use(
   new FormStrategy(async ({ form }) => {
     const user = await new LoginUser(form.get('email') as string, form.get('password') as string).call();
 
-    return user?.json() || null;
+    return user.json();
   }),
   'user-pass',
 );

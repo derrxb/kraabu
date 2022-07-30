@@ -33,6 +33,6 @@ export class LoginUser {
       throw new AuthorizationError('The provided credentials are invalid');
     }
 
-    return this.user ?? null;
+    return this.user;
   }
 }
