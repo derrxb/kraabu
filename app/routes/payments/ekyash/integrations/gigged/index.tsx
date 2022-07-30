@@ -10,11 +10,17 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction = ({ data }) => {
+  if (!data) {
+    return {
+      title: 'Complete your order payment online | Powered by Krabuu',
+      description: 'Confirm your order by completing payment with a local digital wallet.',
+    };
+  }
+
   return {
-    title: 'GiggedBZ Order Payment | Krabuu - Easily Pay online in Belize',
-    description:
-      'Confirm your order by completing payment with your E-Kyash App. Scan the QR code to complete payment with your E-Kyash app.',
+    title: `Complete your ${data.order.user?.businessName} Order's Payment | Powered by Krabuu`,
+    description: 'Confirm your order by completing payment with a local digital wallet.',
   };
 };
 
@@ -56,5 +62,5 @@ export default function Index() {
     };
   }, [data.order.invoice, navigate]);
 
-  return <PendingPayment order={data.order} hasOrderItemsDisplayed={false} />;
+  return <PendingPayment order={data.order} hasOrderItemsDisplayed />;
 }
