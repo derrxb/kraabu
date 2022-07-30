@@ -12,4 +12,6 @@ const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
 export const InputStory = Template.bind({});
 InputStory.args = {
   value: 'test',
+  name: 'test',
+  label: 'test',
 } as InputProps;

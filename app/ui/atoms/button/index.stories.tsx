@@ -90,3 +90,21 @@ DigiWalletButtonLink.args = {
   variant: 'link',
   href: 'https://ekyash.page.link/GQTJ',
 } as ButtonProps;
+
+export const DisabledButton = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+DisabledButton.args = {
+  children: 'Button',
+  isFullWidth: true,
+  disabled: true,
+};
+
+export const DisabledButtonLink = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+DisabledButtonLink.args = {
+  children: 'Button',
+  isFullWidth: true,
+  href: 'https://example.com',
+  disabled: true,
+  variant: 'link',
+};

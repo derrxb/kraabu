@@ -7,6 +7,7 @@ export class UserEntity {
   id?: UserORM['id'];
   username?: UserORM['username'];
   email?: UserORM['email'];
+  password?: UserORM['password'];
   createdAt?: UserORM['createdAt'];
   updatedAt?: UserORM['updatedAt'];
   logoUrl?: UserORM['logoUrl'];
@@ -21,6 +22,7 @@ export class UserEntity {
     this.id = user.id;
     this.username = user.username;
     this.email = user.email;
+    this.password = user.password;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
     this.logoUrl = user.logoUrl;

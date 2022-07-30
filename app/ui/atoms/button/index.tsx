@@ -43,6 +43,7 @@ export type ButtonProps = {
    * Text to show inside button
    */
   children: ReactNode;
+  disabled?: boolean;
 };
 
 const sizes = {
@@ -66,6 +67,7 @@ export const Button = ({
   children,
   variant = 'button',
   isFullWidth = false,
+  disabled = false,
   ...props
 }: ButtonProps) => {
   if (variant === 'link' && typeof variant === 'undefined') {
@@ -73,8 +75,9 @@ export const Button = ({
   }
 
   if (variant === 'link') {
+    const As = disabled ? 'span' : 'a';
     return (
-      <a
+      <As
         target="_blank"
         href={props.href}
         className={clsx(
@@ -86,6 +89,7 @@ export const Button = ({
             [modes.digiWallet]: color === ButtonColors.DigiWallet,
             'w-full justify-center': isFullWidth,
             'w-fit': !isFullWidth,
+            'cursor-not-allowed opacity-50': disabled,
           },
         )}
         rel="noreferrer"
@@ -98,13 +102,14 @@ export const Button = ({
         {children}
 
         {props.icon ? <span className="ml-2">props.icon</span> : null}
-      </a>
+      </As>
     );
   }
 
   return (
     <button
       type={variant}
+      disabled={disabled}
       className={clsx(
         `inline-flex cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
         {
@@ -114,6 +119,7 @@ export const Button = ({
           [modes.digiWallet]: color === ButtonColors.DigiWallet,
           'w-full justify-center': isFullWidth,
           'w-fit': !isFullWidth,
+          'cursor-not-allowed opacity-50': disabled,
         },
       )}
       {...props}
