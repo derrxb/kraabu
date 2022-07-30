@@ -43,11 +43,8 @@ export const action = async ({ request }: ActionArgs) => {
     // commit the session
     let headers = new Headers({ 'Set-Cookie': await commitSession(session) });
 
-    console.log(user, headers);
-
     return redirect('/', { headers });
   } catch (error) {
-    console.log(error);
     // Because redirects work by throwing a Response, you need to check if the
     // caught error is a response and return it or throw it again
     if (error instanceof Response) throw error;
