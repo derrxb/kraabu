@@ -4,6 +4,9 @@
   "description": "- [Krabuu Docs](https://krabuu.com)",
   "license": "ISC",
   "sideEffects": false,
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "build": "yarn tsc && cross-env NODE_ENV=production npm run build:css && cross-env NODE_ENV=production remix build",
     "build:css": "tailwindcss -m -i ./styles/app.css -o app/styles/app.css",
@@ -15,6 +18,7 @@
     "dev:storybook": "npm run storybook",
     "dev:db": "npx prisma studio",
     "dev:docker-db": "docker-compose up",
+    "db:reset:dev": "dotenv -e .env.dev npx prisma migrate reset",
     "db:migrate": "run-p db:migrate:*",
     "db:migrate:dev": "dotenv -e .env.dev npx prisma migrate dev",
     "db:migrate:test": "dotenv -e .env.test -- npx prisma db push --accept-data-loss",
