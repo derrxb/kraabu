@@ -3,7 +3,6 @@ import { json, redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
-import type { UserEntity } from '~/domain/orders/entities/user';
 import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
@@ -44,7 +43,7 @@ export default function Completed() {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full md:w-1/2">
-        <PaymentPayDetails order={data.order} user={data.order.user as UserEntity} hasOrderItemsDisplayed />
+        <PaymentPayDetails order={data.order} user={data.order.user} hasOrderItemsDisplayed />
       </div>
 
       <div className="h-full w-full md:w-1/2">

@@ -104,7 +104,8 @@ export class OrderEntity {
       currency: this.currency,
       additionalData: this.additionalData,
       amount: this.amount,
-      createdAt: this.createdAt,
+      createdAt: this.createdAt?.toJSON(),
+      updatedAt: this.createdAt?.toJSON(),
       id: this.id,
       orderItems: this.orderItems.map((order) => order.json()),
       ekyashTransaction: this.ekyashTransaction?.json(),
@@ -115,5 +116,11 @@ export class OrderEntity {
 
 export type OrderDTO = Pick<
   OrderEntity,
-  'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'createdAt' | 'id'
-> & { orderItems: OrderItemDTO[]; ekyashTransaction?: EKyashTransactionDTO; user?: UserDTO };
+  'invoice' | 'description' | 'status' | 'currency' | 'additionalData' | 'amount' | 'id'
+> & {
+  orderItems: OrderItemDTO[];
+  ekyashTransaction?: EKyashTransactionDTO;
+  user?: UserDTO;
+  createdAt?: string;
+  updatedAt?: string;
+};

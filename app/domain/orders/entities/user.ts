@@ -1,5 +1,5 @@
 import type { User as UserORM } from '@prisma/client';
-import type { EKyashEntity, EkyashDTO } from './ekyash';
+import type { EkyashDTO, EKyashEntity } from './ekyash';
 import type { OrderDTO, OrderEntity } from './order';
 import type { ProductDTO, ProductEntity } from './product';
 
@@ -55,7 +55,10 @@ export class UserEntity {
   }
 }
 
-export type UserDTO = Pick<
-  UserEntity,
-  'businessName' | 'createdAt' | 'email' | 'id' | 'logoUrl' | 'updatedAt' | 'username' | 'tag' | 'website'
-> & { ekyash?: EkyashDTO; products: ProductDTO[]; orders: OrderDTO[] };
+export type UserDTO = Pick<UserEntity, 'businessName' | 'email' | 'id' | 'logoUrl' | 'username' | 'tag' | 'website'> & {
+  ekyash?: EkyashDTO;
+  products: ProductDTO[];
+  orders: OrderDTO[];
+  createdAt?: string;
+  updatedAt?: string;
+};
