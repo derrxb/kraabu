@@ -14,6 +14,7 @@
     "dev:remix": "cross-env NODE_ENV=development remix watch",
     "dev:storybook": "npm run storybook",
     "dev:db": "npx prisma studio",
+    "dev:docker-db": "docker-compose up",
     "db:migrate": "run-p db:migrate:*",
     "db:migrate:dev": "dotenv -e .env.dev npx prisma migrate dev",
     "db:migrate:test": "dotenv -e .env.test -- npx prisma db push --accept-data-loss",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.14.0",
+    "@radix-ui/react-popover": "1.0.0",
     "@remix-run/express": "^1.6.5",
     "@remix-run/node": "^1.6.5",
     "@remix-run/react": "^1.6.5",
