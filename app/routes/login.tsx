@@ -7,6 +7,7 @@ import { authenticator } from '~/auth.server';
 import { getErrorMessage } from '~/lib/error-messages';
 import { commitSession, getSession } from '~/session.server';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
+import { SiteNav } from '~/ui/molecules/site-nav';
 import { LoginForm } from '~/ui/organisms/auth/login-form';
 
 const getValuesFromRequest = async (request: Request) => {
@@ -82,19 +83,23 @@ const Login = () => {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="mt-9 flex flex-col items-center">
-      <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H4}>
-        Log into your Krabuu account
-      </Heading>
+    <div className="h-full w-full">
+      <SiteNav />
 
-      <LoginForm
-        isSubmitting={transition.state === 'submitting'}
-        errors={actionData?.errors}
-        initialValues={{
-          email: actionData?.values?.email?.toString() ?? '',
-          password: actionData?.values?.password?.toString() ?? '',
-        }}
-      />
+      <div className="my-32 flex flex-col items-center space-y-4">
+        <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H4}>
+          Log into your Krabuu account
+        </Heading>
+
+        <LoginForm
+          isSubmitting={transition.state === 'submitting'}
+          errors={actionData?.errors}
+          initialValues={{
+            email: actionData?.values?.email?.toString() ?? '',
+            password: actionData?.values?.password?.toString() ?? '',
+          }}
+        />
+      </div>
     </div>
   );
 };

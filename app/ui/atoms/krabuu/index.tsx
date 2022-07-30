@@ -1,9 +1,17 @@
+import { NavLink } from '@remix-run/react';
+
 export type KrabuuProps = {
+  isLink?: boolean;
   size: 'small' | 'medium' | 'large';
 };
 
-export const Krabuu = ({ size }: KrabuuProps) => {
+export const Krabuu = ({ size, isLink }: KrabuuProps) => {
   const sizeClass = size === 'small' ? 'text-xs !font-bold' : size === 'medium' ? 'text-md' : 'text-2xl';
+  const As = isLink ? NavLink : 'span';
 
-  return <span className={`font-extrabold tracking-tight text-primary-3 ${sizeClass}`}>krabuu.</span>;
+  return (
+    <As to="/" className={`font-extrabold tracking-tight text-primary-3 ${sizeClass}`}>
+      krabuu.
+    </As>
+  );
 };

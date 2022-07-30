@@ -7,7 +7,7 @@ export const SiteNav = ({ className }: { className?: string }) => {
   return (
     <nav className={`flex h-[96px] w-full flex-row items-center px-4 md:px-24 ${className}`}>
       <div className="mr-auto">
-        <Krabuu size="large" />
+        <Krabuu isLink size="large" />
       </div>
 
       <div className="ml-auto">
