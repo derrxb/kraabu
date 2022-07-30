@@ -1,9 +1,8 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
 import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import type { OrderDTO } from '~/domain/orders/entities/order';
+import axios from 'axios';
+import { useEffect } from 'react';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-order.server';

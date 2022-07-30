@@ -80,7 +80,7 @@ export const mockOrderItemEntity = new OrderItemEntity({
  * A base fake ekyash transaction entity that does not yet exist in the database.
  */
 export const mockEKyashTransactionEntity = new EKyashTransactionEntity({
-  deepLinkUrl: 'N/A',
+  deepLinkUrl: faker.internet.url(),
   id: 1,
   invoiceId: mockEkyashInternalInvoiceId,
   invoiceUrl: 'https://boofcv.org/images/3/35/Example_rendered_qrcode.png',
