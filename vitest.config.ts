@@ -9,7 +9,7 @@ export default defineConfig({
     coverage: {
       all: true,
     },
-    environment: 'jsdom',
+    environment: 'node',
     setupFiles: ['./test/setup.ts'],
   },
 });
