@@ -25,6 +25,12 @@ export class ProductEntity {
     this.userId = product.userId;
   }
 
+  publishable() {
+    return Boolean(
+      !!this.name && typeof this.price !== 'undefined' && this.currency && this.coverImage && this.publicUrl,
+    );
+  }
+
   json() {
     return {
       id: this.id,
