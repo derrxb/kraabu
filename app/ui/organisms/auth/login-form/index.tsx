@@ -18,7 +18,7 @@ export type LoginFormProps = {
 export const LoginForm = (props: LoginFormProps) => {
   return (
     <Form method="post" action="/login" className={clsx('mx-auto flex w-full flex-col  md:w-[480px]', props.className)}>
-      {props.errors?.general ? <span>{props.errors.general?.toString()}</span> : null}
+      {props.errors?.general ? <span className="text-red-500">{props.errors.general?.toString()}</span> : null}
 
       <fieldset disabled={props.isSubmitting} className="mb-8 space-y-4">
         <Input isFullWidth name="email" label="Email" type="text" defaultValue={props.initialValues?.email} />
@@ -32,7 +32,7 @@ export const LoginForm = (props: LoginFormProps) => {
         />
       </fieldset>
 
-      <Button disabled={props.isSubmitting} isFullWidth variant="submit">
+      <Button disabled={props.isSubmitting} isFullWidth variant="submit" size="medium">
         Continue
       </Button>
     </Form>

@@ -47,8 +47,8 @@ export type ButtonProps = {
 };
 
 const sizes = {
-  small: 'text-xs px-2 py-2 md:px-[10px] px-2 py-2 md:py-[16px]',
-  medium: 'text-sm px-2 py-3 md:px-[11px] px-2 py-3 md:py-5',
+  small: 'text-base px-2 py-2 md:px-[10px] px-2 py-2 md:py-[16px]',
+  medium: 'text-base px-2 py-2 md:px-[11px] px-2 py-2 md:py-4',
   large: 'text-base px-6 py-4 md:px-[12px] px-4 py-4 md:py-6',
 };
 

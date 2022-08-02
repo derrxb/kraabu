@@ -7,7 +7,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & { label: string
 export const Input = ({ label, name, isFullWidth = false, ...props }: InputProps) => {
   return (
     <div>
-      <Label htmlFor={name} className="flex flex-col text-gray-500">
+      <Label htmlFor={name} className="flex flex-col text-sm text-gray-500">
         {label}
       </Label>
 
