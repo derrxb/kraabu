@@ -1,7 +1,9 @@
-import { ProductEntity } from "../entities/product";
+import prisma from '~/infrastructure/database/index.server';
+import { ProductEntity } from '../entities/product';
+import type { UserEntity } from '../entities/user';
 
 export default class ProductRepository {
-   static async rebuildEntity(data: any) {
+  static async rebuildEntity(data: any) {
     if (!data || typeof data === 'undefined') {
       return undefined;
     }
@@ -17,6 +19,24 @@ export default class ProductRepository {
       published: data.published,
       publicUrl: data.publicUrl,
       userId: data.userId,
-    })
+    });
+  }
+
+  static async create(data: ProductEntity, user: UserEntity) {
+    const result = await prisma.product.create({
+      data: {
+        name: data.name as string,
+        coverImage: data.coverImage as string,
+        description: data.description as string,
+        price: data.price ?? 0,
+        publicUrl: data.publicUrl as string,
+        thumbnailImage: data.thumbnailImage as string,
+        currency: data.currency,
+        userId: user.id as number,
+        published: false,
+      },
+    });
+
+    return this.rebuildEntity(result);
   }
 }

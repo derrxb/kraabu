@@ -12,7 +12,7 @@ export class ProductEntity {
   publicUrl?: ProductORM['publicUrl'];
   userId?: ProductORM['userId'];
 
-  constructor(product: ProductORM) {
+  constructor(product: Partial<ProductORM>) {
     this.id = product.id;
     this.name = product.name;
     this.description = product.description;

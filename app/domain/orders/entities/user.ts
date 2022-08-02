@@ -35,6 +35,11 @@ export class UserEntity {
     this.orders = user.orders;
     this.ekyash = user.ekyash;
   }
+
+  canUpsertProduct(product: ProductEntity) {
+    return this.id === product.userId;
+  }
+
   json(userId?: number) {
     return {
       businessName: this.businessName,
