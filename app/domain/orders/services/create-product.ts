@@ -1,10 +1,10 @@
+import { ProductEntity } from '~/entities/product';
+import type { UserEntity } from '~/entities/user';
 import Failure from '~/lib/failure';
 import createProductSchema from '~/presentation/requests/create-product';
-import { ProductEntity } from '../entities/product';
-import type { UserEntity } from '../entities/user';
-import ProductRepository from '../repositories/product-repository';
-import { CurrencyValue } from '../values/currency';
-import { PriceValue } from '../values/price';
+import ProductRepository from '~/repositories/product-repository';
+import { CurrencyValue } from '~/values/currency';
+import { PriceValue } from '~/values/price';
 
 export class CreateProduct {
   private request: Request;

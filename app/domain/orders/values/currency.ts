@@ -1,5 +1,5 @@
+import { Currency } from '~/entities/order';
 import Failure from '~/lib/failure';
-import { Currency } from '../entities/order';
 
 export class CurrencyValue {
   private currency: string;
