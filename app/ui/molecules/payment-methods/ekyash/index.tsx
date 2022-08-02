@@ -2,6 +2,7 @@ import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
 import { OrDivider } from '~/ui/atoms/or-divider';
+import { QRCode } from '~/ui/atoms/qr-code';
 
 export type PaymentPayCodeProps = {
   qr: string;
@@ -21,7 +22,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
         appearance={HeadingAppearance.Primary}
         className="pb-2 pt-5 text-xl font-bold text-gray-800 sm:text-3xl"
       >
-        Confirm your order by completing payment with your{' '}
+        Complete payment with your{' '}
         <a
           href={paymentMethod.url}
           className="font-semibold"
@@ -38,7 +39,7 @@ export const PaymentPayCode = ({ qr, paymentMethod, deepLink }: PaymentPayCodePr
         Scan the QR code to complete payment with your E-Kyash app.
       </span>
 
-      <img src={qr} alt="payment qr code" className="h-44 w-44 self-center md:h-56 md:w-56" />
+      <QRCode url={qr} />
 
       <OrDivider />
 
