@@ -7,6 +7,7 @@ export enum DigiWalletAPIBAse {
 
 export enum DigiWalletRoutes {
   CreatePayment = 'SALESREQUESTMERCHANT',
+  ConfirmPayment = 'SALESREQUESTEXECTOSELF',
 }
 
 const headers = {
@@ -38,6 +39,7 @@ export type NewPaymentData = {
    * The destination phone number
    */
   destinationPhoneNumber: string;
+  password: string;
 };
 
 export type NewPaymentResponse = {
@@ -91,13 +93,39 @@ export type NewPaymentResponse = {
   payableAmount: number;
 };
 
-const createPaymentRequest = async (data: NewPaymentData): Promise<NewPaymentResponse> => {
+export const createPaymentRequest = async (data: NewPaymentData): Promise<NewPaymentResponse> => {
   const response = await superagent
     .post(`${getDigiWalletBase()}/${DigiWalletRoutes.CreatePayment}`)
-    .send(data)
+    .set('Content-Type', 'application/xml')
+    .send({
+      TSCReply: {
+        UserName: data.username,
+        TerminalType: 'API',
+        Password: data.password,
+        Function: {
+          Param1: data.username,
+          Param2: data.amount,
+          Param4: data.sourcePhoneNumber,
+          Param6: data.destinationPhoneNumber,
+        },
+      },
+    })
     .set(headers);
 
-  return Promise.resolve({} as NewPaymentResponse);
+  return {
+    requestId: response.body.TSCReply.Param1,
+    originalAmount: response.body.TSCReply.Function.Param2,
+    finalAmount: response.body.TSCReply.Function.Param3,
+    sourceFee1: response.body.TSCReply.Param4,
+    sourceFee2: response.body.TSCReply.Param5,
+    sourceFee3: response.body.TSCReply.Param6,
+    sourceFee4: response.body.TSCReply.Param7,
+    destinationFee1: response.body.TSCReply.Param8,
+    destinationFee2: response.body.TSCReply.Param9,
+    destinationFee3: response.body.TSCReply.Param10,
+    destinationFee4: response.body.TSCReply.Param11,
+    payableAmount: response.body.TSCReply.Param15,
+  } as NewPaymentResponse;
 };
 
 export type PaymentConfirmationRequest = {
@@ -129,7 +157,17 @@ export type PaymentConfirmationResponse = {
    * Param2 Payment Amount
    */
   paymentAmount: number;
+  /**
+   * Destination amount less fees
+   */
+  destinationAmountLessFees: number;
+  /**
+   * Destination phone number
+   */
   destinationPhoneNumber: string;
+  /**
+   * Source phone number
+   */
   sourcePhoneNumber: string;
   /**
    * The first set of fees applied to the destination account.
@@ -166,5 +204,61 @@ export type PaymentConfirmationResponse = {
   /**
    * Created at time
    */
-  timestamp: number;
+  timestamp: string;
+  /**
+   * Originating account 1
+   */
+  originatingAccount1: string;
+  /**
+   * Originating account 2
+   */
+  originatingAccount2: string;
+  serviceOrderNumber: string;
+  brandId: string;
+  brandDescription: string;
+  destinationFees: string;
+  destinationAccountName: string;
+  destinationAccountId: string;
+};
+
+export const confirmPaymentRequest = async (data: PaymentConfirmationRequest) => {
+  const response = await superagent
+    .post(`${getDigiWalletBase()}/${DigiWalletRoutes.ConfirmPayment}`)
+    .set('Content-Type', 'application/xml')
+    .send({
+      TSCReply: {
+        UserName: data.username,
+        TerminalType: 'API',
+        Password: data.password,
+        Function: {
+          Param1: data.confirmationNumber,
+          Param2: 'APPROVE',
+        },
+      },
+    })
+    .set(headers);
+
+  return {
+    referenceNumber: response.body.TSCReply.Param1,
+    paymentAmount: response.body.TSCReply.Param2,
+    destinationAmountLessFees: response.body.TSCReply.Param3,
+    timestamp: response.body.TSCReply.Param8,
+    serviceOrderNumber: response.body.TSSReply.Param11,
+    sourceFee1: response.body.TSCReply.Param14,
+    sourceFee2: response.body.TSCReply.Param19,
+    sourceFee3: response.body.TSCReply.Param20,
+    sourceFee4: response.body.TSCReply.Param21,
+    destinationFee1: response.body.TSCReply.Param23,
+    destinationFee2: response.body.TSCReply.Param24,
+    destinationFee3: response.body.TSCReply.Param25,
+    destinationFee4: response.body.TSCReply.Param26,
+    destinationPhoneNumber: response.body.TSCReply.Param28,
+    brandId: response.body.TSCReply.Param79,
+    brandDescription: response.body.TSCReply.Param80,
+    originatingAccount1: response.body.TSCReply.Param81,
+    originatingAccount2: response.body.TSCReply.Param82,
+    destinationFees: response.body.TSCReply.Param85,
+    destinationAccountName: response.body.TSCReply.Param86,
+    destinationAccountId: response.body.TSCReply.Param87,
+  } as PaymentConfirmationResponse;
 };
