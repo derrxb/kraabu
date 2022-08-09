@@ -40,6 +40,10 @@ export class UserEntity {
     return this.id === product.userId;
   }
 
+  isProductOwner(product: ProductEntity) {
+    return this.id === product.userId;
+  }
+
   json(userId?: number) {
     return {
       businessName: this.businessName,

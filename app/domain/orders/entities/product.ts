@@ -1,5 +1,7 @@
 import type { Product as ProductORM } from '@prisma/client';
+import { nanoid } from 'nanoid';
 import type { PaymentLinkDTO, PaymentLinkEntity } from './payment-link';
+import type { UserEntity } from './user';
 
 export class ProductEntity {
   id?: ProductORM['id'];
@@ -32,6 +34,21 @@ export class ProductEntity {
     return Boolean(
       !!this.name && typeof this.price !== 'undefined' && this.currency && this.coverImage && this.publicUrl,
     );
+  }
+
+  /**
+   * Only products with the all required details can create a payment link.
+   */
+  canCreatePaymentLink(user: UserEntity) {
+    return this.publishable() && !!this.published;
+  }
+
+  /**
+   * Create a temporary payment link for this product.
+   */
+  generateTemporaryPaymentLink() {
+    const nano = nanoid(8);
+    return `${this.publicUrl}-${nano}`;
   }
 
   json() {
