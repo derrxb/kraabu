@@ -5,6 +5,7 @@ import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transac
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { OrderEntity } from '~/domain/orders/entities/order';
 import { OrderItemEntity } from '~/domain/orders/entities/order-item';
+import { PaymentLinkEntity } from '~/domain/orders/entities/payment-link';
 import { ProductEntity } from '~/domain/orders/entities/product';
 import { UserEntity } from '~/domain/orders/entities/user';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
@@ -90,12 +91,15 @@ export const mockEKyashTransactionEntity = new EKyashTransactionEntity({
   transactionId: mockEKyashTransactionId,
 });
 
+export const mockPaymentLinkEntity = new PaymentLinkEntity({
+  url: faker.internet.url(),
+});
+
 export const mockGiggedProductEntity = new ProductEntity({
   coverImage:
     'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
   thumbnailImage:
     'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
-
   currency: 'BZD', // $500 BZD,
   description: 'A used MacBook Pro',
   id: 1,
@@ -104,6 +108,7 @@ export const mockGiggedProductEntity = new ProductEntity({
   publicUrl: 'used-macbook-pro',
   published: true,
   userId: Number(mockUserEntity.id),
+  paymentLinks: [mockPaymentLinkEntity],
 });
 
 /**

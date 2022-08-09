@@ -1,4 +1,5 @@
 import type { Product as ProductORM } from '@prisma/client';
+import type { PaymentLinkDTO, PaymentLinkEntity } from './payment-link';
 
 export class ProductEntity {
   id?: ProductORM['id'];
@@ -11,8 +12,9 @@ export class ProductEntity {
   published?: ProductORM['published'];
   publicUrl?: ProductORM['publicUrl'];
   userId?: ProductORM['userId'];
+  paymentLinks?: PaymentLinkEntity[];
 
-  constructor(product: Partial<ProductORM>) {
+  constructor(product: Partial<ProductORM> & { paymentLinks: PaymentLinkEntity[] }) {
     this.id = product.id;
     this.name = product.name;
     this.description = product.description;
@@ -23,6 +25,7 @@ export class ProductEntity {
     this.published = product.published;
     this.publicUrl = product.publicUrl;
     this.userId = product.userId;
+    this.paymentLinks = product.paymentLinks;
   }
 
   publishable() {
@@ -43,6 +46,7 @@ export class ProductEntity {
       published: this.published,
       publicUrl: this.publicUrl,
       userId: this.userId,
+      paymentLinks: this.paymentLinks?.map((paymentLink) => paymentLink.json()) ?? [],
     } as ProductDTO;
   }
 }
@@ -59,4 +63,4 @@ export type ProductDTO = Pick<
   | 'published'
   | 'thumbnailImage'
   | 'userId'
->;
+> & { paymentLinks: PaymentLinkDTO[] };
