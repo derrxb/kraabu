@@ -23,6 +23,7 @@ export default function Dashboard() {
   return (
     <div className="h-full w-full">
       <SiteNav className="" />
+      <h1>Your Dashboard</h1>
     </div>
   );
 }

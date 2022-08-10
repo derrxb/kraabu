@@ -1,8 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import bycrypt from 'bcryptjs';
 
 const db = new PrismaClient();
 
 const seed = async () => {
+  const password = await bycrypt.hash('password', 12)
+
   // Create gigged user
   const giggedUser = await db.user.create({
     data: {
@@ -10,7 +13,7 @@ const seed = async () => {
       email: 'admin@gigged.bz',
       ekyash: undefined,
       username: "giggedbz",
-      password: 'unencrypted-password',
+      password,
       tag: 'GIGGED TEST',
       logoUrl: "https://giggedbz.arcadier.io/images/logo-giggedbz.arcadier.io.png?id=7bbb7abc-f85f-4a58-bb43-2b4b3ab479f1",
       website: "https://gigged.bz",
