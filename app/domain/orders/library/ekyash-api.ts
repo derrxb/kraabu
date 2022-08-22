@@ -4,7 +4,7 @@ import type { EKyashEntity } from '../entities/ekyash';
 
 export enum EKyashAPIBase {
   StagingBase = 'https://mw-api-preprod.e-kyash.com/api/qrpos-app',
-  ProductionBase = '',
+  ProductionBase = 'https://mw-api-preprod.e-kyash.com/api/qrpos-app',
 }
 
 export enum EKyashRoutes {
