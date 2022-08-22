@@ -26,6 +26,7 @@ export class CreateProduct {
     });
 
     return new ProductEntity({
+      paymentLinks: [],
       coverImage: result.coverImage,
       currency: new CurrencyValue(result.currency).call(),
       description: result.description,

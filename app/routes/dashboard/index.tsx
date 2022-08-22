@@ -22,7 +22,7 @@ export const loader = async (args: LoaderArgs) => {
 export default function Dashboard() {
   return (
     <div className="h-full w-full">
-      <SiteNav className="" />
+      <SiteNav />
       <h1>Your Dashboard</h1>
     </div>
   );
