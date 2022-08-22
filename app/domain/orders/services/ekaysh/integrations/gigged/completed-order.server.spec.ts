@@ -1,4 +1,4 @@
-import { beforeEach, it, expect } from 'vitest';
+import { beforeEach, expect, it } from 'vitest';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma, { OrderStatus } from '~/infrastructure/database/index.server';
@@ -15,7 +15,7 @@ import GetOrder from './get-order.server';
 
 beforeEach(truncateDB);
 
-it('Ensures that cancelled payments are correctly marked as cancelled', async () => {
+it('Ensures that cancelled orders are correctly marked as cancelled', async () => {
   // Arrange
   const user = await prisma.user.create({
     data: {
