@@ -2,11 +2,6 @@ import { enc, HmacSHA256 } from 'crypto-js';
 import superagent from 'superagent';
 import type { EKyashEntity } from '../entities/ekyash';
 
-export enum EKyashAPIBase {
-  StagingBase = 'https://mw-api-preprod.e-kyash.com/api/qrpos-app',
-  ProductionBase = 'https://mw-api-preprod.e-kyash.com/api/qrpos-app',
-}
-
 export enum EKyashRoutes {
   Authorization = 'authorization',
   CreateInvoice = 'create-new-invoice',
@@ -22,12 +17,12 @@ const headers = {
   operatingSystem: 'Android',
 };
 
-const getEKyashApiBase = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return EKyashAPIBase.ProductionBase;
+export const getEKyashApiBase = () => {
+  if (process.env.EKYASH_BASE_ENDPOINT) {
+    return process.env.EKYASH_BASE_ENDPOINT;
   }
 
-  return EKyashAPIBase.StagingBase;
+  throw new Error('EKYASH_BASE_ENDPOINT environment variable is not set');
 };
 
 /**

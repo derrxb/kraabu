@@ -2,13 +2,13 @@ import { rest } from 'msw';
 import { nanoid } from 'nanoid';
 import { Currency } from '~/domain/orders/entities/order';
 import type { AuthorizationResponse, NewInvoiceResponse } from '~/domain/orders/library/ekyash-api';
-import { EKyashAPIBase, EKyashRoutes } from '~/domain/orders/library/ekyash-api';
+import { EKyashRoutes, getEKyashApiBase } from '~/domain/orders/library/ekyash-api';
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import { mockEKyashTransactionEntity, mockGiggedOrderEntity } from './fixtures';
 
 export const handlers = [
   // Mock EKyash Authorization
-  rest.post(`${EKyashAPIBase.StagingBase}/${EKyashRoutes.Authorization}`, (req, res, ctx) => {
+  rest.post(`${getEKyashApiBase()}/${EKyashRoutes.Authorization}`, (req, res, ctx) => {
     return res(
       ctx.json({
         session: 'a-random-authorization-code',
@@ -20,7 +20,7 @@ export const handlers = [
     );
   }),
   // Mock create invoice
-  rest.post(`${EKyashAPIBase.StagingBase}/${EKyashRoutes.CreateInvoice}`, (req, res, ctx) => {
+  rest.post(`${getEKyashApiBase()}/${EKyashRoutes.CreateInvoice}`, (req, res, ctx) => {
     return res(
       ctx.json({
         invoiceId: 1234567890, // TODO: This might be a string. Double check.
