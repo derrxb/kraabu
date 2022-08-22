@@ -38,7 +38,7 @@ const getJWTToken = async (kyash: EKyashEntity) => {
         mobile: kyash.phone,
         sid: String(kyash.sid),
         pushkey: '',
-        pinHash: kyash.pinEncoded,
+        pinHash: kyash.pinHash,
       }),
     ),
   );
