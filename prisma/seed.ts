@@ -1,6 +1,7 @@
 import faker from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 import bycrypt from 'bcryptjs';
+import { kebabCase } from 'lodash';
 import { nanoid } from 'nanoid';
 
 const db = new PrismaClient();
@@ -53,6 +54,8 @@ const seed = async () => {
 
   // Create Products
   for (let i = 0; i < 10; i++) {
+    const productName = faker.commerce.productName();
+
     const product = await db.product.create({
       data: {
         coverImage:
@@ -63,7 +66,7 @@ const seed = async () => {
         description: faker.commerce.productDescription(),
         name: faker.commerce.product(),
         price: Number(faker.commerce.price(10000, 100000)),
-        publicUrl: 'used-macbook-pro',
+        publicUrl: `${kebabCase(productName)}-${nanoid(4)}`,
         published: true,
         userId: giggedUser.id,
       }
