@@ -97,13 +97,20 @@ model OrderItem {
   orderId     Int
 }
 
+enum PaymentLinkStatus {
+  Pending
+  Completed
+  Expired
+}
+
 model PaymentLink {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  product   Product  @relation(fields: [productId], references: [id])
+  id        Int               @id @default(autoincrement())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  product   Product           @relation(fields: [productId], references: [id])
   productId Int
-  url       String   @db.VarChar(255)
+  url       String            @db.VarChar(255)
+  status    PaymentLinkStatus @default(Pending)
 }
 
 model Product {

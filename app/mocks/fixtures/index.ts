@@ -5,7 +5,7 @@ import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transac
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { OrderEntity } from '~/domain/orders/entities/order';
 import { OrderItemEntity } from '~/domain/orders/entities/order-item';
-import { PaymentLinkEntity } from '~/domain/orders/entities/payment-link';
+import { PaymentLinkEntity, PaymentLinkStatus } from '~/domain/orders/entities/payment-link';
 import { ProductEntity } from '~/domain/orders/entities/product';
 import { UserEntity } from '~/domain/orders/entities/user';
 import type { CompletedPaymentCallbackData } from '~/domain/orders/library/ekyash-api';
@@ -93,6 +93,7 @@ export const mockEKyashTransactionEntity = new EKyashTransactionEntity({
 
 export const mockPaymentLinkEntity = new PaymentLinkEntity({
   url: faker.internet.url(),
+  status: PaymentLinkStatus.Pending,
 });
 
 export const mockGiggedProductEntity = new ProductEntity({
