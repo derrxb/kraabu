@@ -1,7 +1,7 @@
 import type { Product as ProductORM } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import type { PaymentLinkDTO, PaymentLinkEntity } from './payment-link';
-import type { UserEntity } from './user';
+import type { UserDTO, UserEntity } from './user';
 
 export class ProductEntity {
   id?: ProductORM['id'];
@@ -15,8 +15,9 @@ export class ProductEntity {
   publicUrl?: ProductORM['publicUrl'];
   userId?: ProductORM['userId'];
   paymentLinks?: PaymentLinkEntity[];
+  user?: UserEntity;
 
-  constructor(product: Partial<ProductORM> & { paymentLinks: PaymentLinkEntity[] }) {
+  constructor(product: Partial<ProductORM> & { paymentLinks: PaymentLinkEntity[]; user?: UserEntity }) {
     this.id = product.id;
     this.name = product.name;
     this.description = product.description;
@@ -28,6 +29,7 @@ export class ProductEntity {
     this.publicUrl = product.publicUrl;
     this.userId = product.userId;
     this.paymentLinks = product.paymentLinks;
+    this.user = product.user;
   }
 
   publishable() {
@@ -64,6 +66,7 @@ export class ProductEntity {
       publicUrl: this.publicUrl,
       userId: this.userId,
       paymentLinks: this.paymentLinks?.map((paymentLink) => paymentLink.json()) ?? [],
+      user: this.user?.json(),
     } as ProductDTO;
   }
 }
@@ -80,4 +83,4 @@ export type ProductDTO = Pick<
   | 'published'
   | 'thumbnailImage'
   | 'userId'
-> & { paymentLinks: PaymentLinkDTO[] };
+> & { paymentLinks: PaymentLinkDTO[]; user?: UserDTO };

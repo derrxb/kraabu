@@ -19,7 +19,7 @@
     "dev:db": "npx prisma studio",
     "dev:docker-db": "docker-compose up",
     "db:reset:dev": "dotenv -e .env.dev npx prisma migrate reset",
-    "db:seed:dev": "dotenv -e .env.dev npx prisma db seed",
+    "db:seed:dev": "yarn db:reset:dev && dotenv -e .env.dev npx prisma db seed",
     "db:migrate:create": "dotenv -e .env.dev npx prisma migrate dev --name",
     "db:migrate": "run-p db:migrate:*",
     "db:migrate:dev": "dotenv -e .env.dev npx prisma migrate dev",

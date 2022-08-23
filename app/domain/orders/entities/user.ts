@@ -44,7 +44,7 @@ export class UserEntity {
     return this.id === product.userId;
   }
 
-  json(userId?: number) {
+  json(): UserDTO {
     return {
       businessName: this.businessName,
       createdAt: this.createdAt,

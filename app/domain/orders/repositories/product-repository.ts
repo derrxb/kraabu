@@ -3,6 +3,7 @@ import prisma from '~/infrastructure/database/index.server';
 import { ProductEntity } from '../entities/product';
 import type { UserEntity } from '../entities/user';
 import { PaymentLinkRepository } from '../repositories/payment-link-repository';
+import { UserRepository } from './user-repository';
 export default class ProductRepository {
   static async rebuildEntity(data: any) {
     if (!data || typeof data === 'undefined') {
@@ -10,6 +11,7 @@ export default class ProductRepository {
     }
 
     const paymentLinks = data.paymentLinks?.map((link: PaymentLink) => PaymentLinkRepository.rebuildEntity(link)) ?? [];
+    const user = await UserRepository.rebuildEntity(data.user);
 
     return new ProductEntity({
       paymentLinks,
@@ -23,6 +25,7 @@ export default class ProductRepository {
       published: data.published,
       publicUrl: data.publicUrl,
       userId: data.userId,
+      user,
     });
   }
 
@@ -58,7 +61,7 @@ export default class ProductRepository {
   static async getByPaymentLink(paymentLink: string) {
     const result = await prisma.paymentLink.findFirst({
       where: { url: paymentLink },
-      include: { product: true },
+      include: { product: { include: { user: true } } },
     });
 
     return await this.rebuildEntity(result?.product);
@@ -69,7 +72,7 @@ export default class ProductRepository {
       where: {
         id,
       },
-      include: { paymentLinks: true },
+      include: { paymentLinks: true, user: true },
     });
 
     return this.rebuildEntity(result);
