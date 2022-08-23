@@ -1,3 +1,5 @@
+import { kebabCase } from 'lodash';
+import { nanoid } from 'nanoid';
 import { ProductEntity } from '~/entities/product';
 import type { UserEntity } from '~/entities/user';
 import Failure from '~/lib/failure';
@@ -32,7 +34,7 @@ export class CreateProduct {
       description: result.description,
       name: result.name,
       price: new PriceValue(result.price).call(),
-      publicUrl: result.publicUrl,
+      publicUrl: result.publicUrl ?? kebabCase(`${result.name.toLowerCase()}-${nanoid(3)}`),
     });
   }
 

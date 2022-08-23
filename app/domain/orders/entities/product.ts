@@ -53,8 +53,7 @@ export class ProductEntity {
    * Create a temporary payment link for this product.
    */
   generateTemporaryPaymentLink() {
-    const nano = nanoid(8);
-    return `${this.publicUrl}-${nano}`;
+    return `${this.publicUrl}-${nanoid(3)}`;
   }
 
   json() {
