@@ -64,7 +64,7 @@ const seed = async () => {
           'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
         currency: 'BZD', // $500 BZD,
         description: faker.commerce.productDescription(),
-        name: faker.commerce.product(),
+        name: productName,
         price: Number(faker.commerce.price(10000, 100000)),
         publicUrl: `${kebabCase(productName)}-${nanoid(4)}`,
         published: true,
@@ -74,7 +74,7 @@ const seed = async () => {
 
     await db.paymentLink.create({
       data: {
-        url: nanoid(),
+        url: `${product.publicUrl}-${nanoid(3)}`,
         productId: product.id,
         status: "Pending"
       }
