@@ -10,6 +10,7 @@ export class PaymentLinkRepository {
     return new PaymentLinkEntity({
       id: data.id,
       url: data.url,
+      status: data?.status,
       productId: data.productId,
     });
   }
@@ -19,6 +20,16 @@ export class PaymentLinkRepository {
       data: {
         url: data.url,
         productId: productId,
+      },
+    });
+
+    return this.rebuildEntity(result);
+  }
+
+  static async findByUrl(url: string) {
+    const result = await prisma.paymentLink.findFirst({
+      where: {
+        url,
       },
     });
 

@@ -16,6 +16,10 @@ export class PaymentLinkEntity {
     this.status = paymentLink.status as PaymentLinkStatusORM;
   }
 
+  isOrderable() {
+    return this.status === PaymentLinkStatus.Pending;
+  }
+
   json() {
     return {
       url: this.url,

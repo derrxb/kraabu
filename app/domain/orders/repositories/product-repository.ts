@@ -54,4 +54,24 @@ export default class ProductRepository {
 
     return this.rebuildEntity(result);
   }
+
+  static async getByPaymentLink(paymentLink: string) {
+    const result = await prisma.paymentLink.findFirst({
+      where: { url: paymentLink },
+      include: { product: true },
+    });
+
+    return await this.rebuildEntity(result?.product);
+  }
+
+  static async findById(id: number) {
+    const result = await prisma.product.findFirst({
+      where: {
+        id,
+      },
+      include: { paymentLinks: true },
+    });
+
+    return this.rebuildEntity(result);
+  }
 }

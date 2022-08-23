@@ -1,5 +1,6 @@
 import faker from '@faker-js/faker';
 import { Currency, OrderStatus } from '@prisma/client';
+import { nanoid } from 'nanoid';
 import { EKyashEntity } from '~/domain/orders/entities/ekyash';
 import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transaction';
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
@@ -50,7 +51,7 @@ export const mockEkyashEntity = new EKyashEntity({
 export const mockUserEntity = new UserEntity({
   id: 1,
   password: 'test',
-  email: 'test@text.com',
+  email: faker.internet.email(),
   website: faker.internet.url(),
   businessName: "Dave's Bike Shop",
   logoUrl: 'https://i.imgur.com/tfWgyRJ.png',
@@ -92,7 +93,7 @@ export const mockEKyashTransactionEntity = new EKyashTransactionEntity({
 });
 
 export const mockPaymentLinkEntity = new PaymentLinkEntity({
-  url: faker.internet.url(),
+  url: nanoid(),
   status: PaymentLinkStatus.Pending,
 });
 
