@@ -77,4 +77,17 @@ export default class ProductRepository {
 
     return this.rebuildEntity(result);
   }
+
+  static async findByUrl(url: string) {
+    const result = await prisma.product.findFirst({
+      where: {
+        publicUrl: url,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    return this.rebuildEntity(result);
+  }
 }

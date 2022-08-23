@@ -1,7 +1,7 @@
 import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { ProductDTO } from '~/domain/orders/entities/product';
-import { GetOrderablePaymentLink } from '~/domain/orders/services/get-order-by-payment-link';
+import { GetOrderablePaymentLink } from '~/domain/orders/services/get-product-by-payment-link';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 export const loader = async ({ request, params }: LoaderArgs) => {

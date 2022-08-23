@@ -6,7 +6,7 @@ import prisma from '~/infrastructure/database/index.server';
 import { mockGiggedProductEntity, mockUserEntity } from '~/mocks/fixtures';
 import { PaymentLinkStatus } from '../entities/payment-link';
 import { UserEntity } from '../entities/user';
-import { GetOrderablePaymentLink } from './get-order-by-payment-link';
+import { GetOrderablePaymentLink } from './get-product-by-payment-link';
 
 describe('', () => {
   it('Returns `not_found` when payment link is missing', async () => {
@@ -38,6 +38,7 @@ describe('', () => {
         id: undefined,
         userId: Number(user.id),
         paymentLinks: undefined,
+        publicUrl: nanoid(),
       },
     });
 
@@ -58,11 +59,9 @@ describe('', () => {
     });
 
     // Act & Assert
-    expect(async () => await new GetOrderablePaymentLink(expiredPaymentLink.url).call());
     expect(async () => await new GetOrderablePaymentLink(expiredPaymentLink.url).call()).rejects.toThrowError(
       /expired or is already used/i,
     );
-    expect(async () => await new GetOrderablePaymentLink(completedPaymentLink.url).call());
     expect(async () => await new GetOrderablePaymentLink(completedPaymentLink.url).call()).rejects.toThrowError(
       /expired or is already used/i,
     );
@@ -89,6 +88,7 @@ describe('', () => {
         id: undefined,
         userId: Number(user.id),
         paymentLinks: undefined,
+        publicUrl: nanoid(),
       },
     });
 

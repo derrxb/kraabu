@@ -38,6 +38,10 @@ export class ProductEntity {
     );
   }
 
+  isPublished() {
+    return this.published;
+  }
+
   /**
    * Only products with the all required details can create a payment link.
    */
