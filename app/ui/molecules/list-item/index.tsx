@@ -1,4 +1,4 @@
-import { CheckCircleIcon, CheckIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon, CheckIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
 

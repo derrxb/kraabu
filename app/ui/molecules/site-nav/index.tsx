@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import noop from 'lodash/noop';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Krabuu } from '~/ui/atoms/krabuu';

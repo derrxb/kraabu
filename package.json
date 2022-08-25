@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.145.0",
-    "@heroicons/react": "^1.0.6",
+    "@heroicons/react": "^2.0.4",
     "@prisma/client": "^3.14.0",
     "@radix-ui/react-label": "^1.0.0",
     "@radix-ui/react-popover": "1.0.0",

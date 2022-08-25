@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import heroBusiness from '~/assets/images/hero-business.svg';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';

@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import type { ButtonProps } from '.';
 import { Button, ButtonColors } from '.';

@@ -41,7 +41,9 @@ it('Ensures that only cent values are supported for price', async () => {
   });
 
   // Act & Assert
-  expect(async () => new CreateProduct(request, user).call()).rejects.toThrowError(/^price must be a cent value$/i);
+  expect(async () => new CreateProduct(await request.formData(), user.json()).call()).rejects.toThrowError(
+    /^price must be a cent value$/i,
+  );
 });
 
 it('Ensures that only `currencies` are supported', async () => {
@@ -78,7 +80,7 @@ it('Ensures that only `currencies` are supported', async () => {
   });
 
   // Act & Assert
-  expect(async () => new CreateProduct(request, user).call()).rejects.toThrowError(
+  expect(async () => new CreateProduct(await request.formData(), user.json()).call()).rejects.toThrowError(
     /^Currency should either be USD or BZD$/i,
   );
 });

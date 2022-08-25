@@ -16,15 +16,24 @@ export enum HeadingAppearance {
 }
 
 export type HeadingProps = {
+  as?: 'h1' | 'h2' | 'h3';
   children: ReactNode | string;
   variant: HeadingVariant;
   appearance?: HeadingAppearance;
   className?: string;
 };
 
-export const Heading = ({ children, appearance = HeadingAppearance.Primary, variant, className }: HeadingProps) => {
+export const Heading = ({
+  as = 'h1',
+  children,
+  appearance = HeadingAppearance.Primary,
+  variant,
+  className,
+}: HeadingProps) => {
+  const As = as;
+
   return (
-    <h1
+    <As
       className={clsx(
         'font-extrabold ',
         {
@@ -40,6 +49,6 @@ export const Heading = ({ children, appearance = HeadingAppearance.Primary, vari
       )}
     >
       {children}
-    </h1>
+    </As>
   );
 };
