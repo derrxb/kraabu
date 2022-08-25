@@ -2,7 +2,7 @@ import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { authenticator } from '~/auth.server';
 import { UserRepository } from '~/domain/orders/repositories/user-repository';
-import { SiteNav } from '~/ui/molecules/site-nav';
+import { Dashboard } from '~/ui/layouts/dashboard';
 
 export const meta: MetaFunction = () => {
   return {
@@ -19,11 +19,6 @@ export const loader = async (args: LoaderArgs) => {
   return json({ user: user?.json() });
 };
 
-export default function Dashboard() {
-  return (
-    <div className="h-full w-full">
-      <SiteNav />
-      <h1>Your Dashboard</h1>
-    </div>
-  );
+export default function DashboardPage() {
+  return <Dashboard />;
 }

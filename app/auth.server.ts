@@ -6,7 +6,7 @@ import type { UserDTO } from './domain/orders/entities/user';
 import { LoginUser } from './domain/orders/services/login-user';
 
 export const getHashedPassword = async (password: string) => {
-  const saltRounds = 10;
+  const saltRounds = 12;
   return await bycrypt.hash(password, saltRounds);
 };
 
