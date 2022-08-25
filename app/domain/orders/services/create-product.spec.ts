@@ -35,14 +35,9 @@ it('Ensures that only cent values are supported for price', async () => {
     .filter((key) => product[key])
     .forEach((key) => formData.append(key, product[key]));
 
-  const request = new Request('http://localhost:3000?name=test', {
-    method: 'POST',
-    body: formData,
-  });
-
   // Act & Assert
-  expect(async () => new CreateProduct(await request.formData(), user.json()).call()).rejects.toThrowError(
-    /^price must be a cent value$/i,
+  expect(async () => new CreateProduct(formData, user.json()).call()).rejects.toThrowError(
+    /^price must be a cent value/i,
   );
 });
 

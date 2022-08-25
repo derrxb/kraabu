@@ -55,7 +55,7 @@ export class UserEntity {
       username: this.username,
       website: this.website,
       products: this.products?.map((product) => product.json()) ?? [],
-      orders: this.orders.map((order) => order.json()) ?? [],
+      orders: this.orders?.map((order) => order.json()) ?? [],
       ekyash: this.ekyash?.json(),
     } as UserDTO;
   }
