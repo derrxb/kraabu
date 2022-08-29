@@ -5,7 +5,7 @@ import { authenticator } from '~/auth.server';
 import { CreateProduct } from '~/domain/orders/services/create-product';
 import { Button } from '~/ui/atoms/button';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
-import { Input } from '~/ui/atoms/input';
+import { InputField } from '~/ui/atoms/input-field';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ErrorResponse } from '~/utils/error-response';
 
@@ -47,7 +47,7 @@ export default function ProductNew() {
       </Heading>
 
       <Form method="post" action="/products/new" className="max-w-[640px]">
-        <Input
+        <InputField
           autoFocus
           name="name"
           label="Name"
@@ -56,7 +56,7 @@ export default function ProductNew() {
           disabled={transition.state === 'submitting'}
         />
 
-        <Input
+        <InputField
           name="description"
           label="Description"
           defaultValue={actionData?.values.description}
@@ -64,7 +64,7 @@ export default function ProductNew() {
           disabled={transition.state === 'submitting'}
         />
 
-        <Input
+        <InputField
           name="price"
           label="Price"
           defaultValue={actionData?.values.price}
@@ -72,7 +72,7 @@ export default function ProductNew() {
           disabled={transition.state === 'submitting'}
         />
 
-        <Input
+        <InputField
           name="publicUrl"
           label="Short URL"
           defaultValue={actionData?.values.publicUrl}

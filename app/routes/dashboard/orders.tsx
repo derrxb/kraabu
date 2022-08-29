@@ -2,6 +2,8 @@ import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
+import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
+import { Page } from '~/ui/layouts/dashboard/page';
 
 export const meta: MetaFunction = () => {
   return {
@@ -22,8 +24,10 @@ export default function OrdersPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <h1>Your orders</h1>
-    </div>
+    <Page>
+      <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary}>
+        Your orders
+      </Heading>
+    </Page>
   );
 }

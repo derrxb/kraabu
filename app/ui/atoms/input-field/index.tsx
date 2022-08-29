@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import type { InputHTMLAttributes } from 'react';
 import { ValidationMessage } from '../input-validation-message';
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
   isFullWidth?: boolean;
@@ -12,7 +12,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   labelClassName?: string;
 };
 
-export const Input = ({
+export const InputField = ({
   label,
   name,
   isFullWidth = false,
@@ -21,7 +21,7 @@ export const Input = ({
   wrapperClassName,
   labelClassName,
   ...props
-}: InputProps) => {
+}: InputFieldProps) => {
   return (
     <fieldset
       disabled={readOnly}
@@ -30,7 +30,7 @@ export const Input = ({
         'pb-2': errorMessage,
       })}
     >
-      <Label htmlFor={name} className={clsx('flex flex-col pb-2 text-sm text-gray-500', labelClassName)}>
+      <Label htmlFor={name} className={clsx('flex flex-col pb-0 text-sm text-gray-500', labelClassName)}>
         {label}
       </Label>
 
