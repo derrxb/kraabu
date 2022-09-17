@@ -27,6 +27,8 @@ export class CreateProduct {
         price: formData.get('price'),
         coverImage: formData.get('coverImage'),
         publicUrl: formData.get('publicUrl'),
+        currency: formData.get('currency'),
+        thumbnailImage: formData.get('thumbnailImage'),
       },
       { abortEarly: false },
     );
@@ -39,12 +41,15 @@ export class CreateProduct {
       name: result.name,
       price: new PriceValue(result.price).call(),
       publicUrl: result.publicUrl ?? kebabCase(`${result.name.toLowerCase()}-${nanoid(3)}`),
+      thumbnailImage: result.thumbnailImage,
     });
   }
 
   async call() {
     const newProduct = await this.verifyFormData();
     const user = await UserRepository.findByUserId(this.user.id!);
+
+    newProduct.user = user;
 
     if (!user!.canUpsertProduct(newProduct)) {
       throw new Failure('forbidden', "You can't create this product as it's not yours.");

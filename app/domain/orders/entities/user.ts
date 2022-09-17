@@ -37,11 +37,15 @@ export class UserEntity {
   }
 
   canUpsertProduct(product: ProductEntity) {
-    return this.id === product.userId;
+    return this.id === product?.userId || this.id === product.user?.id;
   }
 
   isProductOwner(product: ProductEntity) {
     return this.id === product.userId;
+  }
+
+  isEqual(user: UserEntity) {
+    return this.id === user.id;
   }
 
   json(): UserDTO {

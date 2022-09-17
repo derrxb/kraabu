@@ -27,6 +27,7 @@ const createProductSchema = joi.object({
       return newErrors;
     }),
   coverImage: joi.string().required(),
+  thumbnailImage: joi.string().required(),
   publicUrl: joi.string().required(),
 });
 

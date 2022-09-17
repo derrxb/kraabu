@@ -1,6 +1,6 @@
 import type { LoaderArgs, MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
@@ -20,7 +20,7 @@ export const loader = async (args: LoaderArgs) => {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
 
-  const products = await new GetSupplierProducts(userDTO?.username!, userDTO as UserEntity).call();
+  const products = await new GetSupplierProducts(userDTO as UserEntity, userDTO as UserEntity).call();
 
   return json({ products: products.map((p) => p.json()) });
 };
@@ -39,8 +39,6 @@ export default function ProductsPage() {
           <ProductListingItem key={product.id} product={product} isOwner />
         ))}
       </div>
-
-      <Link to="/products/new">Create a product</Link>
     </Page>
   );
 }

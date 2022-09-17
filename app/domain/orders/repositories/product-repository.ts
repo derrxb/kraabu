@@ -39,12 +39,43 @@ export default class ProductRepository {
         publicUrl: data.publicUrl as string,
         thumbnailImage: data.thumbnailImage as string,
         currency: data.currency,
-        userId: user.id as number,
         published: false,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
       },
     });
 
     return this.rebuildEntity(result);
+  }
+
+  static async findAllProductsByUserId(userId: number) {
+    const result = await prisma.product.findMany({
+      where: {
+        userId,
+      },
+      include: { paymentLinks: true },
+    });
+
+    const products = await Promise.all(result.map(async (product) => await this.rebuildEntity(product!)));
+
+    return products as ProductEntity[];
+  }
+
+  static async findPublishedProductsByUserId(userId: number) {
+    const result = await prisma.product.findMany({
+      where: {
+        userId,
+        published: true,
+      },
+      include: { paymentLinks: true, user: true },
+    });
+
+    const products = await Promise.all(result.map(async (product) => await this.rebuildEntity(product!)));
+
+    return products as ProductEntity[];
   }
 
   static async getByPublicUrl(publicUrl: string) {

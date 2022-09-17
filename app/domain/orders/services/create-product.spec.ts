@@ -76,6 +76,6 @@ it('Ensures that only `currencies` are supported', async () => {
 
   // Act & Assert
   expect(async () => new CreateProduct(await request.formData(), user.json()).call()).rejects.toThrowError(
-    /^Currency should either be USD or BZD$/i,
+    /^Currency not supported$/i,
   );
 });

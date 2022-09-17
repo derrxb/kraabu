@@ -42,12 +42,13 @@ export default function ProductNew() {
 
   return (
     <Page>
-      <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H3}>
-        Create a new product
-      </Heading>
+      <Form method="post" action="/products/new" className="m-auto max-w-[640px]">
+        <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H3}>
+          Create a new product
+        </Heading>
 
-      <Form method="post" action="/products/new" className="max-w-[640px]">
         <InputField
+          isFullWidth
           autoFocus
           name="name"
           label="Name"
@@ -57,6 +58,7 @@ export default function ProductNew() {
         />
 
         <InputField
+          isFullWidth
           name="description"
           label="Description"
           defaultValue={actionData?.values.description}
@@ -65,6 +67,7 @@ export default function ProductNew() {
         />
 
         <InputField
+          isFullWidth
           name="price"
           label="Price"
           defaultValue={actionData?.values.price}
@@ -73,10 +76,44 @@ export default function ProductNew() {
         />
 
         <InputField
+          isFullWidth
           name="publicUrl"
           label="Short URL"
           defaultValue={actionData?.values.publicUrl}
           errorMessage={actionData?.errors.publicUrl}
+          disabled={transition.state === 'submitting'}
+        />
+
+        <InputField
+          isFullWidth
+          name="thumbnailImage"
+          label="Thumbnail Image"
+          defaultValue="thumbnail"
+          wrapperClassName="hidden"
+          className="hidden"
+          errorMessage={actionData?.errors.thumbnailImage}
+          disabled={transition.state === 'submitting'}
+        />
+
+        <InputField
+          isFullWidth
+          name="coverImage"
+          label="Cover Image"
+          defaultValue="thumbnail"
+          wrapperClassName="hidden"
+          className="hidden"
+          errorMessage={actionData?.errors.coverImage}
+          disabled={transition.state === 'submitting'}
+        />
+
+        <InputField
+          isFullWidth
+          name="currency"
+          label="Currency"
+          defaultValue="USD"
+          wrapperClassName="hidden"
+          className="hidden"
+          errorMessage={actionData?.errors.currency}
           disabled={transition.state === 'submitting'}
         />
 
