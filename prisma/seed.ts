@@ -55,14 +55,11 @@ const seed = async () => {
   // Create Products
   for (let i = 0; i < 10; i++) {
     const productName = faker.commerce.productName();
-
+    const productImage = faker.image.unsplash.technology(undefined, undefined, "product");
     const product = await db.product.create({
       data: {
-        coverImage:
-          'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
-        thumbnailImage:
-          'https://images.unsplash.com/photo-1569770218135-bea267ed7e84?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80',
-        currency: 'BZD', // $500 BZD,
+        coverImage: productImage,
+        thumbnailImage: productImage,
         description: faker.commerce.productDescription(),
         name: productName,
         price: Number(faker.commerce.price(10000, 100000)),

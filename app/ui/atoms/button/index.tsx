@@ -47,9 +47,9 @@ export type ButtonProps = {
 };
 
 const sizes = {
-  small: 'text-base px-2 py-2 md:px-[10px] px-2 py-2 md:py-[16px]',
-  medium: 'text-base px-2 py-2 md:px-[11px] px-2 py-2 md:py-4',
-  large: 'text-base px-6 py-4 md:px-[12px] px-4 py-4 md:py-6',
+  small: 'text-sm px-4 py-3',
+  medium: 'text-base px-4 py-3',
+  large: 'text-lg px-4 py-3',
 };
 
 const modes = {
@@ -81,7 +81,7 @@ export const Button = ({
         target="_blank"
         href={props.href}
         className={clsx(
-          `inline-flex cursor-pointer items-center rounded-sm border-0 text-center font-bold leading-4 ${sizes[size]}`,
+          `inline-flex cursor-pointer items-center rounded-md border-0 text-center text-base font-semibold tracking-wider ${sizes[size]}`,
           {
             [modes.primary]: color === ButtonColors.Primary,
             [modes.secondary]: color === ButtonColors.Text,
@@ -111,7 +111,7 @@ export const Button = ({
       type={variant}
       disabled={disabled}
       className={clsx(
-        `inline-flex cursor-pointer flex-row items-center rounded-sm border-0 font-bold leading-4 ${sizes[size]}`,
+        `inline-flex cursor-pointer flex-row items-center rounded-md border-0 text-base font-semibold tracking-wider ${sizes[size]}`,
         {
           [modes.primary]: color === ButtonColors.Primary,
           [modes.secondary]: color === ButtonColors.Text,

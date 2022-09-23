@@ -1,5 +1,18 @@
+import clsx from 'clsx';
 import type { ReactNode } from 'react';
+import { SiteNav } from '~/ui/molecules/site-nav';
 
-export const Page = ({ children }: { children: ReactNode }) => {
-  return <div className="h-full w-full bg-slate-50 px-4 py-4 md:px-8">{children}</div>;
+export type PageProps = {
+  className?: string;
+  children: ReactNode | ReactNode[];
+  hasTopNav?: boolean;
+};
+
+export const Page = ({ children, className, hasTopNav }: PageProps) => {
+  return (
+    <div className={clsx('flex h-full w-full flex-col bg-slate-50 px-4 md:px-24 lg:px-32', className)}>
+      {hasTopNav ? <SiteNav className="mb-8" /> : null}
+      {children}
+    </div>
+  );
 };
