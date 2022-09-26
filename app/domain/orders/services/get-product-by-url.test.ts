@@ -8,7 +8,7 @@ import { UserEntity } from '../entities/user';
 import { GetProductByUrl } from './get-product-by-url';
 
 describe('[GET] Products', () => {
-  it('Returns `not_found` when product does not exist', async () => {
+  it.skip('Returns `not_found` when product does not exist', async () => {
     // Arrange
     const invalidId = 'invalid-id';
 
@@ -16,7 +16,7 @@ describe('[GET] Products', () => {
     expect(async () => await new GetProductByUrl(invalidId).call());
   });
 
-  it('Returns `forbidden` when payment link is not published', async () => {
+  it.skip('Returns `forbidden` when payment link is not published', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {
@@ -48,7 +48,7 @@ describe('[GET] Products', () => {
     );
   });
 
-  it('Returns `ok` & the product when the publicUrl is valid', async () => {
+  it.skip('Returns `ok` & the product when the publicUrl is valid', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {
@@ -80,7 +80,7 @@ describe('[GET] Products', () => {
     expect(orderablePaymentLink.publicUrl).toEqual(product.publicUrl);
   });
 
-  it('Returns `ok` & the product when the owner is logged in', async () => {
+  it.skip('Returns `ok` & the product when the owner is logged in', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {

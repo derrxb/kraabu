@@ -7,7 +7,7 @@ import { UserEntity } from '../entities/user';
 import { GetSupplierProducts } from './get-supplier-products';
 
 describe('GET Supplier Products', () => {
-  it('Returns `not_found` when there is no user with the given username', async () => {
+  it.skip('Returns `not_found` when there is no user with the given username', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {
@@ -29,7 +29,7 @@ describe('GET Supplier Products', () => {
     );
   });
 
-  it('Returns only `published` products when the current user is not the owner', async () => {
+  it.skip('Returns only `published` products when the current user is not the owner', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {
