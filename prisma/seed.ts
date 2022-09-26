@@ -21,7 +21,7 @@ const seed = async () => {
         username: "giggedbz",
         password,
         tag: 'GIGGED TEST',
-        logoUrl: "https://giggedbz.arcadier.io/images/logo-giggedbz.arcadier.io.png?id=7bbb7abc-f85f-4a58-bb43-2b4b3ab479f1",
+        logoUrl: faker.image.unsplash.avatar(),
         website: "https://gigged.bz",
       },
     });
@@ -34,7 +34,7 @@ const seed = async () => {
         username: nanoid(),
         password,
         tag: 'GIGGED TEST',
-        logoUrl: "https://giggedbz.arcadier.io/images/logo-giggedbz.arcadier.io.png?id=7bbb7abc-f85f-4a58-bb43-2b4b3ab479f1",
+        logoUrl: faker.image.unsplash.avatar(),
         website: "https://gigged.bz",
       },
     });
