@@ -7,7 +7,7 @@ export class GetProductByUrl {
   private url: string | null;
   private user: UserEntity | null;
 
-  constructor(url: string, user: UserEntity = null) {
+  constructor(url: string, user: UserEntity | null = null) {
     this.url = url;
     this.user = user;
   }

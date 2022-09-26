@@ -20,7 +20,7 @@ export const loader = async (args: LoaderArgs) => {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
 
-  const products = await new GetSupplierProducts(userDTO as UserEntity, userDTO as UserEntity).call();
+  const products = await new GetSupplierProducts('userDTO as UserEntity', userDTO as UserEntity).call();
 
   return json({ products: products.map((p) => p.json()) });
 };
