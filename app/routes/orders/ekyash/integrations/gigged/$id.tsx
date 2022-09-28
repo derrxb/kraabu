@@ -16,7 +16,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
         );
       case OrderStatus.Completed:
       case OrderStatus.Failed:
-        throw `${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`;
+        throw redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`);
       default:
         throw redirect(
           `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
