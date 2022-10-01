@@ -7,7 +7,9 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   try {
+    console.log(params);
     const order = await new GetOrder(params).call();
+    console.log(order);
 
     switch (order.status) {
       case OrderStatus.Pending:
@@ -23,6 +25,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
         );
     }
   } catch (e) {
+    console.log(e);
     throw getFormattedFailureResponse(e, request);
   }
 };
