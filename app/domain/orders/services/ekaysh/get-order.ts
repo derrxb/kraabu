@@ -20,7 +20,6 @@ export default class GetOrder {
     const order = await OrderRepository.getByInvoice(id);
 
     if (order) {
-      console.log('RETURNING ORDER: ', order.json());
       return order;
     }
 

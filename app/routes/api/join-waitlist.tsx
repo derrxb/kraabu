@@ -11,7 +11,7 @@ export const action = async ({ request }: ActionArgs) => {
   try {
     await new SubscribeToNewsletter(request).call();
 
-    throw redirect('/');
+    return redirect('/');
   } catch (e) {
     throw getFormattedFailureResponse(e, request);
   }

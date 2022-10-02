@@ -12,6 +12,8 @@ export const action = async ({ request }: ActionArgs) => {
   try {
     const order = await new CompleteOrder(request).call();
 
+    console.log('COMPLETE ORDER: ', order);
+
     return json({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
     throw getFormattedFailureResponse(e, request);

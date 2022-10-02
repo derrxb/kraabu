@@ -27,12 +27,12 @@ export const loader = async ({ params, request }: LoaderArgs) => {
       case OrderStatus.Completed:
         return json({ order: order.json() });
       case OrderStatus.Pending:
-        throw redirect(
+        return redirect(
           `/orders/ekyash/integrations/gigged?invoiceNo=${order.invoice}&paykey=${order.additionalData.paymentKey}`,
         );
       case OrderStatus.Failed:
       default:
-        throw redirect(`/orders/ekyash/${order.invoice}/failed`);
+        return redirect(`/orders/ekyash/${order.invoice}/failed`);
     }
   } catch (e) {
     throw getFormattedFailureResponse(e, request);
