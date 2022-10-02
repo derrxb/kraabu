@@ -86,9 +86,11 @@ class GiggedMapper {
       return Number(prev) + Number(curr);
     }, 0);
 
+    const currency: keyof typeof Currency = payees.Currency as keyof typeof Currency;
+
     return {
       amount: parseInt((Number(total) * 100).toString(), 10),
-      currency: Currency[payees.Currency as Currency],
+      currency: Currency[currency],
       payer: {
         name: order.PayeeInfos[0].Name,
         email: order.PayeeInfos[0].Email,

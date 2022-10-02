@@ -1,9 +1,9 @@
-import { PaymentLink as PaymentLinkORM, PaymentLinkStatus as PaymentLinkStatusORM } from '@prisma/client';
+import type { PaymentLink as PaymentLinkORM } from '@prisma/client';
+import { PaymentLinkStatus as PaymentLinkStatusORM } from '@prisma/client';
 
 const PaymentLinkStatus = PaymentLinkStatusORM;
-const PaymentLink = PaymentLinkORM;
 
-export { PaymentLinkStatus, PaymentLink };
+export { PaymentLinkStatus };
 
 export class PaymentLinkEntity {
   id?: PaymentLinkORM['id'];
