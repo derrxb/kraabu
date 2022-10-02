@@ -8,6 +8,8 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   try {
     const order = await new GetOrder(params).call();
 
+    console.log('STATUS: ', order);
+
     return json(order.json(), HTTP_CODE.ok);
   } catch (e) {
     throw getFormattedFailureResponse(e, request);

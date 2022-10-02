@@ -1,6 +1,6 @@
-import { Currency, OrderStatus } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import superagent from 'superagent';
+import { Currency, OrderStatus } from '~/domain/orders/entities/order';
 import { getErrorMessage } from '~/lib/error-messages';
 import Failure from '~/lib/failure';
 import type { EKyashEntity } from '../entities/ekyash';
