@@ -21,8 +21,6 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   try {
     const order = await new GetOrder(params).call();
 
-    console.log('COMPLETED: ', order);
-
     switch (order.status) {
       case OrderStatus.Completed:
         return json({ order: order.json() });

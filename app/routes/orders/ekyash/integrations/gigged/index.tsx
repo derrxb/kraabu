@@ -28,8 +28,6 @@ export const loader = async ({ request }: LoaderArgs) => {
   try {
     const order = await new GetOrder(request).call();
 
-    console.log('LOADING: ', order);
-
     return json({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
     throw getFormattedFailureResponse(e, request);

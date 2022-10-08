@@ -3,15 +3,11 @@ import { redirect } from '@remix-run/node';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import GetOrder from '~/domain/orders/services/ekaysh/get-order';
-import { getErrorMessage } from '~/lib/error-messages';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   try {
     const order = await new GetOrder(params).call();
-
-    console.log(params);
-    console.log('EKYASH > integrations > gigged: ', order);
 
     switch (order.status) {
       case OrderStatus.Pending:
@@ -27,7 +23,6 @@ export const loader = async ({ params, request }: LoaderArgs) => {
         );
     }
   } catch (e) {
-    console.log(e, getErrorMessage(e));
     throw getFormattedFailureResponse(e, request);
   }
 };
