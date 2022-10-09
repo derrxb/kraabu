@@ -116,7 +116,6 @@ class GiggedMapper {
         status: data.status === OrderStatus.Completed ? 'success' : data.status === OrderStatus.Failed ? 'failed' : '',
       });
     } catch (e) {
-      console.log('ERROR UPDATING GIGGEDBZ: ', e, getErrorMessage(e));
       throw new Failure('bad_request', getErrorMessage(e));
     }
   }
