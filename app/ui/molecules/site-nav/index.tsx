@@ -1,9 +1,10 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import noop from 'lodash/noop';
+import { useNavigate } from '@remix-run/react';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Krabuu } from '~/ui/atoms/krabuu';
 
 export const SiteNav = ({ className }: { className?: string }) => {
+  const navigate = useNavigate();
   return (
     <nav className={`flex h-[96px] w-full flex-row items-center ${className}`}>
       <div className="mr-auto">
@@ -14,11 +15,11 @@ export const SiteNav = ({ className }: { className?: string }) => {
         <Button
           variant="button"
           color={ButtonColors.Primary}
-          onClick={noop}
+          onClick={() => navigate('/login')}
           size="small"
           icon={<ChevronRightIcon className="h-4 w-4" />}
         >
-          Join waitlist - it's free
+          Log in
         </Button>
       </div>
     </nav>

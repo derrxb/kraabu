@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
-    "@faker-js/faker": "^6.2.0",
+    "@faker-js/faker": "^6.3.1",
     "@remix-run/dev": "^1.6.5",
     "@remix-run/eslint-config": "^1.6.5",
     "@storybook/addon-actions": "^6.4.22",
@@ -78,6 +78,7 @@
     "@storybook/react": "^6.4.22",
     "@storybook/testing-library": "^0.0.11",
     "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/bcryptjs": "^2.4.2",
     "@types/crypto-js": "^4.1.1",
     "@types/lodash": "^4.14.182",

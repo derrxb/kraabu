@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Product" ALTER COLUMN "coverImage" SET DATA TYPE TEXT,
+ALTER COLUMN "thumbnailImage" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "logoUrl" SET DATA TYPE TEXT;

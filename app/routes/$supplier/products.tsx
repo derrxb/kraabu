@@ -34,7 +34,7 @@ export default function ProductsPage() {
         Your Products
       </Heading>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-3 gap-8">
         {data.products.map((product) => (
           <ProductListingItem key={product.id} product={product} isOwner />
         ))}

@@ -14,7 +14,7 @@ model User {
   email        String    @unique @db.VarChar(255)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  logoUrl      String    @db.VarChar(255)
+  logoUrl      String    @db.Text()
   website      String    @db.VarChar(255)
   tag          String    @db.VarChar(255)
   businessName String    @db.VarChar(255)
@@ -119,8 +119,8 @@ model Product {
   description    String        @db.VarChar(255)
   price          Int
   currency       Currency      @default(BZD)
-  coverImage     String        @db.VarChar(255)
-  thumbnailImage String        @db.VarChar(255)
+  coverImage     String        @db.Text()
+  thumbnailImage String        @db.Text()
   published      Boolean       @default(false) @db.Boolean
   publicUrl      String        @unique @db.VarChar(255)
   orders         Order[]

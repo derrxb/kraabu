@@ -1,25 +1,39 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { Link } from '@remix-run/react';
-import { truncate } from 'lodash';
 import type { ProductDTO } from '~/domain/orders/entities/product';
+import { getPrettyCurrency } from '~/lib/currency';
 
-export type ProductListingItemType = {
+export type ProductListingItemTypeProps = {
   product: ProductDTO;
   isOwner?: boolean;
 };
 
-export const ProductListingItem = ({ product, isOwner }: ProductListingItemType) => {
+export const ProductListingItem = ({ product, isOwner }: ProductListingItemTypeProps) => {
   return (
     <Link
       to={`/products/${product.publicUrl}`}
       key={product.id}
-      className="max-w-[320px] rounded-md border-[1px] border-gray-100 p-4 shadow-md"
+      className="relative max-w-[320px] space-y-2 overflow-hidden rounded-md border-[1px] border-gray-200"
     >
-      <h1 className="font-bold text-gray-900">{product.name}</h1>
-      <p className="text-gray-600">{truncate(product.description, { length: 75 })}</p>
+      <img src={product.coverImage} alt={product.name} className="object-contain object-center" />
 
-      {!product.published && isOwner ? (
-        <span className="rounded-full bg-yellow-600 px-2 py-1 text-sm text-white">Draft</span>
-      ) : null}
+      <div className="flex flex-col space-y-2 px-4 pb-4">
+        <h1 className="text-lg font-medium text-gray-900">{product.name}</h1>
+        <p className="text-gray-500 line-clamp-3">{product.description}</p>
+
+        {product.price ? (
+          <span className="mt-auto text-lg font-bold text-primary-4">
+            {getPrettyCurrency(product.price / 100, product.currency!)}
+          </span>
+        ) : null}
+
+        {!product.published && isOwner ? (
+          <span className="absolute -top-2 right-0 inline-flex  items-center rounded-r-sm rounded-bl-md rounded-br-none bg-yellow-600 px-2 py-2 text-sm text-white">
+            <ExclamationTriangleIcon className="mr-1 h-4 w-4" />
+            Draft
+          </span>
+        ) : null}
+      </div>
     </Link>
   );
 };
