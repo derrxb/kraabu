@@ -29,7 +29,7 @@ export default function ProductsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <Page>
+    <Page className="py-8">
       <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary} className="pb-4">
         Your Products
       </Heading>
