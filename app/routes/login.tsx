@@ -83,7 +83,7 @@ const Login = () => {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full px-8 md:px-32">
       <SiteNav />
 
       <div className="my-32 flex flex-col items-center space-y-4">

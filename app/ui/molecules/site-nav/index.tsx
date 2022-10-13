@@ -10,7 +10,7 @@ export const SiteNav = ({ className }: { className?: string }) => {
         <Krabuu isLink size="large" />
       </div>
 
-      <div className="ml-auto">
+      <div className="ml-auto hidden sm:flex">
         <Button
           variant="button"
           color={ButtonColors.Primary}
