@@ -44,10 +44,10 @@ export default function Index() {
     setIntervalAsync(
       timer,
       async () => {
-        const result = await axios.get(`/orders/ekyash/${data.order.invoice}/status`);
+        const result = await axios.get(`/orders/ekyash/${data.order?.invoice}/status`);
 
         if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
-          navigate(`/orders/ekyash/integrations/gigged/${data.order.invoice}`, {
+          navigate(`/orders/ekyash/integrations/gigged/${data.order?.invoice}`, {
             replace: true,
           });
         }
@@ -60,7 +60,7 @@ export default function Index() {
         clearTimeout(timer);
       }
     };
-  }, [data.order.invoice, navigate]);
+  }, [data.order?.invoice, navigate]);
 
-  return <PendingPayment order={data.order} hasOrderItemsDisplayed />;
+  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed />;
 }

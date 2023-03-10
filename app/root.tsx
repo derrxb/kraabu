@@ -1,9 +1,9 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import styles from './styles/app.css';
+import stylesheet from '~/assets/styles/app.css';
 
 export let links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [{ rel: 'stylesheet', href: stylesheet }];
 };
 
 export const meta: MetaFunction = () => {
