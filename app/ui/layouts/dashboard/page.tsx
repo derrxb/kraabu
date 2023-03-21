@@ -10,7 +10,7 @@ export type PageProps = {
 
 export const Page = ({ children, className, hasTopNav }: PageProps) => {
   return (
-    <div className={clsx('flex h-full w-full flex-col bg-slate-50 px-4 md:px-24 lg:px-32', className)}>
+    <div className={clsx('flex h-full w-full flex-col bg-slate-50 px-4 md:px-12 lg:px-20', className)}>
       {hasTopNav ? <SiteNav className="mb-8" /> : null}
       {children}
     </div>

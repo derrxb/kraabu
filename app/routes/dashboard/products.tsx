@@ -29,18 +29,20 @@ export default function ProductsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <Page className="py-8">
-      <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary} className="pb-4">
-        Your Products
-      </Heading>
+    <div className="flex flex-col space-y-4 py-8 px-8">
+      <div className="flex items-center justify-between">
+        <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary}>
+          Your Products
+        </Heading>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4">
+        <Link to="/products/new">Create a product</Link>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {data.products.map((product) => (
           <ProductListingItem key={product.id} product={product} isOwner />
         ))}
       </div>
-
-      <Link to="/products/new">Create a product</Link>
-    </Page>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { enc, HmacSHA256 } from 'crypto-js';
+import cryptoJS from 'crypto-js';
 import superagent from 'superagent';
 import type { EKyashEntity } from '../entities/ekyash';
 
@@ -30,10 +30,10 @@ export const getEKyashApiBase = () => {
  * @returns
  */
 const getJWTToken = async (kyash: EKyashEntity) => {
-  const header = enc.Base64.stringify(enc.Utf8.parse(JSON.stringify({ alg: 'HS256', typ: 'JWT' })));
+  const header = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(JSON.stringify({ alg: 'HS256', typ: 'JWT' })));
 
-  const data = enc.Base64.stringify(
-    enc.Utf8.parse(
+  const data = cryptoJS.enc.Base64.stringify(
+    cryptoJS.enc.Utf8.parse(
       JSON.stringify({
         mobile: kyash.phone,
         sid: String(kyash.sid),
@@ -43,7 +43,7 @@ const getJWTToken = async (kyash: EKyashEntity) => {
     ),
   );
 
-  const signature = enc.Base64.stringify(HmacSHA256(`${header}.${data}`, kyash.apiKey));
+  const signature = cryptoJS.enc.Base64.stringify(cryptoJS.HmacSHA256(`${header}.${data}`, kyash.apiKey));
 
   return `${header}.${data}.${signature}`;
 };
@@ -262,7 +262,7 @@ export type CompletedPaymentCallbackData = {
 };
 
 const getAuthenticatedHash = (data: Omit<CompletedPaymentCallbackData, 'transactionId'>, password: string) => {
-  return enc.Base64.stringify(HmacSHA256(JSON.stringify(data), password));
+  return cryptoJS.enc.Base64.stringify(cryptoJS.HmacSHA256(JSON.stringify(data), password));
 };
 
 const isCallbackRequestValid = (data: CompletedPaymentCallbackData, password: string) => {

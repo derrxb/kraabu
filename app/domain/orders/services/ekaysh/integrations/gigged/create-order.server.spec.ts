@@ -1,5 +1,5 @@
 import { OrderStatus } from '@prisma/client';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { beforeEach, expect, it } from 'vitest';
 import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';

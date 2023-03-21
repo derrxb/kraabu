@@ -2,6 +2,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { Link } from '@remix-run/react';
 import type { ProductDTO } from '~/domain/orders/entities/product';
 import { getPrettyCurrency } from '~/lib/currency';
+import { Image } from '~/ui/atoms/image';
 
 export type ProductListingItemTypeProps = {
   product: ProductDTO;
@@ -13,9 +14,9 @@ export const ProductListingItem = ({ product, isOwner }: ProductListingItemTypeP
     <Link
       to={`/products/${product.publicUrl}`}
       key={product.id}
-      className="relative max-w-[320px] space-y-2 overflow-hidden rounded-md border-[1px] border-gray-200"
+      className="relative w-full space-y-2 overflow-hidden rounded-md border-[1px] border-gray-200"
     >
-      <img src={product.coverImage} alt={product.name} className="object-contain object-center" />
+      <Image src={product.coverImage!} alt={product.name!} className="object-contain object-center" />
 
       <div className="flex flex-col space-y-2 px-4 pb-4">
         <h1 className="text-lg font-medium text-gray-900">{product.name}</h1>
