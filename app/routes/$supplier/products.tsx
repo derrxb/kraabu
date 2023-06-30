@@ -16,7 +16,9 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async (args: LoaderArgs) => {
-  let userDTO = await authenticator.isAuthenticated(args.request, {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const userDTO = await authenticator.isAuthenticated(args.request, {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
 
@@ -26,6 +28,8 @@ export const loader = async (args: LoaderArgs) => {
 };
 
 export default function ProductsPage() {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const data = useLoaderData<typeof loader>();
 
   return (
