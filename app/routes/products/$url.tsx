@@ -1,4 +1,4 @@
-import type { LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { capitalize } from 'lodash';
 import type { ProductDTO } from '~/domain/orders/entities/product';
@@ -8,13 +8,18 @@ import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Page } from '~/ui/layouts/dashboard/page';
 
-export const meta: MetaFunction = ({ data }) => {
+export const meta: V2_MetaFunction = ({ data }) => {
   const product = data as ProductDTO;
 
-  return {
-    title: `${product.name} by ${product.user?.businessName} | Krabuu`,
-    description: product.description,
-  };
+  return [
+    {
+      title: `${product.name} by ${product.user?.businessName} | Krabuu`,
+    },
+    {
+      name: 'description',
+      content: product.description,
+    },
+  ];
 };
 
 export const loader = async (args: LoaderArgs) => {

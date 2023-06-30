@@ -1,12 +1,17 @@
-import type { MetaFunction } from '@remix-run/node';
+import type { V2_MetaFunction } from '@remix-run/node';
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { HeroFold } from '~/ui/organisms/landing-page/hero-fold';
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Krabuu | Sell anything online in Belize, without the hassle',
-    description: 'Sell anything online in Belize, without the hassle',
-  };
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: 'Krabuu | Sell anything online in Belize, without the hassle',
+    },
+    {
+      name: 'description',
+      content: 'Sell anything online in Belize, without the hassle',
+    },
+  ];
 };
 
 export default function Index() {

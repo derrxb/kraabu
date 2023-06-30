@@ -1,13 +1,13 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import stylesheet from '~/assets/styles/app.css';
 
-export let links: LinksFunction = () => {
+export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: stylesheet }];
 };
 
-export const meta: MetaFunction = () => {
-  return { title: 'Krabuu | Accept Payments in Belize Online' };
+export const meta: V2_MetaFunction = () => {
+  return [{ title: 'Krabuu | Accept Payments in Belize Online' }];
 };
 
 export default function App() {

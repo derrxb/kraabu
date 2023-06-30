@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { useActionData, useTransition } from '@remix-run/react';
 import { ValidationError } from 'joi';
@@ -17,14 +17,19 @@ const getValuesFromRequest = async (request: Request) => {
   return values;
 };
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Sign in to your Krabuu Account',
-    description: 'Sign in to your account to manage your products & see your completed orders.',
-  };
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: 'Sign in to your Krabuu Account',
+    },
+    {
+      name: 'description',
+      content: 'Sign in to your account to manage your products & see your completed orders.',
+    },
+  ];
 };
 
-export let loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderArgs) => {
   return await authenticator.isAuthenticated(request, {
     successRedirect: '/',
   });
@@ -37,12 +42,12 @@ export const action = async ({ request }: ActionArgs) => {
     });
 
     // manually get the session
-    let session = await getSession(request.headers.get('cookie'));
+    const session = await getSession(request.headers.get('cookie'));
     // and store the user data
     session.set(authenticator.sessionKey, user);
 
     // commit the session
-    let headers = new Headers({ 'Set-Cookie': await commitSession(session) });
+    const headers = new Headers({ 'Set-Cookie': await commitSession(session) });
 
     return redirect('/dashboard', { headers });
   } catch (error) {

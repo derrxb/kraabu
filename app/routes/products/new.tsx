@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { Form, useActionData, useTransition } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
@@ -9,11 +9,16 @@ import { InputField } from '~/ui/atoms/input-field';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ErrorResponse } from '~/utils/error-response';
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Create Product | Add your product details',
-    description: '',
-  };
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: 'Create Product | Add your product details',
+    },
+    {
+      name: 'description',
+      content: '',
+    },
+  ];
 };
 
 export const loader = async (args: LoaderArgs) => {

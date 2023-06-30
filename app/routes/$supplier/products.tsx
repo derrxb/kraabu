@@ -1,4 +1,4 @@
-import type { LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
@@ -8,11 +8,16 @@ import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ProductListingItem } from '~/ui/molecules/product-listing-item';
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Your Products | Krabuu',
-    description: 'See the status of all your products.',
-  };
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: 'Your Products | Krabuu',
+    },
+    {
+      name: 'description',
+      content: 'See the status of all your products.',
+    },
+  ];
 };
 
 export const loader = async (args: LoaderArgs) => {

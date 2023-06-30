@@ -1,4 +1,4 @@
-import type { LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
@@ -8,13 +8,18 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
 
-export const meta: MetaFunction = ({ data }) => {
+export const meta: V2_MetaFunction = ({ data }) => {
   const order = data.order as OrderDTO;
 
-  return {
-    title: `Payment Successful | ${order?.user?.businessName} - ${order?.user?.tag}`,
-    description: `${order.orderItems?.[0].description}`,
-  };
+  return [
+    {
+      title: `Payment Successful | ${order?.user?.businessName} - ${order?.user?.tag}`,
+    },
+    {
+      name: 'description',
+      content: `${order.orderItems?.[0].description}`,
+    },
+  ];
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {

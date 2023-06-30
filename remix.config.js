@@ -3,8 +3,9 @@
  */
 module.exports = {
   ignoredRouteFiles: ['**/.*'],
+  tailwind: true,
   future: {
-    unstable_dev: true,
-    unstable_tailwind: true,
+    v2_dev: true,
+    v2_meta: true,
   },
 };

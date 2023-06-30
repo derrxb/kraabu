@@ -1,4 +1,4 @@
-import type { LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { ProductDTO } from '~/domain/orders/entities/product';
 import { GetOrderablePaymentLink } from '~/domain/orders/services/get-product-by-payment-link';
@@ -15,13 +15,18 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 };
 
-export const meta: MetaFunction = ({ data }) => {
+export const meta: V2_MetaFunction = ({ data }) => {
   const product = data as ProductDTO;
 
-  return {
-    title: `${product.name} by ${product.user?.businessName} | Krabuu`,
-    description: product.description,
-  };
+  return [
+    {
+      title: `${product.name} by ${product.user?.businessName} | Krabuu`,
+    },
+    {
+      name: 'description',
+      content: product.description,
+    },
+  ];
 };
 
 export default function OrderByPaymentLink() {

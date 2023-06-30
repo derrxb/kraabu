@@ -1,22 +1,26 @@
-import type { LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
-import { Page } from '~/ui/layouts/dashboard/page';
 import { ProductListingItem } from '~/ui/molecules/product-listing-item';
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Your Products | Krabuu',
-    description: 'See the status of all your products.',
-  };
+export const meta: V2_MetaFunction = () => {
+  return [
+    {
+      title: 'Your Products | Krabuu',
+    },
+    {
+      name: 'description',
+      content: 'See the status of all your products.',
+    },
+  ];
 };
 
 export const loader = async (args: LoaderArgs) => {
-  let userDTO = await authenticator.isAuthenticated(args.request, {
+  const userDTO = await authenticator.isAuthenticated(args.request, {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
 

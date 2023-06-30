@@ -1,4 +1,4 @@
-import type { LoaderArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import axios from 'axios';
@@ -10,18 +10,28 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
 
-export const meta: MetaFunction = ({ data }) => {
+export const meta: V2_MetaFunction = ({ data }) => {
   if (!data) {
-    return {
-      title: 'Complete your order payment online | Powered by Krabuu',
-      description: 'Confirm your order by completing payment with a local digital wallet.',
-    };
+    return [
+      {
+        title: 'Complete your order payment online | Powered by Krabuu',
+      },
+      {
+        name: 'description',
+        content: 'Confirm your order by completing payment with a local digital wallet.',
+      },
+    ];
   }
 
-  return {
-    title: `Complete your ${data.order.user?.businessName} Order's Payment | Powered by Krabuu`,
-    description: 'Confirm your order by completing payment with a local digital wallet.',
-  };
+  return [
+    {
+      title: `Complete your ${data.order.user?.businessName} Order's Payment | Powered by Krabuu`,
+    },
+    {
+      name: 'description',
+      content: 'Confirm your order by completing payment with a local digital wallet.',
+    },
+  ];
 };
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -39,7 +49,7 @@ export default function Index() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
+    const timer: NodeJS.Timeout | null = null;
 
     setIntervalAsync(
       timer,
