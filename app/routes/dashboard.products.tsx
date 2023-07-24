@@ -1,5 +1,5 @@
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
@@ -24,7 +24,11 @@ export const loader = async (args: LoaderArgs) => {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
 
-  const products = await new GetSupplierProducts(userDTO?.username!, userDTO as UserEntity).call();
+  if (!userDTO?.username) {
+    throw redirect('/');
+  }
+
+  const products = await new GetSupplierProducts(userDTO.username!, userDTO as UserEntity).call();
 
   return json({ products: products.map((p) => p.json()) });
 };

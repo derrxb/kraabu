@@ -17,7 +17,7 @@ export type LoginFormProps = {
 
 export const LoginForm = (props: LoginFormProps) => {
   return (
-    <Form method="post" action="/login" className={clsx('mx-auto flex w-full flex-col md:w-[480px]', props.className)}>
+    <Form method="POST" action="/login" className={clsx('mx-auto flex w-full flex-col md:w-[480px]', props.className)}>
       {props.errors?.general ? <span className="text-red-500">{props.errors.general?.toString()}</span> : null}
 
       <InputField

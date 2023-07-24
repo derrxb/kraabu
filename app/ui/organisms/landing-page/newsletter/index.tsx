@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form } from '@remix-run/react';
 import { Button } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
@@ -21,7 +21,7 @@ export const Newsletter = () => {
         Register your interest now to secure your priority spot and be one of the first to know when we go live.{' '}
       </p>
 
-      <Form className="py-4" method="post" action="/api/join-waitlist">
+      <Form className="py-4" method="POST" action="/api/join-waitlist">
         <div className="flex flex-row items-center">
           <div className="flex flex-col">
             <label htmlFor="firstName" className="sr-only">

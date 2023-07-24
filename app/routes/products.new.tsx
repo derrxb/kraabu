@@ -47,7 +47,7 @@ export default function ProductNew() {
 
   return (
     <Page>
-      <Form method="post" action="/products/new" className="m-auto max-w-[640px]">
+      <Form method="POST" action="/products/new" className="m-auto max-w-[640px]">
         <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H3}>
           Create a new product
         </Heading>
