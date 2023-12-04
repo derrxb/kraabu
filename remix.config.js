@@ -3,6 +3,7 @@
  */
 module.exports = {
   ignoredRouteFiles: ['**/.*'],
+  postcss: true,
   tailwind: true,
   future: {
     v2_dev: true,
