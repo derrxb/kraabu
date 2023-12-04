@@ -1,4 +1,4 @@
-import heroRemembered from '~/assets/images/hero-remembered.svg';
+import heroRemembered from 'public/images/hero-remembered.svg';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
 /**

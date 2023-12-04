@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import heroMain from '~/assets/images/hero-home.svg';
+import heroMain from 'public/images/hero-home.svg';
 import { Button, ButtonColors } from '~/ui/atoms/button';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 import { Tag, TagAppearance } from '~/ui/atoms/tag';

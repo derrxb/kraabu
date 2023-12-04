@@ -1,5 +1,5 @@
-import heroSecurity from '~/assets/images/hero-security.svg';
-import walletEKyash from '~/assets/images/wallets/ekyash.png';
+import heroSecurity from 'public/images/hero-security.svg';
+import walletEKyash from 'public/images/wallets/ekyash.png';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
 /**

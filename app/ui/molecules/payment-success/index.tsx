@@ -1,4 +1,4 @@
-import success from '~/assets/images/success.svg';
+import success from 'public/images/success.svg';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 
 export type PaymentSuccessProps = {};
