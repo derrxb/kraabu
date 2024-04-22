@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw'
 import { nanoid } from 'nanoid';
 import { Currency } from '~/domain/orders/entities/order';
 import type { AuthorizationResponse, NewInvoiceResponse } from '~/domain/orders/library/ekyash-api';
@@ -8,35 +8,31 @@ import { mockEKyashTransactionEntity, mockGiggedOrderEntity } from './fixtures';
 
 export const handlers = [
   // Mock EKyash Authorization
-  rest.post(`${getEKyashApiBase()}/${EKyashRoutes.Authorization}`, (req, res, ctx) => {
-    return res(
-      ctx.json({
-        session: 'a-random-authorization-code',
-        firstName: 'Test',
-        lastName: 'User',
-        Mobile: 5554443333,
-        Settings: '',
-      } as AuthorizationResponse),
-    );
+  http.post(`${getEKyashApiBase()}/${EKyashRoutes.Authorization}`, ({ request }) => {
+    return HttpResponse.json({
+      session: 'a-random-authorization-code',
+      firstName: 'Test',
+      lastName: 'User',
+      Mobile: 5554443333,
+      Settings: '',
+    } as AuthorizationResponse);
   }),
   // Mock create invoice
-  rest.post(`${getEKyashApiBase()}/${EKyashRoutes.CreateInvoice}`, (req, res, ctx) => {
-    return res(
-      ctx.json({
-        invoiceId: 1234567890, // TODO: This might be a string. Double check.
-        paymentLink: mockEKyashTransactionEntity.deepLinkUrl,
-        receiptUrl: mockEKyashTransactionEntity.invoiceUrl,
-        qrUrl: mockEKyashTransactionEntity.qrCodeUrl,
-      } as NewInvoiceResponse),
-    );
+  http.post(`${getEKyashApiBase()}/${EKyashRoutes.CreateInvoice}`, ({ request }) => {
+    return HttpResponse.json({
+      invoiceId: 1234567890, // TODO: This might be a string. Double check.
+      paymentLink: mockEKyashTransactionEntity.deepLinkUrl,
+      receiptUrl: mockEKyashTransactionEntity.invoiceUrl,
+      qrUrl: mockEKyashTransactionEntity.qrCodeUrl,
+    } as NewInvoiceResponse);
   }),
   // Mocks the transaction update
-  rest.post(GiggedRoutes.TransactionStatus, (req, res, ctx) => {
-    return res(ctx.json({ success: true }));
+  http.post(GiggedRoutes.TransactionStatus, ({ request }) => {
+    return HttpResponse.json({ success: true });
   }),
   // Mocks the order details
-  rest.get(GiggedRoutes.OrderDetails, (req, res, ctx) => {
-    const { invoiceNo } = req.params;
+  http.get(GiggedRoutes.OrderDetails, ({ request }) => {
+    const invoiceNo = new URL(request.url).searchParams.get("invoiceNo");
     const total = mockGiggedOrderEntity.amount / 100; // convert to dollars
 
     const orderId = nanoid();
@@ -83,6 +79,6 @@ export const handlers = [
       },
     };
 
-    return res(ctx.json(data));
+    return HttpResponse.json(data);
   }),
 ];

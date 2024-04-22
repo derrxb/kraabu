@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { Currency, OrderStatus } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { EKyashEntity } from '~/domain/orders/entities/ekyash';
@@ -72,7 +72,7 @@ export const mockOrderItemEntity = new OrderItemEntity({
   description: faker.lorem.lines(2),
   name: 'Kawasaki Ninja 400 deep cleaning session',
   // convert to cents
-  price: Number(faker.commerce.price(200, 250, 2)) * 100,
+  price: Number(faker.commerce.price({ min: 200, max: 250, dec: 2})) * 100,
   quantity: 1,
   id: 1,
   orderId: 1,

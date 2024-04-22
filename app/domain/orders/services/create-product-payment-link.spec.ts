@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';

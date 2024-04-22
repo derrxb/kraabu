@@ -1,8 +1,8 @@
-import type { V2_MetaFunction } from '@remix-run/node';
+import type { MetaFunction } from '@vercel/remix';
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { HeroFold } from '~/ui/organisms/landing-page/hero-fold';
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     {
       title: 'Krabuu | Sell anything online in Belize, without the hassle',

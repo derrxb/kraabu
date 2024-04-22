@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node";
+import { json } from '@remix-run/node';
 import { logError } from '~/infrastructure/logging/index.server';
 import { getErrorMessage } from '~/lib/error-messages';
 import Failure from '~/lib/failure';

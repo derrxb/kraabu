@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import type { AvatarProps } from '.';
 import { Avatar } from '.';

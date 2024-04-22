@@ -1,4 +1,4 @@
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json, redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
@@ -8,7 +8,7 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
 
-export const meta: V2_MetaFunction = ({ data }) => {
+export const meta: MetaFunction = ({ data }) => {
   const order = data.order as OrderDTO;
 
   return [
@@ -22,7 +22,7 @@ export const meta: V2_MetaFunction = ({ data }) => {
   ];
 };
 
-export const loader = async ({ params, request }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   try {
     const order = await new GetOrder(params).call();
 

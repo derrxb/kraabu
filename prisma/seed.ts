@@ -1,9 +1,9 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 import bycrypt from 'bcryptjs';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import { nanoid } from 'nanoid';
 
 const db = new PrismaClient();
@@ -66,7 +66,7 @@ const seed = async () => {
           thumbnailImage: productURLResponse.request.res.responseUrl,
           description: faker.commerce.productDescription(),
           name: productName,
-          price: Number(faker.commerce.price(10000, 100000)),
+          price: Number(faker.commerce.price({ min: 10000, max:100000})),
           publicUrl: `${kebabCase(productName)}-${nanoid(4)}`,
           published: true,
           userId: user.id!

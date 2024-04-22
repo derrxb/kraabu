@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import type { Product } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { describe, expect, it } from 'vitest';

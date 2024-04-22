@@ -1,4 +1,4 @@
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
@@ -8,7 +8,7 @@ import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ProductListingItem } from '~/ui/molecules/product-listing-item';
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     {
       title: 'Your Products | Krabuu',
@@ -20,7 +20,7 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-export const loader = async (args: LoaderArgs) => {
+export const loader = async (args: LoaderFunctionArgs) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const userDTO = await authenticator.isAuthenticated(args.request, {

@@ -1,4 +1,4 @@
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import { nanoid } from 'nanoid';
 import { ProductEntity } from '~/entities/product';
 import type { UserDTO } from '~/entities/user';

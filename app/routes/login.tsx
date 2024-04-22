@@ -1,7 +1,7 @@
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json, redirect } from '@remix-run/node';
-import { useActionData, useTransition } from '@remix-run/react';
-import { ValidationError } from 'joi';
+import { useActionData, useNavigation } from '@remix-run/react';
+import * as joi from 'joi';
 import { AuthorizationError } from 'remix-auth';
 import { authenticator } from '~/auth.server';
 import { getErrorMessage } from '~/lib/error-messages';
@@ -17,7 +17,7 @@ const getValuesFromRequest = async (request: Request) => {
   return values;
 };
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     {
       title: 'Sign in to your Krabuu Account',
@@ -29,13 +29,13 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   return await authenticator.isAuthenticated(request, {
     successRedirect: '/',
   });
 };
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const user = await authenticator.authenticate('user-pass', request, {
       throwOnError: true,
@@ -54,7 +54,7 @@ export const action = async ({ request }: ActionArgs) => {
     // Because redirects work by throwing a Response, you need to check if the
     // caught error is a response and return it or throw it again
     if (error instanceof Response) throw error;
-    if (error instanceof ValidationError) {
+    if (error instanceof joi.ValidationError) {
       return json({
         values: await getValuesFromRequest(request),
         errors: error.details.reduce((acc, curr) => {
@@ -84,7 +84,7 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 const Login = () => {
-  const transition = useTransition();
+  const transition = useNavigation();
   const actionData = useActionData<typeof action>();
 
   return (

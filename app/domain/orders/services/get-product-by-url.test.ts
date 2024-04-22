@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import type { Product } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { describe, expect, it } from 'vitest';
@@ -8,7 +8,7 @@ import { UserEntity } from '../entities/user';
 import { GetProductByUrl } from './get-product-by-url';
 
 describe('[GET] Products', () => {
-  it.skip('Returns `not_found` when product does not exist', async () => {
+  it('Returns `not_found` when product does not exist', async () => {
     // Arrange
     const invalidId = 'invalid-id';
 
@@ -16,7 +16,7 @@ describe('[GET] Products', () => {
     expect(async () => await new GetProductByUrl(invalidId).call());
   });
 
-  it.skip('Returns `forbidden` when payment link is not published', async () => {
+  it('Returns `forbidden` when payment link is not published', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {
@@ -48,7 +48,7 @@ describe('[GET] Products', () => {
     );
   });
 
-  it.skip('Returns `ok` & the product when the publicUrl is valid', async () => {
+  it('Returns `ok` & the product when the publicUrl is valid', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {

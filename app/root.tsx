@@ -1,12 +1,8 @@
-import type { LinksFunction, V2_MetaFunction } from '@remix-run/node';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import stylesheet from '~/assets/styles/app.css';
+import type { MetaFunction } from '@vercel/remix';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import '~/assets/styles/app.css';
 
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: stylesheet }];
-};
-
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: 'Krabuu | Accept Payments in Belize Online' }];
 };
 
@@ -24,7 +20,6 @@ export default function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

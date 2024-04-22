@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
 import { describe, expect, it } from 'vitest';
 import prisma from '~/infrastructure/database/index.server';
@@ -7,7 +7,7 @@ import { UserEntity } from '../entities/user';
 import { GetSupplierProducts } from './get-supplier-products';
 
 describe('GET Supplier Products', () => {
-  it.skip('Returns `not_found` when there is no user with the given username', async () => {
+  it('Returns `not_found` when there is no user with the given username', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {

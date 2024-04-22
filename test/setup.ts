@@ -1,6 +1,6 @@
-import { installGlobals } from '@remix-run/node';
+// import { installGlobals } from '@remix-run/node';
 import { mswServer } from '~/mocks/server';
 
-installGlobals();
+// installGlobals();
 
 mswServer.listen({ onUnhandledRequest: 'warn' });

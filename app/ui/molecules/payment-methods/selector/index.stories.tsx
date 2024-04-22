@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { noop } from 'lodash';
+import noop from 'lodash/noop';
 import type { PaymentMethodSelectorProps } from '.';
 import { PaymentMethodSelector } from '.';
 

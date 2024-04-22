@@ -1,10 +1,10 @@
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { useLoaderData } from '@remix-run/react';
 import type { ProductDTO } from '~/domain/orders/entities/product';
 import { GetOrderablePaymentLink } from '~/domain/orders/services/get-product-by-payment-link';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
-export const loader = async ({ request, params }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   try {
     const { url } = params;
     const product = await new GetOrderablePaymentLink(url as string).call();
@@ -15,7 +15,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 };
 
-export const meta: V2_MetaFunction = ({ data }) => {
+export const meta: MetaFunction = ({ data }) => {
   const product = data as ProductDTO;
 
   return [

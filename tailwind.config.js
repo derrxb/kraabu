@@ -1,8 +1,20 @@
-module.exports = {
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
-  // Theme!
+import forms from '@tailwindcss/forms';
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './app/**/*.{js,jsx,ts,tsx, mdx}',
+    './ui/**/*.{js,jsx,ts,tsx, mdx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    './public/index.html',
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Raleway', ...fontFamily.sans],
+        serif: ['Raleway', ...fontFamily.serif],
+      },
       colors: {
         brand: '#002042',
         twitter: '#1DA1F2',
@@ -19,5 +31,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/line-clamp')],
+  plugins: [forms],
 };

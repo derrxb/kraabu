@@ -1,6 +1,6 @@
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json, redirect } from '@remix-run/node';
-import { Form, useActionData, useTransition } from '@remix-run/react';
+import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import { CreateProduct } from '~/domain/orders/services/create-product';
 import { Button } from '~/ui/atoms/button';
@@ -9,7 +9,7 @@ import { InputField } from '~/ui/atoms/input-field';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ErrorResponse } from '~/utils/error-response';
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     {
       title: 'Create Product | Add your product details',
@@ -21,7 +21,7 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-export const loader = async (args: LoaderArgs) => {
+export const loader = async (args: LoaderFunctionArgs) => {
   await authenticator.isAuthenticated(args.request, {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
@@ -29,7 +29,7 @@ export const loader = async (args: LoaderArgs) => {
   return json({});
 };
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
 
   try {
@@ -42,7 +42,7 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default function ProductNew() {
-  const transition = useTransition();
+  const transition = useNavigation();
   const actionData = useActionData<typeof action>();
 
   return (

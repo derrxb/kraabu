@@ -1,4 +1,4 @@
-import { truncate } from 'lodash';
+import truncate from 'lodash/truncate';
 import type { OrderItemDTO } from '~/domain/orders/entities/order-item';
 import { getPrettyCurrency } from '~/lib/currency';
 

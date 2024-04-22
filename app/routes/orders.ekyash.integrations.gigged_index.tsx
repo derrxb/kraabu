@@ -1,4 +1,4 @@
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PendingPayment } from '~/ui/organisms/pending-payment';
 
-export const meta: V2_MetaFunction = ({ data }) => {
+export const meta: MetaFunction = ({ data }) => {
   if (!data) {
     return [
       {
@@ -34,7 +34,7 @@ export const meta: V2_MetaFunction = ({ data }) => {
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
     const order = await new GetOrder(request).call();
 

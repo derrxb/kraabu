@@ -61,7 +61,9 @@ export default class GetOrder {
     }
 
     const ekyashMapper = new EKyashMapper(this.user?.ekyash as EKyashEntity);
+
     await ekyashMapper.initialize();
+
     return await ekyashMapper.createInvoice(payment);
   }
 
@@ -81,6 +83,7 @@ export default class GetOrder {
     await this.getOrderUser(order);
 
     const invoice = await this.getPaymentQrCode(order);
+
     const orderDetails = await this.getPaymentOrderDetails(order);
 
     if (!!invoice || !!orderDetails) {

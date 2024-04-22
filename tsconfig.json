@@ -7,25 +7,26 @@
   ],
   "compilerOptions": {
     "sourceMap": true,
-    "types": [
-      "vitest/globals"
-    ],
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ES2019",
-      "ESNext"
+      "ES2022"
     ],
-    "module": "CommonJS",
+    "types": [
+      "@remix-run/node",
+      "vite/client",
+      "vitest/globals"
+    ],
+    "baseUrl": ".",
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ES2022",
     "strict": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": [
         "./app/*"

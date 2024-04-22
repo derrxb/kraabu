@@ -1,4 +1,4 @@
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json, redirect } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
@@ -7,7 +7,7 @@ import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-produ
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { ProductListingItem } from '~/ui/molecules/product-listing-item';
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     {
       title: 'Your Products | Krabuu',
@@ -19,7 +19,7 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-export const loader = async (args: LoaderArgs) => {
+export const loader = async (args: LoaderFunctionArgs) => {
   const userDTO = await authenticator.isAuthenticated(args.request, {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
@@ -37,7 +37,7 @@ export default function ProductsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col space-y-4 py-8 px-8">
+    <div className="flex flex-col space-y-4 px-8 py-8">
       <div className="flex items-center justify-between">
         <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary}>
           Your Products
