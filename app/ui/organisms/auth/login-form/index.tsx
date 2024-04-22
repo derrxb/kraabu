@@ -1,7 +1,6 @@
 import { Form } from '@remix-run/react';
-import clsx from 'clsx';
 import { Button } from '~/ui/atoms/button';
-import { InputField } from '~/ui/atoms/input-field';
+import { InputField } from '~/ui/atoms/input-field-deprecated';
 
 export type LoginFormProps = {
   className?: string;
@@ -17,7 +16,7 @@ export type LoginFormProps = {
 
 export const LoginForm = (props: LoginFormProps) => {
   return (
-    <Form method="POST" action="/login" className={clsx('mx-auto flex w-full flex-col md:w-[480px]', props.className)}>
+    <Form method="POST" action="/login" className={props.className}>
       {props.errors?.general ? <span className="text-red-500">{props.errors.general?.toString()}</span> : null}
 
       <InputField
@@ -28,6 +27,7 @@ export const LoginForm = (props: LoginFormProps) => {
         type="text"
         defaultValue={props.initialValues?.email}
       />
+
       <InputField
         autoComplete="current-password"
         isFullWidth
@@ -38,8 +38,8 @@ export const LoginForm = (props: LoginFormProps) => {
         disabled={props.isSubmitting}
       />
 
-      <Button disabled={props.isSubmitting} isFullWidth variant="submit" size="medium">
-        Continue
+      <Button type="submit" className="w-full">
+        Login
       </Button>
     </Form>
   );

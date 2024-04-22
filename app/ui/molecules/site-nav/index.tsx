@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from '@remix-run/react';
-import { Button, ButtonColors } from '~/ui/atoms/button';
+import { Button, ButtonColors } from '~/ui/atoms/button-deprecated';
 import { Krabuu } from '~/ui/atoms/krabuu';
 
 export const SiteNav = ({ className }: { className?: string }) => {

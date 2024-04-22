@@ -1,137 +1,56 @@
-import clsx from 'clsx';
-import type { ReactNode } from 'react';
-import digiWalletWhite from 'public/images/wallets/digiwallet-white.png';
-import ekyashWhite from 'public/images/wallets/ekaysh-white.png';
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "~/lib/utils"
 
-export enum ButtonColors {
-  Primary,
-  Text,
-  EKyash,
-  DigiWallet,
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-export type ButtonProps = {
-  /**
-   * Where to redirect the user to
-   */
-  href?: string;
-  /**
-   * The button's variant
-   */
-  variant: 'button' | 'submit' | 'link';
-  /**
-   * Is this the principal call to action on the page?
-   */
-  color?: ButtonColors;
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large';
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void;
-  /**
-   * Button should take up the full width of its container.
-   */
-  isFullWidth?: boolean;
-  /**
-   * A right aligned icon to display with your button
-   */
-  icon?: ReactNode;
-  /**
-   * Text to show inside button
-   */
-  children: ReactNode;
-  disabled?: boolean;
-};
-
-const sizes = {
-  small: 'text-sm px-4 py-3',
-  medium: 'text-base px-4 py-3',
-  large: 'text-lg px-4 py-3',
-};
-
-const modes = {
-  secondary: 'text-gray-900 bg-transparent shadow-md',
-  ekyash: 'bg-ekyash-1 text-gray-100 hover:text-white hover:bg-ekyash-2',
-  primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
-  digiWallet: 'bg-digi-1 text-gray-100 hover:text-white hover:bg-digi-2',
-};
-/**
- * Primary UI component for user interaction
- */
-export const Button = ({
-  color = ButtonColors.Primary,
-  size = 'medium',
-  children,
-  variant = 'button',
-  isFullWidth = false,
-  disabled = false,
-  ...props
-}: ButtonProps) => {
-  if (variant === 'link' && typeof variant === 'undefined') {
-    throw new Error('Button links required `href` to be defined.');
-  }
-
-  if (variant === 'link') {
-    const As = disabled ? 'span' : 'a';
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
     return (
-      <As
-        target="_blank"
-        href={props.href}
-        className={clsx(
-          `inline-flex cursor-pointer items-center rounded-md border-0 text-center text-base font-semibold tracking-wider ${sizes[size]}`,
-          {
-            [modes.primary]: color === ButtonColors.Primary,
-            [modes.secondary]: color === ButtonColors.Text,
-            [modes.ekyash]: color === ButtonColors.EKyash,
-            [modes.digiWallet]: color === ButtonColors.DigiWallet,
-            'w-full justify-center': isFullWidth,
-            'w-fit': !isFullWidth,
-            'cursor-not-allowed opacity-50': disabled,
-          },
-        )}
-        rel="noreferrer"
-      >
-        {color === ButtonColors.EKyash ? <img src={ekyashWhite} alt="ekyash" className="-mb-1 mr-2 h-6 w-24" /> : null}
-        {color === ButtonColors.DigiWallet ? (
-          <img src={digiWalletWhite} alt="digiwallet" className="mr-4 h-6 w-24" />
-        ) : null}
-
-        {children}
-
-        {props.icon ? <span className="ml-2">props.icon</span> : null}
-      </As>
-    );
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
   }
+)
+Button.displayName = "Button"
 
-  return (
-    <button
-      type={variant}
-      disabled={disabled}
-      className={clsx(
-        `inline-flex cursor-pointer flex-row items-center rounded-md border-0 text-base font-semibold tracking-wider ${sizes[size]}`,
-        {
-          [modes.primary]: color === ButtonColors.Primary,
-          [modes.secondary]: color === ButtonColors.Text,
-          [modes.ekyash]: color === ButtonColors.EKyash,
-          [modes.digiWallet]: color === ButtonColors.DigiWallet,
-          'w-full justify-center': isFullWidth,
-          'w-fit': !isFullWidth,
-          'cursor-not-allowed opacity-50': disabled,
-        },
-      )}
-      {...props}
-    >
-      {color === ButtonColors.EKyash ? <img src={ekyashWhite} alt="ekyash" className="-mb-1 mr-2 h-6 w-24" /> : null}
-      {color === ButtonColors.DigiWallet ? (
-        <img src={digiWalletWhite} alt="digiwallet" className="mr-2 h-5 w-20" />
-      ) : null}
-
-      {children}
-
-      {props.icon ? <span className="ml-2">{props.icon}</span> : null}
-    </button>
-  );
-};
+export { Button, buttonVariants }

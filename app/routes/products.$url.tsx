@@ -4,7 +4,7 @@ import capitalize from 'lodash/capitalize';
 import type { ProductDTO } from '~/domain/orders/entities/product';
 import { GetProductByUrl } from '~/domain/orders/services/get-product-by-url';
 import { Avatar } from '~/ui/atoms/avatar';
-import { Button, ButtonColors } from '~/ui/atoms/button';
+import { Button, ButtonColors } from '~/ui/atoms/button-deprecated';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Page } from '~/ui/layouts/dashboard/page';
 

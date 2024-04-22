@@ -16,7 +16,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="h-full w-full px-8 md:px-32">
+    <div className="h-full w-full px-8 md:px-32 font-sans">
       <SiteNav className="" />
       <HeroFold />
     </div>

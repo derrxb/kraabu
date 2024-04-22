@@ -1,57 +1,25 @@
-import { Label } from '@radix-ui/react-label';
-import clsx from 'clsx';
-import type { InputHTMLAttributes } from 'react';
-import { ValidationMessage } from '../input-validation-message';
+/* eslint-disable react/prop-types */
+import * as React from "react"
+import { cn } from "~/lib/utils"
 
-export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
-  name: string;
-  isFullWidth?: boolean;
-  errorMessage?: string;
-  wrapperClassName?: string;
-  labelClassName?: string;
-};
 
-export const InputField = ({
-  label,
-  name,
-  isFullWidth = false,
-  readOnly = false,
-  errorMessage,
-  wrapperClassName,
-  labelClassName,
-  ...props
-}: InputFieldProps) => {
-  return (
-    <fieldset
-      disabled={readOnly}
-      className={clsx('flex flex-col', wrapperClassName, {
-        'pb-4': !errorMessage,
-        'pb-2': errorMessage,
-      })}
-    >
-      <Label htmlFor={name} className={clsx('flex flex-col pb-0 text-sm text-gray-500', labelClassName)}>
-        {label}
-      </Label>
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
       <input
-        {...props}
-        readOnly={readOnly}
-        id={name}
-        name={name}
-        className={clsx(
-          'mt-1 rounded-sm border-0 px-4 py-2 text-base text-gray-900 ring-2 focus:outline-none focus:ring-2',
-          {
-            'w-full': isFullWidth,
-            'w-fit': !isFullWidth,
-            'ring-gray-300 focus:ring-indigo-500': !errorMessage,
-            'pb-2 ring-red-600': !!errorMessage,
-          },
-          props.className,
+        type={type}
+        className={cn(
+          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+          className
         )}
+        ref={ref}
+        {...props}
       />
+    )
+  }
+)
+Input.displayName = "Input"
 
-      <ValidationMessage errorMessage={errorMessage} isSubmitting={!!props.disabled} />
-    </fieldset>
-  );
-};
+export { Input }

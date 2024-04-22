@@ -1,4 +1,4 @@
-import { Button, ButtonColors } from '~/ui/atoms/button';
+import { Button, ButtonColors } from '~/ui/atoms/button-deprecated';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
 

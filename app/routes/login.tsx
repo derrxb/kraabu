@@ -6,9 +6,9 @@ import { AuthorizationError } from 'remix-auth';
 import { authenticator } from '~/auth.server';
 import { getErrorMessage } from '~/lib/error-messages';
 import { commitSession, getSession } from '~/session.server';
-import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { LoginForm } from '~/ui/organisms/auth/login-form';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/atoms/card';
 
 const getValuesFromRequest = async (request: Request) => {
   const formData = await request.formData();
@@ -31,7 +31,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return await authenticator.isAuthenticated(request, {
-    successRedirect: '/',
+    successRedirect: '/dashboard',
   });
 };
 
@@ -92,18 +92,25 @@ const Login = () => {
       <SiteNav />
 
       <div className="my-32 flex flex-col items-center space-y-4">
-        <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H4}>
-          Log into your Krabuu account
-        </Heading>
+        <Card className="mx-auto max-w-sm">
+          <CardHeader>
+            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardDescription>
+              Enter your email below to log into your account
+            </CardDescription>
+          </CardHeader>
 
-        <LoginForm
-          isSubmitting={transition.state === 'submitting'}
-          errors={actionData?.errors}
-          initialValues={{
-            email: actionData?.values?.email?.toString() ?? '',
-            password: actionData?.values?.password?.toString() ?? '',
-          }}
-        />
+          <CardContent>
+            <LoginForm
+              isSubmitting={transition.state === 'submitting'}
+              errors={actionData?.errors}
+              initialValues={{
+                email: actionData?.values?.email?.toString() ?? '',
+                password: actionData?.values?.password?.toString() ?? '',
+              }}
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import heroMain from 'public/images/hero-home.svg';
-import { Button, ButtonColors } from '~/ui/atoms/button';
+import { Button, ButtonColors } from '~/ui/atoms/button-deprecated';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 import { Tag, TagAppearance } from '~/ui/atoms/tag';
 import { FadeInOutItems } from '~/ui/molecules/fade-in-out-items';

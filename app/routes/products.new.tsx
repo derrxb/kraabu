@@ -3,9 +3,9 @@ import { json, redirect } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import { CreateProduct } from '~/domain/orders/services/create-product';
-import { Button } from '~/ui/atoms/button';
+import { Button } from '~/ui/atoms/button-deprecated';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
-import { InputField } from '~/ui/atoms/input-field';
+import { InputField } from '~/ui/atoms/input-field-deprecated';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ErrorResponse } from '~/utils/error-response';
 

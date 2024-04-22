@@ -1,5 +1,5 @@
 import { Form } from '@remix-run/react';
-import { Button } from '~/ui/atoms/button';
+import { Button } from '~/ui/atoms/button-deprecated';
 import { Heading, HeadingVariant } from '~/ui/atoms/heading';
 
 /**
