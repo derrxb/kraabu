@@ -17,7 +17,7 @@ export const Image = (props: ImageProps) => {
   return (
     <figure
       className={clsx(
-        'relative aspect-video overflow-hidden bg-cover bg-center bg-no-repeat object-cover object-center',
+        'relative aspect-video overflow-hidden bg-cover bg-center bg-no-repeat object-cover object-center rounded-md',
         {
           'animate-pulse bg-gray-200': !imageLoaded,
         },
@@ -32,7 +32,7 @@ export const Image = (props: ImageProps) => {
         }}
         src={props.src}
         className={clsx(
-          'absolute top-0 left-0 aspect-video h-full w-full object-cover object-center',
+          'absolute top-0 left-0 aspect-video h-full w-full object-cover object-center rounded-md',
           {
             'opacity-100': imageLoaded,
             'opacity-0': !imageLoaded,

@@ -5,7 +5,10 @@ import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
-import { ProductListingItem } from '~/ui/molecules/product-listing-item';
+import { Breadcrumbs } from '~/ui/molecules/breadcrumbs-list';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/atoms/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/atoms/card';
+import { ProductsTable } from '~/ui/organisms/products-table';
 
 export const meta: MetaFunction = () => {
   return [
@@ -42,15 +45,49 @@ export default function ProductsPage() {
         <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary}>
           Your Products
         </Heading>
-
-        <Link to="/products/new">Create a product</Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {data.products.map((product) => (
-          <ProductListingItem key={product.id} product={product} isOwner />
-        ))}
-      </div>
+      <Breadcrumbs
+        items={[
+          {
+            label: "Dashboard",
+            href: "/"
+          },
+          {
+            label: "Products",
+            href: "/products"
+          },
+          {
+            label: "All Products",
+            href: "/dashboard/products"
+          }
+        ]}
+      />
+
+      <Tabs defaultValue='all'>
+        <div className="flex items-center">
+          <TabsList>
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="active">Active</TabsTrigger>
+            <TabsTrigger value="draft">Draft</TabsTrigger>
+          </TabsList>
+        </div>
+
+        <TabsContent value="all">
+          <Card>
+            <CardHeader>
+              <CardTitle>Products</CardTitle>
+              <CardDescription>
+                Manage your products and view their sales performance.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <ProductsTable products={data.products} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
