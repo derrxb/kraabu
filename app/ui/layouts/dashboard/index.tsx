@@ -10,9 +10,9 @@ export const Dashboard = () => {
     <React.Fragment>
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex items-center">
         <nav className="mt-6 flex flex-col space-y-2 justify-center">
-          <NavItem content='Products' label='Products' href={Routes.Products} icon={<Package className="h-5 w-5" />} />
-          <NavItem content='Orders' label='Orders' href={Routes.Orders} icon={<ShoppingCart className="h-5 w-5" />} />
-          <NavItem content='Settings' label='Settings' href={Routes.Settings} icon={<Settings className="h-5 w-5" />} />
+          <NavItem content="Products" label="Products" href={Routes.Products} icon={<Package className="h-5 w-5" />} />
+          <NavItem content="Orders" label="Orders" href={Routes.Orders} icon={<ShoppingCart className="h-5 w-5" />} />
+          <NavItem content="Settings" label="Settings" href={Routes.Settings} icon={<Settings className="h-5 w-5" />} />
         </nav>
       </aside>
 

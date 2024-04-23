@@ -3,6 +3,9 @@
     "remix.env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    ".eslintrc.js",
     "app/lib/**/*"
   ],
   "compilerOptions": {

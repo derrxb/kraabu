@@ -47,7 +47,7 @@ const Product = () => {
 
           <Link to={`/business/${data.user?.id}`}>
             <span className="mr-1 text-gray-500">by</span>
-            <Avatar src={data.user?.logoUrl!} fallback={data.user?.businessName?.slice(0, 2) ?? ""} />
+            <Avatar src={data.user?.logoUrl!} fallback={data.user?.businessName?.slice(0, 2) ?? ''} />
 
             <span className="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">
               {capitalize(data.user?.businessName)}

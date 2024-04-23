@@ -95,9 +95,7 @@ const Login = () => {
         <Card className="mx-auto max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-              Enter your email below to log into your account
-            </CardDescription>
+            <CardDescription>Enter your email below to log into your account</CardDescription>
           </CardHeader>
 
           <CardContent>

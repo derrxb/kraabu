@@ -1,9 +1,9 @@
-import { Button } from "~/ui/atoms/button"
-import { Sheet, SheetContent, SheetTrigger } from "~/ui/atoms/sheet"
-import { BurgerNavItem } from "../burger-nav-item"
-import { Krabuu } from "~/ui/atoms/krabuu"
-import { Home, Package, PanelLeft, Settings, ShoppingCart } from "lucide-react"
-import { Routes } from "~/ui/atoms/sidebar-item"
+import { Button } from '~/ui/atoms/button';
+import { Sheet, SheetContent, SheetTrigger } from '~/ui/atoms/sheet';
+import { BurgerNavItem } from '../burger-nav-item';
+import { Krabuu } from '~/ui/atoms/krabuu';
+import { Home, Package, PanelLeft, Settings, ShoppingCart } from 'lucide-react';
+import { Routes } from '~/ui/atoms/sidebar-item';
 
 export const BurgerNav = () => {
   return (
@@ -17,14 +17,14 @@ export const BurgerNav = () => {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
-            <Krabuu size='large' />
-            <BurgerNavItem label='Dashboard' href={Routes.Dashboard} icon={<Home className="h-5 w-5" />} />
-            <BurgerNavItem label='Products' href={Routes.Products} icon={<Package className="h-5 w-5" />} />
-            <BurgerNavItem label='Orders' href={Routes.Orders} icon={<ShoppingCart className="h-5 w-5" />} />
-            <BurgerNavItem label='Settings' href={Routes.Settings} icon={<Settings className="h-5 w-5" />} />
+            <Krabuu size="large" />
+            <BurgerNavItem label="Dashboard" href={Routes.Dashboard} icon={<Home className="h-5 w-5" />} />
+            <BurgerNavItem label="Products" href={Routes.Products} icon={<Package className="h-5 w-5" />} />
+            <BurgerNavItem label="Orders" href={Routes.Orders} icon={<ShoppingCart className="h-5 w-5" />} />
+            <BurgerNavItem label="Settings" href={Routes.Settings} icon={<Settings className="h-5 w-5" />} />
           </nav>
         </SheetContent>
       </Sheet>
     </header>
-  )
-}
+  );
+};

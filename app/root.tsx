@@ -1,6 +1,6 @@
+import '~/assets/styles/app.css';
 import type { MetaFunction } from '@vercel/remix';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import '~/assets/styles/app.css';
 import { TooltipProvider } from './ui/atoms/tooltip';
 
 export const meta: MetaFunction = () => {
@@ -16,11 +16,7 @@ export default function App() {
         <Meta />
         <Links />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"

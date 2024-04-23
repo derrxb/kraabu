@@ -31,14 +31,10 @@ export const InputField = ({
         'pb-2': errorMessage,
       })}
     >
-
-      <Label htmlFor="email" className={labelClassName}>{label}</Label>
-      <Input
-        {...props}
-        id={name}
-        name={name}
-        required
-      />
+      <Label htmlFor="email" className={labelClassName}>
+        {label}
+      </Label>
+      <Input {...props} id={name} name={name} required />
 
       <ValidationMessage errorMessage={errorMessage} isSubmitting={!!props.disabled} />
     </fieldset>

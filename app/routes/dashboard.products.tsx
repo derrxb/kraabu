@@ -46,21 +46,21 @@ export default function ProductsPage() {
       <Breadcrumbs
         items={[
           {
-            label: "Dashboard",
-            href: "/"
+            label: 'Dashboard',
+            href: '/',
           },
           {
-            label: "Products",
-            href: "/products"
+            label: 'Products',
+            href: '/products',
           },
           {
-            label: "All Products",
-            href: "/dashboard/products"
-          }
+            label: 'All Products',
+            href: '/dashboard/products',
+          },
         ]}
       />
 
-      <Tabs defaultValue='all'>
+      <Tabs defaultValue="all">
         <div className="flex items-center">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
@@ -73,9 +73,7 @@ export default function ProductsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Products</CardTitle>
-              <CardDescription>
-                Manage your products and view their sales performance.
-              </CardDescription>
+              <CardDescription>Manage your products and view their sales performance.</CardDescription>
             </CardHeader>
 
             <CardContent>
