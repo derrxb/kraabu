@@ -31,7 +31,7 @@ const seed = async () => {
     giggedUser = await db.user.create({
       data: {
         businessName: 'GIGGED_TEST',
-        email: faker.internet.email(),
+        email: faker.internet.email({ allowSpecialCharacters: true }),
         ekyash: undefined,
         username: nanoid(),
         password,
@@ -90,12 +90,12 @@ const seed = async () => {
   // Create fake business
   const createUser = async (index: number) => {
     const businessName = faker.company.buzzNoun();
-    const productURLResponse = await axios.get(faker.image.unsplash.imageUrl(undefined, undefined, "business logo"), { responseType: 'arraybuffer' });
+    const productURLResponse = await axios.get(faker.image.urlLoremFlickr({ category: "business" }), { responseType: 'arraybuffer' });
 
     const newUser = await db.user.create({
       data: {
         businessName,
-        email: `business-${index}@krabuu.com`,
+        email: `business-${index}${nanoid(2)}@krabuu.com`,
         ekyash: undefined,
         username: businessName.toLowerCase() + nanoid(3),
         password,
@@ -124,9 +124,6 @@ const seed = async () => {
     const user = await createUser(i);
     await createProductsForUser(user);
   }
-
-
-
 };
 
 seed();
