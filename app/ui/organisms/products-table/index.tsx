@@ -1,58 +1,69 @@
-import type { ProductDTO } from '~/domain/orders/entities/product';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '~/ui/atoms/table';
-import { Image } from '~/ui/atoms/image';
-import { Badge } from '~/ui/atoms/badge';
-import { getPrettyCurrency } from '~/lib/currency';
 import { Link } from '@remix-run/react';
+import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import React from 'react';
+import type { ProductDTO } from '~/domain/orders/entities/product';
+import { getPrettyCurrency } from '~/lib/currency';
+import { Badge } from '~/ui/atoms/badge';
+import { Image } from '~/ui/atoms/image';
+import { DataGrid } from '~/ui/molecules/data-grid';
 
 export type ProductsTableProps = {
   products: ProductDTO[];
 };
 
+const columnHelper = createColumnHelper<ProductDTO>();
+
 export const ProductsTable = ({ products }: ProductsTableProps) => {
-  return (
-    <Table>
-      <TableRow>
-        <TableHead className="w-[100px] sm:table-cell">
-          <span className="sr-only">Image</span>
-        </TableHead>
-        <TableHead>Name</TableHead>
-        <TableHead>Status</TableHead>
-        <TableHead>Price</TableHead>
-        <TableHead>Total Sales</TableHead>
-        <TableHead className="hidden md:table-cell">Created at</TableHead>
-        <TableHead>
-          <span>Actions</span>
-        </TableHead>
-      </TableRow>
-      <TableBody>
-        {products.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell>
-              <Image src={product.coverImage} alt={product.name} className="object-contain object-center" />
-            </TableCell>
-            <TableCell className="font-medium">
-              <Link to={`/products/${product.publicUrl}`}>{product.name}</Link>
-              <span className="line-clamp-2 text-sm text-gray-500">{product.description}</span>
-            </TableCell>
-            <TableCell>
-              <Badge variant={product.published ? 'default' : 'outline'}>
-                {product.published ? 'Active' : 'Draft'}
-              </Badge>
-            </TableCell>
-            <TableCell>
-              <span>
-                {typeof product.price !== 'undefined' && typeof product.currency !== 'undefined'
-                  ? getPrettyCurrency(product.price / 100, product.currency)
-                  : '$0'}
-              </span>
-            </TableCell>
-            <TableHead>1</TableHead>
-            <TableCell className="hidden md:table-cell">Today</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+  const columns = React.useMemo(
+    () => [
+      columnHelper.accessor('coverImage', {
+        header: () => 'Preview',
+        cell: (info) => (
+          <Image src={info.getValue()} alt={info.row.original.name} className="object-contain object-center min-h-20" />
+        ),
+      }),
+      columnHelper.accessor('name', {
+        header: 'Name',
+        cell: (info) => (
+          <div className="max-w-4xl">
+            <Link to={`/products/${info.row.original.publicUrl}`}>{info.getValue()}</Link>
+            <span className="line-clamp-2 text-sm text-gray-500">{info.row.original.description}</span>
+          </div>
+        ),
+      }),
+      columnHelper.accessor('published', {
+        header: 'Status',
+        cell: (info) => (
+          <Badge variant={info.getValue() ? 'default' : 'outline'}>{info.getValue() ? 'Active' : 'Draft'}</Badge>
+        ),
+      }),
+      columnHelper.accessor('price', {
+        header: 'Price',
+        cell: (info) => (
+          <span>
+            {typeof info.getValue() !== 'undefined' && typeof info.row.original.currency !== 'undefined'
+              ? getPrettyCurrency(info.getValue()! / 100, info.row.original.currency)
+              : '$0'}
+          </span>
+        ),
+      }),
+      columnHelper.accessor('publicUrl', {
+        header: 'Actions',
+        cell: (info) => (
+          <div>
+            <Link to={`/products/${info.getValue()}/edit`}>Edit</Link>
+          </div>
+        ),
+      }),
+    ],
+    [],
   );
+
+  const instance = useReactTable({
+    columns,
+    data: products,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  return <DataGrid table={instance} />;
 };
