@@ -1,13 +1,13 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json, redirect } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
-import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
-import { Breadcrumbs } from '~/ui/molecules/breadcrumbs-list';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/atoms/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/atoms/card';
+import { Krabuu } from '~/ui/atoms/krabuu';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/atoms/tabs';
+import { Breadcrumbs } from '~/ui/molecules/breadcrumbs-list';
 import { ProductsTable } from '~/ui/organisms/products-table';
 
 export const meta: MetaFunction = () => {
@@ -40,12 +40,8 @@ export default function ProductsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col space-y-4 px-8 py-8">
-      <div className="flex items-center justify-between">
-        <Heading variant={HeadingVariant.H3} appearance={HeadingAppearance.Primary}>
-          Your Products
-        </Heading>
-      </div>
+    <div className="flex flex-col space-y-4">
+      <Krabuu className="py-2" size="large" isLink />
 
       <Breadcrumbs
         items={[

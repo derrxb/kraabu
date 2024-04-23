@@ -1,6 +1,7 @@
 import type { MetaFunction } from '@vercel/remix';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import '~/assets/styles/app.css';
+import { TooltipProvider } from './ui/atoms/tooltip';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Krabuu | Accept Payments in Belize Online' }];
@@ -26,10 +27,12 @@ export default function App() {
         ></link>
       </head>
 
-      <body className="h-full w-full font-sans">
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
+      <body className="h-full w-full font-sans flex min-h-screen flex-col bg-muted/40">
+        <TooltipProvider>
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+        </TooltipProvider>
       </body>
     </html>
   );

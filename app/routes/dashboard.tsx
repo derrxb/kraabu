@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { authenticator } from '~/auth.server';
 import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import { Dashboard } from '~/ui/layouts/dashboard';

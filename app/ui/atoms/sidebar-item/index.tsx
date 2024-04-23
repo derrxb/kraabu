@@ -3,8 +3,10 @@ import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
 export const enum Routes {
+  Dashboard = '/dashboard',
   Products = '/dashboard/products',
   Orders = '/dashboard/orders',
+  Settings = '/dashboard/settings',
 }
 
 export type SidebarItemProps = {
