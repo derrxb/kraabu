@@ -23,7 +23,7 @@ const seed = async () => {
         username: "giggedbz",
         password,
         tag: 'GIGGED TEST',
-        logoUrl: faker.image.unsplash.avatar(),
+        logoUrl: faker.image.avatar(),
         website: "https://gigged.bz",
       },
     });
@@ -36,7 +36,7 @@ const seed = async () => {
         username: nanoid(),
         password,
         tag: 'GIGGED TEST',
-        logoUrl: faker.image.unsplash.avatar(),
+        logoUrl: faker.image.avatar(),
         website: "https://gigged.bz",
       },
     });
@@ -58,7 +58,7 @@ const seed = async () => {
   const createProductsForUser = async (user: User) => {
     for (let i = 0; i < 25; i++) {
       const productName = faker.commerce.productName();
-      const productImage = faker.image.unsplash.technology(undefined, undefined, "product");
+      const productImage = faker.image.urlLoremFlickr({ category: "product" })
       const productURLResponse = await axios.get(productImage, { responseType: 'arraybuffer' });
       const product = await db.product.create({
         data: {
@@ -89,7 +89,7 @@ const seed = async () => {
 
   // Create fake business
   const createUser = async (index: number) => {
-    const businessName = faker.company.companyName();
+    const businessName = faker.company.buzzNoun();
     const productURLResponse = await axios.get(faker.image.unsplash.imageUrl(undefined, undefined, "business logo"), { responseType: 'arraybuffer' });
 
     const newUser = await db.user.create({
@@ -108,7 +108,7 @@ const seed = async () => {
     await db.ekyash.create({
       data: {
         apiKey: `${nanoid(3)}-APPKEY17-07A8-4BAF-AA0F-B1568C5017A3`,
-        phone: faker.phone.phoneNumber(),
+        phone: faker.phone.number(),
         sid: 2324518403,
         pinEncoded: `${nanoid(3)}-44c80bbde592aed7e2138b67ec71e94a5a22d39bc36d66c3373c1ea33013d396`,
         pinHash: `${nanoid(3)}-8d4fd24a970f49292076bf74df011e9f8d0e7850273666fcf4db458f1ee2d461`,
