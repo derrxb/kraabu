@@ -40,8 +40,8 @@ export default function ProductsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col space-y-4">
-      <Krabuu className="py-2" size="large" isLink />
+    <div className="flex flex-col space-y-4 px-4 md:px-0">
+      <Krabuu size="large" isLink />
 
       <Breadcrumbs
         items={[
