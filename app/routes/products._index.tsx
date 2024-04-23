@@ -53,10 +53,6 @@ export default function ProductsPage() {
             label: 'Products',
             href: '/products',
           },
-          {
-            label: 'All Products',
-            href: '/dashboard/products',
-          },
         ]}
       />
 

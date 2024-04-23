@@ -51,6 +51,21 @@ export default class ProductRepository {
     return this.rebuildEntity(result);
   }
 
+  static async edit(data: ProductEntity) {
+    const result = await prisma.product.update({
+      where: { id: data.id },
+      data: {
+        name: data.name as string,
+        description: data.description as string,
+        price: data.price ?? 0,
+        publicUrl: data.publicUrl as string,
+        currency: data.currency,
+      },
+    });
+
+    return this.rebuildEntity(result);
+  }
+
   static async findAllProductsByUserId(userId: number) {
     const result = await prisma.product.findMany({
       where: {

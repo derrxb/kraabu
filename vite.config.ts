@@ -15,5 +15,8 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./test/setup.ts'],
   },
+  ssr: {
+    noExternal: /^\@radix-ui/,
+  },
   plugins: [remix({ presets: [vercelPreset()] }), tsconfigPaths()],
 });
