@@ -28,16 +28,14 @@ export const loader = async (args: LoaderFunctionArgs) => {
   };
 };
 
-export const meta: MetaFunction = ({ data }) => {
-  const product = data as ProductDTO;
-
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
     {
-      title: `Edit ${product.name} | Krabuu`,
+      title: `Edit ${data?.product.name} | Krabuu`,
     },
     {
       name: 'description',
-      content: product.description,
+      content: data?.product.description,
     },
   ];
 };

@@ -1,7 +1,8 @@
 import '~/assets/styles/app.css';
-import type { MetaFunction } from '@vercel/remix';
+import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { TooltipProvider } from './ui/atoms/tooltip';
+import { authenticator } from './auth.server';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Krabuu | Accept Payments in Belize Online' }];
