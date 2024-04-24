@@ -1,7 +1,6 @@
 import { Form, useLoaderData, useNavigate, useNavigation } from '@remix-run/react';
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from '@vercel/remix';
 import { authenticator } from '~/auth.server';
-import { ProductDTO } from '~/domain/orders/entities/product';
 import { EditProduct } from '~/domain/orders/services/edit-product';
 import { GetProductByUrl } from '~/domain/orders/services/get-product-by-url';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/ui/atoms/Select';

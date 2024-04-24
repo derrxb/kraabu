@@ -22,7 +22,7 @@
     "db:migrate:dev": "dotenv -e .env.dev npx prisma migrate dev",
     "db:migrate:test": "dotenv -e .env.test -- npx prisma db push --accept-data-loss",
     "db:gen:migrate": "dotenv -e .env.dev npx prisma migrate dev --name",
-    "start": "cross-env NODE_ENV=production remix-server ./build/index.js",
+    "start": "cross-env NODE_ENV=production remix-serve ./build/server/index.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test:local": "run-s db:migrate:test test:coverage:disabled",
