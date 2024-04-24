@@ -26,8 +26,8 @@ const createProductSchema = joi.object({
       });
       return newErrors;
     }),
-  coverImage: joi.string().required(),
-  thumbnailImage: joi.string().required(),
+  coverImage: joi.string().optional(),
+  thumbnailImage: joi.string().optional(),
   publicUrl: joi.string().required(),
 });
 

@@ -1,13 +1,17 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { json, redirect } from '@remix-run/node';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { Form, useActionData, useNavigate, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import { CreateProduct } from '~/domain/orders/services/create-product';
-import { Button } from '~/ui/atoms/button-deprecated';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { InputField } from '~/ui/atoms/input-field-deprecated';
-import { Page } from '~/ui/layouts/dashboard/page';
 import { ErrorResponse } from '~/utils/error-response';
+import { Krabuu } from '~/ui/atoms/krabuu';
+import { Breadcrumbs } from '~/ui/molecules/breadcrumbs-list';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/atoms/card';
+import { Button } from '~/ui/atoms/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/ui/atoms/Select';
+import { Label } from '~/ui/atoms/label';
 
 export const meta: MetaFunction = () => {
   return [
@@ -42,90 +46,155 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function ProductNew() {
-  const transition = useNavigation();
   const actionData = useActionData<typeof action>();
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === 'submitting';
 
   return (
-    <Page>
-      <Form method="POST" action="/products/new" className="m-auto max-w-[640px]">
-        <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H3}>
-          Create a new product
-        </Heading>
+    <div className="flex flex-col space-y-4 px-4 md:px-0">
+      <Krabuu size="large" isLink />
+      <Breadcrumbs
+        items={[
+          {
+            label: 'Dashboard',
+            href: '/',
+          },
+          {
+            label: 'Products',
+            href: '/products',
+          },
+          {
+            label: 'Create',
+            href: `/products/new`,
+          },
+        ]}
+      />
 
-        <InputField
-          isFullWidth
-          autoFocus
-          name="name"
-          label="Name"
-          defaultValue={actionData?.values.name}
-          errorMessage={actionData?.errors.name}
-          disabled={transition.state === 'submitting'}
-        />
+      <Form action={`/products/new`} method="post" className="mx-auto w-full max-w-5xl grid flex-1 auto-rows-max gap-4">
+        <div className="flex items-center gap-4">
+          <Heading appearance={HeadingAppearance.Primary} variant={HeadingVariant.H1}>
+            Create a product
+          </Heading>
 
-        <InputField
-          isFullWidth
-          name="description"
-          label="Description"
-          defaultValue={actionData?.values.description}
-          errorMessage={actionData?.errors.description}
-          disabled={transition.state === 'submitting'}
-        />
+          <div className="hidden items-center gap-2 md:ml-auto md:flex">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/products')}
+              disabled={isSubmitting}
+            >
+              Discard
+            </Button>
+            <Button type="submit" size="sm" disabled={isSubmitting}>
+              Save Product
+            </Button>
+          </div>
+        </div>
 
-        <InputField
-          isFullWidth
-          name="price"
-          label="Price"
-          defaultValue={actionData?.values.price}
-          errorMessage={actionData?.errors.price}
-          disabled={transition.state === 'submitting'}
-        />
+        <div>
+          <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
+            <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+              <Card x-chunk="details">
+                <CardHeader>
+                  <CardTitle>Product Details</CardTitle>
+                  <CardDescription>Tell your customers the details about this product.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-6">
+                    <InputField
+                      disabled={isSubmitting}
+                      className="grid gap-3"
+                      name="name"
+                      label="Name"
+                      type="text"
+                      defaultValue={actionData?.values.name}
+                      errorMessage={actionData?.errors.name}
+                    />
 
-        <InputField
-          isFullWidth
-          name="publicUrl"
-          label="Short URL"
-          defaultValue={actionData?.values.publicUrl}
-          errorMessage={actionData?.errors.publicUrl}
-          disabled={transition.state === 'submitting'}
-        />
+                    <InputField
+                      disabled={isSubmitting}
+                      className="grid gap-3"
+                      name="publicUrl"
+                      label="Slug"
+                      type="text"
+                      defaultValue={actionData?.values.publicUrl}
+                      errorMessage={actionData?.errors.publicUrl}
+                    />
 
-        <InputField
-          isFullWidth
-          name="thumbnailImage"
-          label="Thumbnail Image"
-          defaultValue="thumbnail"
-          wrapperClassName="hidden"
-          className="hidden"
-          errorMessage={actionData?.errors.thumbnailImage}
-          disabled={transition.state === 'submitting'}
-        />
+                    <InputField
+                      disabled={isSubmitting}
+                      className="grid gap-3"
+                      name="description"
+                      label="Description"
+                      type="text"
+                      defaultValue={actionData?.values.description}
+                      errorMessage={actionData?.errors.description}
+                    />
 
-        <InputField
-          isFullWidth
-          name="coverImage"
-          label="Cover Image"
-          defaultValue="thumbnail"
-          wrapperClassName="hidden"
-          className="hidden"
-          errorMessage={actionData?.errors.coverImage}
-          disabled={transition.state === 'submitting'}
-        />
+                    <div className="flex gap-2">
+                      <InputField
+                        name="currency"
+                        label="Currency"
+                        defaultValue={actionData?.values.currency}
+                        errorMessage={actionData?.errors.currency}
+                      />
 
-        <InputField
-          isFullWidth
-          name="currency"
-          label="Currency"
-          defaultValue="USD"
-          wrapperClassName="hidden"
-          className="hidden"
-          errorMessage={actionData?.errors.currency}
-          disabled={transition.state === 'submitting'}
-        />
+                      <InputField
+                        name="price"
+                        label="Price"
+                        defaultValue={actionData?.values.price}
+                        errorMessage={actionData?.errors.price}
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-        <Button disabled={transition.state === 'submitting'} variant="submit" isFullWidth>
-          Create
-        </Button>
+            <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Product Status</CardTitle>
+                  <CardDescription>Is this product ready for publishing?</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-6 sm:grid-cols-3">
+                    <div className="grid gap-3">
+                      <Label htmlFor="category">Status</Label>
+                      <Select defaultValue="draft">
+                        <SelectTrigger id="status" aria-label="Select status">
+                          <SelectValue placeholder="Select Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="draft">Draft</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-2 md:hidden">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => navigate('/products')}
+            disabled={isSubmitting}
+          >
+            Discard
+          </Button>
+          <Button type="submit" size="sm" disabled={isSubmitting}>
+            Save Product
+          </Button>
+        </div>
       </Form>
-    </Page>
+    </div>
   );
 }
