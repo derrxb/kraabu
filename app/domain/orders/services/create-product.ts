@@ -25,23 +25,23 @@ export class CreateProduct {
         name: formData.get('name'),
         description: formData.get('description'),
         price: formData.get('price'),
-        coverImage: formData.get('coverImage') ?? '',
-        publicUrl: formData.get('publicUrl') ?? '',
+        // coverImage: formData.get('coverImage'),
+        publicUrl: formData.get('publicUrl'),
         currency: formData.get('currency'),
-        thumbnailImage: formData.get('thumbnailImage'),
+        // thumbnailImage: formData.get('thumbnailImage'),
       },
       { abortEarly: false },
     );
 
     return new ProductEntity({
       paymentLinks: [],
-      coverImage: result.coverImage,
+      coverImage: result?.coverImage ?? '',
       currency: new CurrencyValue(result.currency).call(),
       description: result.description,
       name: result.name,
       price: new PriceValue(result.price).call(),
       publicUrl: result.publicUrl ?? kebabCase(`${result.name.toLowerCase()}-${nanoid(3)}`),
-      thumbnailImage: result.thumbnailImage,
+      thumbnailImage: result?.thumbnailImage ?? '',
     });
   }
 

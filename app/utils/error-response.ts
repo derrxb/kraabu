@@ -1,5 +1,6 @@
 import { json } from '@remix-run/node';
 import * as joi from 'joi';
+import get from 'lodash/get';
 import { getErrorMessage } from '~/lib/error-messages';
 import Failure from '~/lib/failure';
 
@@ -21,7 +22,7 @@ export class ErrorResponse {
     }
 
     // Note: This is JOI validation errors.
-    if (this.error instanceof joi.ValidationError) {
+    if (Object.keys(get(this.error, '_original') ?? {}).length) {
       return json({
         values: Object.fromEntries(formData) as { [key: string]: string },
         errors: this.error.details.reduce((acc, curr) => {
