@@ -7,10 +7,12 @@ export class GetSupplierProducts {
   private username: string;
   private currentUser: UserEntity;
   private supplier?: UserEntity;
+  private searchParams: URLSearchParams;
 
-  constructor(username: string, currentUser: UserEntity) {
+  constructor(username: string, currentUser: UserEntity, searchParams: URLSearchParams) {
     this.username = username;
     this.currentUser = currentUser;
+    this.searchParams = searchParams;
   }
 
   async call() {
@@ -21,11 +23,15 @@ export class GetSupplierProducts {
     }
 
     if (this.supplier.isEqual(this.currentUser)) {
-      const products = await ProductRepository.findAllProductsByUserId(this.supplier!.id!);
+      const products = await ProductRepository.findAllProductsByUserId(this.supplier!.id!, {
+        status: this.searchParams.get('status') ?? 'all',
+      });
       return products;
     }
 
-    const products = await ProductRepository.findAllProductsByUserId(this.supplier!.id!);
+    const products = await ProductRepository.findAllProductsByUserId(this.supplier!.id!, {
+      status: this.searchParams.get('status') ?? 'all',
+    });
     return products;
   }
 }

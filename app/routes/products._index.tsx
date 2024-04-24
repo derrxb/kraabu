@@ -1,5 +1,5 @@
 import { json, redirect } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
@@ -31,13 +31,16 @@ export const loader = async (args: LoaderFunctionArgs) => {
     throw redirect('/');
   }
 
-  const products = await new GetSupplierProducts(userDTO.username!, userDTO as UserEntity).call();
+  const { searchParams } = new URL(args.request.url);
+  console.log(Object.fromEntries(searchParams.entries()));
+  const products = await new GetSupplierProducts(userDTO.username!, userDTO as UserEntity, searchParams).call();
 
   return json({ products: products.map((p) => p.json()) });
 };
 
 export default function ProductsPage() {
   const data = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col space-y-4 px-4 md:px-0">
@@ -59,24 +62,38 @@ export default function ProductsPage() {
       <Tabs defaultValue="all">
         <div className="flex items-center">
           <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="draft">Draft</TabsTrigger>
+            <TabsTrigger value="all" onClick={() => navigate(`/products?status=all`)}>
+              All
+            </TabsTrigger>
+            <TabsTrigger value="active" onClick={() => navigate('/products?status=active')}>
+              Active
+            </TabsTrigger>
+            <TabsTrigger value="draft" onClick={() => navigate('/products?status=draft')}>
+              Draft
+            </TabsTrigger>
           </TabsList>
         </div>
 
-        <TabsContent value="all">
-          <Card>
-            <CardHeader>
-              <CardTitle>Products</CardTitle>
-              <CardDescription>Manage your products and view their sales performance.</CardDescription>
-            </CardHeader>
+        <Card className="my-4">
+          <CardHeader>
+            <CardTitle>Products</CardTitle>
+            <CardDescription>Manage your products and view their sales performance.</CardDescription>
+          </CardHeader>
 
-            <CardContent>
+          <CardContent>
+            <TabsContent value="all">
               <ProductsTable products={data.products} />
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </TabsContent>
+
+            <TabsContent value="active">
+              <ProductsTable products={data.products} />
+            </TabsContent>
+
+            <TabsContent value="draft">
+              <ProductsTable products={data.products} />
+            </TabsContent>
+          </CardContent>
+        </Card>
       </Tabs>
     </div>
   );

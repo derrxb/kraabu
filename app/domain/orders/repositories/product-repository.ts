@@ -66,10 +66,18 @@ export default class ProductRepository {
     return this.rebuildEntity(result);
   }
 
-  static async findAllProductsByUserId(userId: number) {
+  static async findAllProductsByUserId(userId: number, options: { status: string }) {
     const result = await prisma.product.findMany({
       where: {
         userId,
+        published:
+          options?.status === 'all' || !options?.status
+            ? undefined
+            : options.status === 'active'
+              ? true
+              : options.status === 'draft'
+                ? false
+                : undefined,
       },
       include: { paymentLinks: true },
     });
