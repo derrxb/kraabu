@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw';
 import { nanoid } from 'nanoid';
 import { Currency } from '~/domain/orders/entities/order';
 import type { AuthorizationResponse, NewInvoiceResponse } from '~/domain/orders/library/ekyash-api';
@@ -32,7 +32,7 @@ export const handlers = [
   }),
   // Mocks the order details
   http.get(GiggedRoutes.OrderDetails, ({ request }) => {
-    const invoiceNo = new URL(request.url).searchParams.get("invoiceNo");
+    const invoiceNo = new URL(request.url).searchParams.get('invoiceNo');
     const total = mockGiggedOrderEntity.amount / 100; // convert to dollars
 
     const orderId = nanoid();

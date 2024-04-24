@@ -32,7 +32,6 @@ export const loader = async (args: LoaderFunctionArgs) => {
   }
 
   const { searchParams } = new URL(args.request.url);
-  console.log(Object.fromEntries(searchParams.entries()));
   const products = await new GetSupplierProducts(userDTO.username!, userDTO as UserEntity, searchParams).call();
 
   return json({ products: products.map((p) => p.json()) });
