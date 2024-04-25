@@ -39,7 +39,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const user = await authenticator.isAuthenticated(request, { failureRedirect: '/login' });
     const product = await new CreateProduct(formData, user!).call();
-    return redirect(`/projects/${product?.id}`);
+    return redirect(`/projects/${product?.publicUrl}`);
   } catch (error) {
     return await new ErrorResponse(error).call(formData);
   }
