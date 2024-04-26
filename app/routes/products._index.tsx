@@ -1,6 +1,7 @@
 import { json, redirect } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
+import capitalize from 'lodash/capitalize';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
@@ -34,7 +35,7 @@ export const loader = async (args: LoaderFunctionArgs) => {
   const { searchParams } = new URL(args.request.url);
   const products = await new GetSupplierProducts(userDTO.username!, userDTO as UserEntity, searchParams).call();
 
-  return json({ products: products.map((p) => p.json()) });
+  return json({ products: products.map((p) => p.json()), user: userDTO });
 };
 
 export default function ProductsPage() {
@@ -48,8 +49,8 @@ export default function ProductsPage() {
       <Breadcrumbs
         items={[
           {
-            label: 'Dashboard',
-            href: '/',
+            label: `${capitalize(data.user?.businessName)}`,
+            href: `/${data.user?.username}`,
           },
           {
             label: 'Products',

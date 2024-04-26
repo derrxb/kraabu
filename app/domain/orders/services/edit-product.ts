@@ -30,6 +30,7 @@ export class EditProduct {
         price: formData.get('price'),
         publicUrl: formData.get('publicUrl'),
         currency: formData.get('currency'),
+        published: formData.get('published'),
       },
       { abortEarly: false },
     );
@@ -42,6 +43,7 @@ export class EditProduct {
       name: result.name,
       price: new PriceValue(result.price).call(),
       publicUrl: result.publicUrl ?? kebabCase(`${result.name.toLowerCase()}-${nanoid(3)}`),
+      published: result.published === 'draft' ? false : true,
     });
   }
 

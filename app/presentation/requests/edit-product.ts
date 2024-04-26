@@ -27,6 +27,7 @@ const editProductSchema = joi.object({
       return newErrors;
     }),
   publicUrl: joi.string().required(),
+  published: joi.allow('draft', 'published').required(),
 });
 
 export default editProductSchema;

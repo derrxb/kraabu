@@ -39,12 +39,12 @@ const Product = () => {
       <Breadcrumbs
         items={[
           {
-            label: 'Dashboard',
-            href: '/',
-          },
-          {
             label: `${capitalize(data.user?.businessName)}`,
             href: `/${data.user?.username}`,
+          },
+          {
+            label: `Products`,
+            href: `/${data.user?.username}/products`,
           },
           {
             label: data.name || 'Untitled Product',

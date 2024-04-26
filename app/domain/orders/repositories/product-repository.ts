@@ -60,6 +60,7 @@ export default class ProductRepository {
         price: data.price ?? 0,
         publicUrl: data.publicUrl as string,
         currency: data.currency,
+        published: data.published,
       },
     });
 

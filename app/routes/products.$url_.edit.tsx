@@ -1,5 +1,6 @@
 import { Form, useLoaderData, useNavigate, useNavigation } from '@remix-run/react';
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from '@vercel/remix';
+import React from 'react';
 import { authenticator } from '~/auth.server';
 import { EditProduct } from '~/domain/orders/services/edit-product';
 import { GetProductByUrl } from '~/domain/orders/services/get-product-by-url';
@@ -11,6 +12,7 @@ import { InputField } from '~/ui/atoms/input-field-deprecated';
 import { Krabuu } from '~/ui/atoms/krabuu';
 import { Label } from '~/ui/atoms/label';
 import { Breadcrumbs } from '~/ui/molecules/breadcrumbs-list';
+import capitalize from 'lodash/capitalize';
 
 export const loader = async (args: LoaderFunctionArgs) => {
   const { url } = args.params;
@@ -60,6 +62,7 @@ export default function ProductEditPage() {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const [published, setPublished] = React.useState(data.product.published ? 'published' : 'draft');
 
   return (
     <div className="flex flex-col space-y-4 px-4 md:px-0">
@@ -67,12 +70,12 @@ export default function ProductEditPage() {
       <Breadcrumbs
         items={[
           {
-            label: 'Dashboard',
-            href: '/',
+            label: `${capitalize(data.user?.businessName)}`,
+            href: `/${data.user?.username}`,
           },
           {
             label: 'Products',
-            href: '/products',
+            href: `/${data.user?.username}`,
           },
           {
             label: data.product.name || 'Your Product',
@@ -172,8 +175,13 @@ export default function ProductEditPage() {
                   <div className="grid gap-6 sm:grid-cols-3">
                     <div className="grid gap-3">
                       <Label htmlFor="category">Status</Label>
-                      <Select defaultValue={data.product.published ? 'draft' : 'published'}>
-                        <SelectTrigger id="status" aria-label="Select status">
+                      <input hidden value={published} name="published" />
+                      <Select
+                        onValueChange={(selected) => setPublished(selected)}
+                        defaultValue={data.product.published ? 'published' : 'draft'}
+                        name="published"
+                      >
+                        <SelectTrigger id="category" aria-label="Select status" name="published">
                           <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                         <SelectContent>

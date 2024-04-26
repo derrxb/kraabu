@@ -19,7 +19,11 @@ export const ProductsTable = ({ products }: ProductsTableProps) => {
       columnHelper.accessor('coverImage', {
         header: () => 'Preview',
         cell: (info) => (
-          <Image src={info.getValue()} alt={info.row.original.name} className="object-contain object-center min-h-20" />
+          <Image
+            src={info.getValue()}
+            alt={info.row.original.name}
+            className="object-contain object-center min-h-20 max-h-20"
+          />
         ),
       }),
       columnHelper.accessor('name', {
