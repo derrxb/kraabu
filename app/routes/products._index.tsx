@@ -5,6 +5,7 @@ import capitalize from 'lodash/capitalize';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
+import { Button } from '~/ui/atoms/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/atoms/card';
 import { Krabuu } from '~/ui/atoms/krabuu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/ui/atoms/tabs';
@@ -72,6 +73,10 @@ export default function ProductsPage() {
               Draft
             </TabsTrigger>
           </TabsList>
+
+          <Button size="sm" className="ml-auto">
+            Add Product
+          </Button>
         </div>
 
         <Card className="my-4">

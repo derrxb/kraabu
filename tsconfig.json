@@ -7,7 +7,8 @@
     "**/*.jsx",
     ".eslintrc.js",
     "app/lib/**/*",
-    "prisma/seed.mjs"
+    "prisma/seed.mjs",
+    "prisma/seed.mts"
   ],
   "compilerOptions": {
     "sourceMap": true,

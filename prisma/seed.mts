@@ -68,7 +68,7 @@ const seed = async () => {
           name: productName,
           price: Number(faker.commerce.price({ min: 10000, max:100000})),
           publicUrl: `${kebabCase(productName)}-${nanoid(4)}`,
-          published: true,
+          published: Math.ceil(Math.random() * 10) > 5,
           userId: user.id!
         }
       });
