@@ -1,13 +1,14 @@
 import type { Order as OrderORM } from '@prisma/client';
 import { Currency as CurrencyORM, OrderStatus as OrderStatusORM } from '@prisma/client';
 import type { EKyashTransactionDTO, EKyashTransactionEntity } from './ekyash-transaction';
+import { OneLinkTransactionDTO, OneLinkTransactionEntity } from './onelink-transaction';
 import type { OrderItemDTO, OrderItemEntity } from './order-item';
 import type { UserDTO, UserEntity } from './user';
 
 const OrderStatus = OrderStatusORM;
 const Currency = CurrencyORM;
 
-export { OrderStatus, Currency };
+export { Currency, OrderStatus };
 
 export type GiggedOrderDetails = {
   gateway?: string;
@@ -32,6 +33,7 @@ export class OrderEntity {
   userId: OrderORM['userId'];
   orderItems: OrderItemEntity[];
   ekyashTransaction?: EKyashTransactionEntity;
+  oneLinkTransaction?: OneLinkTransactionEntity;
   user?: UserEntity;
 
   constructor({
@@ -46,12 +48,14 @@ export class OrderEntity {
     userId,
     orderItems,
     ekyashTransaction,
+    oneLinkTransaction,
     user,
   }: Omit<OrderORM, 'id' | 'createdAt' | 'updatedAt'> &
     Partial<Pick<OrderORM, 'id' | 'createdAt' | 'updatedAt'>> & {
       additionalData: GiggedOrderDetails;
       orderItems?: OrderItemEntity[];
       ekyashTransaction?: EKyashTransactionEntity;
+      oneLinkTransaction?: OneLinkTransactionEntity;
       user?: UserEntity;
     }) {
     this.amount = amount;
@@ -65,6 +69,7 @@ export class OrderEntity {
     this.userId = userId;
     this.orderItems = orderItems ?? [];
     this.ekyashTransaction = ekyashTransaction;
+    this.oneLinkTransaction = oneLinkTransaction;
     this.user = user;
   }
 
@@ -109,6 +114,7 @@ export class OrderEntity {
       id: this.id,
       orderItems: this.orderItems.map((order) => order.json()),
       ekyashTransaction: this.ekyashTransaction?.json(),
+      oneLinkTransaction: this.oneLinkTransaction?.json(),
       user: this.user?.json(),
     };
   }
@@ -120,6 +126,7 @@ export type OrderDTO = Pick<
 > & {
   orderItems: OrderItemDTO[];
   ekyashTransaction?: EKyashTransactionDTO;
+  oneLinkTransaction?: OneLinkTransactionDTO;
   user?: UserDTO;
   createdAt?: string;
   updatedAt?: string;
