@@ -1,3 +1,6 @@
+import superagent from 'superagent';
+import { OneLinkEntity } from '../entities/onelink';
+
 export enum OneLinkRoutes {
   Payment = '/payment',
   NetworkOne = '/networkOne',
@@ -9,6 +12,17 @@ export const getOneLinkApiBase = () => {
   }
 
   throw new Error('ONE_LINK_ENDPOINT environment variable is not set');
+};
+
+/**
+ * Returns the credentials
+ * @returns
+ */
+const getCredentials = async (oneLink: OneLinkEntity) => {
+  return {
+    accessToken: oneLink.accessToken,
+    salt: oneLink.salt,
+  };
 };
 
 export type NewPaymentData = {
@@ -50,4 +64,21 @@ export type NewPaymentResponse = {
    * response message
    */
   msg: string;
+};
+
+/**
+ * Creates an invoice for users with a specified amount in Belize Dollars.
+ */
+export const createNewInvoice = async (
+  data: Omit<NewPaymentData, 'token' | 'salt'>,
+  oneLink: OneLinkEntity,
+): Promise<NewPaymentResponse> => {
+  const credentials = await getCredentials(oneLink);
+
+  const response = await superagent.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`).send({
+    ...data,
+    ...credentials,
+  });
+
+  return JSON.parse(response.text) as NewPaymentResponse;
 };

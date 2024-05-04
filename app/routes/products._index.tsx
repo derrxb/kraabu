@@ -1,5 +1,5 @@
 import { json, redirect } from '@remix-run/node';
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { Link, useLoaderData, useNavigate } from '@remix-run/react';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import capitalize from 'lodash/capitalize';
 import { authenticator } from '~/auth.server';
@@ -74,8 +74,8 @@ export default function ProductsPage() {
             </TabsTrigger>
           </TabsList>
 
-          <Button size="sm" className="ml-auto">
-            Add Product
+          <Button size="sm" className="ml-auto" asChild>
+            <Link to="/products/new">Add Product</Link>
           </Button>
         </div>
 
