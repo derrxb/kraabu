@@ -1,13 +1,12 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { redirect } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
 import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
-import { typedjson } from 'remix-typedjson';
+import { typedjson, useTypedLoaderData } from 'remix-typedjson';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const order = data?.order as OrderDTO;
@@ -44,7 +43,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export default function Completed() {
-  const data = useLoaderData<typeof loader>();
+  const data = useTypedLoaderData<typeof loader>();
 
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">

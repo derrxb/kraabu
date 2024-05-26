@@ -1,8 +1,7 @@
 import { HeartIcon } from '@radix-ui/react-icons';
-import { useLoaderData } from '@remix-run/react';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import capitalize from 'lodash/capitalize';
-import { typedjson } from 'remix-typedjson';
+import { typedjson, useTypedLoaderData } from 'remix-typedjson';
 import type { ProductDTO } from '~/domain/orders/entities/product';
 import { GetProductByUrl } from '~/domain/orders/services/get-product-by-url';
 import { getPrettyCurrency } from '~/lib/currency';
@@ -32,7 +31,7 @@ export const loader = async (args: LoaderFunctionArgs) => {
 };
 
 const Product = () => {
-  const data = useLoaderData<typeof loader>();
+  const data = useTypedLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col space-y-4 px-4 md:px-0">
