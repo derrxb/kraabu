@@ -29,7 +29,7 @@ it('Ensures an error is thrown when no order matching the given invoice exists',
   );
 });
 
-it.only("Ensures that an order's details is loaded correctly", async () => {
+it("Ensures that an order's details is loaded correctly", async () => {
   // Arrange
   const user = await prisma.user.create({
     data: {
