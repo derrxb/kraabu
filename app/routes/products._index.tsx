@@ -1,7 +1,8 @@
-import { json, redirect } from '@remix-run/node';
-import { Link, useLoaderData, useNavigate } from '@remix-run/react';
+import { redirect } from '@remix-run/node';
+import { Link, useNavigate } from '@remix-run/react';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import capitalize from 'lodash/capitalize';
+import { typedjson, useTypedLoaderData } from 'remix-typedjson';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
@@ -36,11 +37,11 @@ export const loader = async (args: LoaderFunctionArgs) => {
   const { searchParams } = new URL(args.request.url);
   const products = await new GetSupplierProducts(userDTO.username!, userDTO as UserEntity, searchParams).call();
 
-  return json({ products: products.map((p) => p.json()), user: userDTO });
+  return typedjson({ products: products.map((p) => p.json()), user: userDTO });
 };
 
 export default function ProductsPage() {
-  const data = useLoaderData<typeof loader>();
+  const data = useTypedLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   return (

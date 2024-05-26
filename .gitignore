@@ -13,3 +13,4 @@ build/index.js
 coverage/
 coverage
 .invalid
+.vercel/remix-build-result.json

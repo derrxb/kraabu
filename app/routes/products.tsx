@@ -1,5 +1,5 @@
-import { json } from '@remix-run/node';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
+import { typedjson } from 'remix-typedjson';
 import { authenticator } from '~/auth.server';
 import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import { Dashboard } from '~/ui/layouts/dashboard';
@@ -21,7 +21,7 @@ export const loader = async (args: LoaderFunctionArgs) => {
   const userDTO = await authenticator.isAuthenticated(args.request, { failureRedirect: '/login' });
   const user = await UserRepository.findByUserId(userDTO?.id as number);
 
-  return json({ user: user?.json() });
+  return typedjson({ user: user?.json() });
 };
 
 export default function DashboardPage() {

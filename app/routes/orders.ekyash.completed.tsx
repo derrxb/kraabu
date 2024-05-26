@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
-import { json, redirect } from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { OrderStatus } from '~/domain/orders/entities/order';
@@ -7,9 +7,10 @@ import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
 import { PaymentSuccess } from '~/ui/molecules/payment-success';
+import { typedjson } from 'remix-typedjson';
 
-export const meta: MetaFunction = ({ data }) => {
-  const order = data.order as OrderDTO;
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const order = data?.order as OrderDTO;
 
   return [
     {
@@ -28,7 +29,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
     switch (order.status) {
       case OrderStatus.Completed:
-        return json({ order: order.json() });
+        return typedjson({ order: order.json() });
       case OrderStatus.Pending:
         return redirect(
           `/orders/ekyash/integrations/gigged?invoiceNo=${order.invoice}&paykey=${order.additionalData.paymentKey}`,

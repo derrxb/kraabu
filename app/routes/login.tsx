@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
-import { json, redirect } from '@remix-run/node';
-import { useActionData, useNavigation } from '@remix-run/react';
+import { redirect } from '@remix-run/node';
+import { useNavigation } from '@remix-run/react';
 import * as joi from 'joi';
 import { AuthorizationError } from 'remix-auth';
 import { authenticator } from '~/auth.server';
@@ -9,6 +9,7 @@ import { commitSession, getSession } from '~/session.server';
 import { SiteNav } from '~/ui/molecules/site-nav';
 import { LoginForm } from '~/ui/organisms/auth/login-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/atoms/card';
+import { typedjson, useTypedActionData } from 'remix-typedjson';
 
 const getValuesFromRequest = async (request: Request) => {
   const formData = await request.formData();
@@ -49,13 +50,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     // commit the session
     const headers = new Headers({ 'Set-Cookie': await commitSession(session) });
 
-    return redirect('/dashboard', { headers });
+    throw redirect('/dashboard', { headers });
   } catch (error) {
     // Because redirects work by throwing a Response, you need to check if the
     // caught error is a response and return it or throw it again
     if (error instanceof Response) throw error;
     if (error instanceof joi.ValidationError) {
-      return json({
+      return typedjson({
         values: await getValuesFromRequest(request),
         errors: error.details.reduce((acc, curr) => {
           return {
@@ -66,7 +67,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       });
     }
     if (error instanceof AuthorizationError) {
-      return json({
+      return typedjson({
         values: await getValuesFromRequest(request),
         errors: {
           general: getErrorMessage(error),
@@ -74,7 +75,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       });
     }
 
-    return json({
+    return typedjson({
       values: await getValuesFromRequest(request),
       errors: {
         general: getErrorMessage(error),
@@ -85,7 +86,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 const Login = () => {
   const transition = useNavigation();
-  const actionData = useActionData<typeof action>();
+  const actionData = useTypedActionData<typeof action>();
 
   return (
     <div className="h-full w-full px-8 md:px-32">

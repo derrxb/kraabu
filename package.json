@@ -71,6 +71,7 @@
     "react-payment-inputs": "^1.1.9",
     "remix-auth": "^3.2.2",
     "remix-auth-form": "^1.1.2",
+    "remix-typedjson": "^0.4.1",
     "rollbar": "^2.25.0",
     "styled-components": "^6.1.11",
     "superagent": "^7.1.3",

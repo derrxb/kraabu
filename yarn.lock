@@ -17039,6 +17039,11 @@ remix-auth@^3.2.2:
   dependencies:
     uuid "^8.3.2"
 
+remix-typedjson@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/remix-typedjson/-/remix-typedjson-0.4.1.tgz#548a68bb7a3520ce0fd8e9810cf96078e45b5c29"
+  integrity sha512-AL6LdNajqce1Exy6aB1bD6GYMk90S6H31e8kDCi6jLgBi4K82Ph604lqGGzalswaPPYckYK+NZzgvhWEY7JCDw==
+
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"

@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from '@vercel/remix';
-import { json } from '@remix-run/node';
+import { typedjson } from 'remix-typedjson';
 
 export async function loader(args: LoaderFunctionArgs) {
-  return json({ alive: true });
+  return typedjson({ alive: true });
 }

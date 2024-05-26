@@ -1,4 +1,4 @@
-import { Form, useLoaderData, useNavigate, useNavigation } from '@remix-run/react';
+import { Form, useNavigate, useNavigation } from '@remix-run/react';
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from '@vercel/remix';
 import React from 'react';
 import { authenticator } from '~/auth.server';
@@ -13,6 +13,7 @@ import { Krabuu } from '~/ui/atoms/krabuu';
 import { Label } from '~/ui/atoms/label';
 import { Breadcrumbs } from '~/ui/molecules/breadcrumbs-list';
 import capitalize from 'lodash/capitalize';
+import { typedjson, useTypedLoaderData } from 'remix-typedjson';
 
 export const loader = async (args: LoaderFunctionArgs) => {
   const { url } = args.params;
@@ -23,10 +24,10 @@ export const loader = async (args: LoaderFunctionArgs) => {
     throw redirect('/');
   }
 
-  return {
+  return typedjson({
     product: product.json(),
     user: userDTO,
-  };
+  });
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -58,7 +59,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 };
 
 export default function ProductEditPage() {
-  const data = useLoaderData<typeof loader>();
+  const data = useTypedLoaderData<typeof loader>();
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';

@@ -1,12 +1,11 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
-import { json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import type { UserEntity } from '~/domain/orders/entities/user';
 import { GetSupplierProducts } from '~/domain/orders/services/get-supplier-products';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Page } from '~/ui/layouts/dashboard/page';
 import { ProductListingItem } from '~/ui/molecules/product-listing-item';
+import { typedjson, useTypedLoaderData } from 'remix-typedjson';
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,16 +25,21 @@ export const loader = async (args: LoaderFunctionArgs) => {
   const userDTO = await authenticator.isAuthenticated(args.request, {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
+  const url = new URL(args.request.url);
 
-  const products = await new GetSupplierProducts('userDTO as UserEntity', userDTO as UserEntity).call();
+  const products = await new GetSupplierProducts(
+    'userDTO as UserEntity',
+    userDTO as UserEntity,
+    url.searchParams,
+  ).call();
 
-  return json({ products: products.map((p) => p.json()) });
+  return typedjson({ products: products.map((p) => p.json()) });
 };
 
 export default function ProductsPage() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const data = useLoaderData<typeof loader>();
+  const data = useTypedLoaderData<typeof loader>();
 
   return (
     <Page>

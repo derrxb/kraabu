@@ -2,6 +2,7 @@ import { HeartIcon } from '@radix-ui/react-icons';
 import { useLoaderData } from '@remix-run/react';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import capitalize from 'lodash/capitalize';
+import { typedjson } from 'remix-typedjson';
 import type { ProductDTO } from '~/domain/orders/entities/product';
 import { GetProductByUrl } from '~/domain/orders/services/get-product-by-url';
 import { getPrettyCurrency } from '~/lib/currency';
@@ -27,7 +28,7 @@ export const meta: MetaFunction = ({ data }) => {
 export const loader = async (args: LoaderFunctionArgs) => {
   const { url } = args.params;
   const product = await new GetProductByUrl(url!).call();
-  return product.json();
+  return typedjson(product.json());
 };
 
 const Product = () => {

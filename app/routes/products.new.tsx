@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
-import { json, redirect } from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 import { Form, useActionData, useNavigate, useNavigation } from '@remix-run/react';
 import { authenticator } from '~/auth.server';
 import { CreateProduct } from '~/domain/orders/services/create-product';
@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/ui/
 import { Button } from '~/ui/atoms/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/ui/atoms/Select';
 import { Label } from '~/ui/atoms/label';
+import { typedjson } from 'remix-typedjson';
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,7 +31,7 @@ export const loader = async (args: LoaderFunctionArgs) => {
     failureRedirect: `/login?redirectTo=${new URL(args.request.url).pathname}`,
   });
 
-  return json({});
+  return typedjson({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
