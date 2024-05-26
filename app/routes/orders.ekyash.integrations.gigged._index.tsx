@@ -8,7 +8,7 @@ import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
-import { PendingPayment } from '~/ui/organisms/pending-payment';
+import { PaymentMethod, PendingPayment } from '~/ui/organisms/pending-payment';
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) {
@@ -40,6 +40,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     return json({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
+    console.log(e);
     throw getFormattedFailureResponse(e, request);
   }
 };
@@ -72,5 +73,5 @@ export default function Index() {
     };
   }, [data.order?.invoice, navigate]);
 
-  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed />;
+  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed paymentMethod={PaymentMethod.EKyash} />;
 }

@@ -38,7 +38,7 @@ export default class OrderRepository {
     });
   }
 
-  static async createPendingEkyashOrder(data: OrderEntity, user: UserEntity) {
+  static async createPendingOrder(data: OrderEntity, user: UserEntity) {
     const result = await prisma.order.create({
       data: {
         additionalData: data.additionalData,

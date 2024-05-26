@@ -35,7 +35,7 @@ export default class CreateOrder {
   async createOrder(supplier: UserEntity, orderHandshake: GiggedOrderHandshake): Promise<OrderEntity> {
     try {
       const startTime = Date.now();
-      const order = await OrderRepository.createPendingEkyashOrder(
+      const order = await OrderRepository.createPendingOrder(
         new GiggedMapper(orderHandshake.gateway, orderHandshake.hashkey).getOrderFromHandshake(
           orderHandshake,
           supplier,

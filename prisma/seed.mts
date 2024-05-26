@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
-import { PrismaClient } from '@prisma/client';
+import { OrderStatus, PrismaClient } from '@prisma/client';
 import axios from 'axios';
 import bycrypt from 'bcryptjs';
 import kebabCase from 'lodash/kebabCase';
@@ -56,17 +56,22 @@ const seed = async () => {
 
   // Create Products
   const createProductsForUser = async (user: User) => {
-    for (let i = 0; i < 25; i++) {
+    await Promise.all(Array.from(Array(50).keys()).map(async () => {
+      let productImageUrl = faker.image.urlLoremFlickr({ category: "product" })
       const productName = faker.commerce.productName();
-      const productImage = faker.image.urlLoremFlickr({ category: "product" })
-      const productURLResponse = await axios.get(productImage, { responseType: 'arraybuffer' });
+      try {
+        const productURLResponse = await axios.get(productImageUrl, { responseType: 'arraybuffer' });
+        productImageUrl = productURLResponse.request.res.responseUrl
+       } catch (error) {
+        productImageUrl = faker.image.urlLoremFlickr({ category: "product" })
+      }
       const product = await db.product.create({
         data: {
-          coverImage: productURLResponse.request.res.responseUrl,
-          thumbnailImage: productURLResponse.request.res.responseUrl,
+          coverImage: productImageUrl,
+          thumbnailImage: productImageUrl,
           description: faker.commerce.productDescription(),
           name: productName,
-          price: Number(faker.commerce.price({ min: 10000, max:100000})),
+          price: Number(faker.commerce.price({ min: 10_000, max:100_000})),
           publicUrl: `${kebabCase(productName)}-${nanoid(4)}`,
           published: Math.ceil(Math.random() * 10) > 5,
           userId: user.id!
@@ -80,12 +85,82 @@ const seed = async () => {
           status: "Pending"
         }
       })
-    }
+    }))
+  }
+
+  const createPendingOrdersForUser = async (user: User) => {
+    const products = await db.product.findMany({
+      where: {
+        userId: user.id
+      }
+    })
+
+    return await Promise.all(products.map(async (p) => {
+      await db.order.create({
+        data: {
+          additionalData: {
+            paymentKey: nanoid(),
+          },
+          amount: p.price,
+          description: p.description,
+          currency: p.currency,
+          status: OrderStatus.Pending,
+          invoice: nanoid(),
+          orderItems: {
+            create: {
+              name: p.name,
+              price: p.price,
+              currency: p.currency,
+              description: p.description,
+              quantity: 1,
+            }
+          },
+          userId: user.id
+        }
+      })
+    }))
+  }
+
+  const createPendingGiggedOrdersForGiggedUser = async (user: User) => {
+    const products = await db.product.findMany({
+      where: {
+        userId: user.id
+      }
+    })
+
+    return await Promise.all(products.map(async (p) => {
+      await db.order.create({
+        data: {
+          additionalData: {
+            gateway: nanoid(),
+            hashkey: nanoid(),
+            paymentKey: nanoid(),
+          },
+          amount: p.price,
+          description: p.description,
+          currency: p.currency,
+          status: OrderStatus.Pending,
+          invoice: nanoid(),
+          orderItems: {
+            create: {
+              name: p.name,
+              price: p.price,
+              currency: p.currency,
+              description: p.description,
+              quantity: 1,
+            }
+          },
+          userId: user.id
+        }
+      })
+    }))
   }
 
 
   // Create GiggedUser with their product
   await createProductsForUser(giggedUser);
+  await createPendingOrdersForUser(giggedUser);
+  await createPendingGiggedOrdersForGiggedUser(giggedUser)
 
   // Create fake business
   const createUser = async (index: number) => {
@@ -120,10 +195,13 @@ const seed = async () => {
   }
 
   // populate with products
-  for (let i = 0; i < 5; i++) {
-    const user = await createUser(i);
-    await createProductsForUser(user);
-  }
+  await Promise.all(
+    Array.from(Array(5).keys()).map(async (_, index) => {
+      const user = await createUser(index);
+      await createProductsForUser(user);
+      await createPendingOrdersForUser(user);
+    })
+  )
 };
 
 seed();

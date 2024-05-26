@@ -1,13 +1,20 @@
 import type { OrderDTO } from '~/domain/orders/entities/order';
 import { PaymentPayCode } from '~/ui/molecules/payment-methods/ekyash';
+import { OneLinkForm } from '~/ui/molecules/payment-methods/one-link';
 import { PaymentPayDetails } from '~/ui/molecules/payment-pay-details';
+
+export enum PaymentMethod {
+  EKyash,
+  OneLink,
+}
 
 export type PendingPaymentProps = {
   order: OrderDTO;
   hasOrderItemsDisplayed: boolean;
+  paymentMethod: PaymentMethod;
 };
 
-export const PendingPayment = ({ order, hasOrderItemsDisplayed }: PendingPaymentProps) => {
+export const PendingPayment = ({ order, hasOrderItemsDisplayed, paymentMethod }: PendingPaymentProps) => {
   return (
     <div className="flex h-full w-full flex-col text-gray-800 md:flex-row">
       <div className="h-full w-full lg:w-1/2">
@@ -15,7 +22,7 @@ export const PendingPayment = ({ order, hasOrderItemsDisplayed }: PendingPayment
       </div>
 
       <div className="h-full w-full lg:w-1/2">
-        {order.ekyashTransaction?.qrCodeUrl ? (
+        {paymentMethod === PaymentMethod.EKyash && order.ekyashTransaction?.qrCodeUrl ? (
           <PaymentPayCode
             qr={order.ekyashTransaction?.qrCodeUrl as string}
             paymentMethod={{
@@ -32,6 +39,8 @@ export const PendingPayment = ({ order, hasOrderItemsDisplayed }: PendingPayment
             </span>
           </div>
         )}
+
+        {paymentMethod === PaymentMethod.OneLink ? <OneLinkForm /> : null}
       </div>
     </div>
   );
