@@ -22,6 +22,19 @@ export const HTTP_CODE = {
   internal_error: 500,
 };
 
+export const HTTP_CODE_TO_STATUS: Record<number, keyof typeof HTTP_CODE> = {
+  200: 'ok',
+  201: 'created',
+  202: 'processing',
+  204: 'no_content',
+  403: 'forbidden',
+  404: 'not_found',
+  400: 'bad_request',
+  409: 'conflict',
+  422: 'cannot_process',
+  500: 'internal_error',
+};
+
 class HttpResponse {
   status: string;
   message: string;

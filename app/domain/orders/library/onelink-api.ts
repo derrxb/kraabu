@@ -1,5 +1,9 @@
 import superagent from 'superagent';
 import { OneLinkEntity } from '../entities/onelink';
+import Failure from '~/lib/failure';
+import axios from 'axios';
+import { HTTP_CODE, HTTP_CODE_TO_STATUS } from '~/presentation/representers/http-response-representer';
+import get from 'lodash/get';
 
 export enum OneLinkRoutes {
   Payment = '/payment',
@@ -20,7 +24,7 @@ export const getOneLinkApiBase = () => {
  */
 const getCredentials = async (oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>) => {
   return {
-    accessToken: oneLink.accessToken,
+    token: oneLink.accessToken,
     salt: oneLink.salt,
   };
 };
@@ -73,12 +77,23 @@ export const createNewInvoice = async (
   data: Omit<NewPaymentData, 'token' | 'salt'>,
   oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>,
 ): Promise<NewPaymentResponse> => {
-  const credentials = await getCredentials(oneLink);
+  try {
+    const credentials = await getCredentials(oneLink);
 
-  const response = await superagent.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`).send({
-    ...data,
-    ...credentials,
-  });
+    const response = await superagent.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`).send({
+      ...data,
+      ...credentials,
+    });
 
-  return JSON.parse(response.text) as NewPaymentResponse;
+    return JSON.parse(response.text) as NewPaymentResponse;
+  } catch (error) {
+    if (get(error as any, 'status')) {
+      throw new Failure(
+        HTTP_CODE_TO_STATUS[(error as any).status]!,
+        JSON.parse(get(error as any, 'response').text)?.msg,
+      );
+    } else {
+      throw new Failure('internal_error', 'Something unexpected happened. Please try again.');
+    }
+  }
 };

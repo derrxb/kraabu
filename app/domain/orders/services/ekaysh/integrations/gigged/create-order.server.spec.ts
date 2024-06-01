@@ -19,7 +19,7 @@ it('Ensures that a gigged order fails to create when the GiggedBZ supplier is mi
   });
 
   // Act & Assert
-  expect(async () => await new CreateOrder(request).call()).rejects.toThrowError(
+  await expect(new CreateOrder(request).call()).rejects.toThrowError(
     /There is no supplier with the username: giggedbz/i,
   );
 });
@@ -39,11 +39,11 @@ it('Ensures that an order fails to create when at least the required params are 
   const gatewayMissingRequest = getIncompleteRequest('gateway');
 
   // Act & Assert
-  expect(async () => await new CreateOrder(invoiceMissingRequest).call()).rejects.toThrowError(/invoiceno/i);
-  expect(async () => await new CreateOrder(currencyMissingRequest).call()).rejects.toThrowError(/currency/i);
-  expect(async () => await new CreateOrder(gatewayMissingRequest).call()).rejects.toThrowError(/gateway/i);
-  expect(async () => await new CreateOrder(hashkeyMissingRequest).call()).rejects.toThrowError(/hashkey/i);
-  expect(async () => await new CreateOrder(totalMissingRequest).call()).rejects.toThrowError(/total/i);
+  await expect(new CreateOrder(invoiceMissingRequest).call()).rejects.toThrowError(/invoiceno/i);
+  await expect(new CreateOrder(currencyMissingRequest).call()).rejects.toThrowError(/currency/i);
+  await expect(new CreateOrder(gatewayMissingRequest).call()).rejects.toThrowError(/gateway/i);
+  await expect(new CreateOrder(hashkeyMissingRequest).call()).rejects.toThrowError(/hashkey/i);
+  await expect(new CreateOrder(totalMissingRequest).call()).rejects.toThrowError(/total/i);
 });
 
 it('Ensures that the amount value is calculated correctly', async () => {

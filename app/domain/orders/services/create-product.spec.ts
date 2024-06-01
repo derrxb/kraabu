@@ -36,9 +36,7 @@ it('Ensures that only cent values are supported for price', async () => {
     .forEach((key) => formData.append(key, product[key]));
 
   // Act & Assert
-  expect(async () => new CreateProduct(formData, user.json()).call()).rejects.toThrowError(
-    /^price must be a cent value/i,
-  );
+  await expect(new CreateProduct(formData, user.json()).call()).rejects.toThrowError(/^price must be a cent value/i);
 });
 
 it('Ensures that only `currencies` are supported', async () => {
@@ -75,7 +73,7 @@ it('Ensures that only `currencies` are supported', async () => {
   });
 
   // Act & Assert
-  expect(async () => new CreateProduct(await request.formData(), user.json()).call()).rejects.toThrowError(
+  await expect(new CreateProduct(await request.formData(), user.json()).call()).rejects.toThrowError(
     /^Currency not supported$/i,
   );
 });

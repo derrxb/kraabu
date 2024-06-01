@@ -66,7 +66,7 @@ export class MakePayment {
       throw new Failure('bad_request', 'You cannot pay an order that has already been completed.');
     }
 
-    return order;
+    this.order = order;
   }
 
   async makePayment() {
@@ -75,6 +75,14 @@ export class MakePayment {
     if (!oneLink) {
       throw new Failure('bad_request', 'OneLink payment has not been enabled for this seller.');
     }
+
+    const result = await new OneLinkMapper(oneLink).createRequest(this.order!, {
+      cardNumber: this.details?.cardNumber!,
+      ccv: this.details?.cvc!,
+      expirationDate: this.details?.expiryDate!,
+      nameOnCard: this.details?.cardholderName!,
+    });
+    console.log(result);
   }
 
   async call() {

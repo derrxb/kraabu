@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import type { Product } from '@prisma/client';
+import { PaymentLinkStatus, type Product } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { describe, expect, it } from 'vitest';
 import prisma from '~/infrastructure/database/index.server';
@@ -16,14 +16,25 @@ describe('[GET] Products', () => {
     expect(async () => await new GetProductByUrl(invalidId).call());
   });
 
-  it('Returns `forbidden` when payment link is not published', async () => {
+  it('Returns `forbidden` when product is not published', async () => {
     // Arrange
+    const otherUser = await prisma.user.create({
+      data: {
+        businessName: mockUserEntity.businessName as string,
+        username: nanoid(),
+        password: 'test',
+        email: faker.internet.email(),
+        logoUrl: mockUserEntity.logoUrl as string,
+        tag: mockUserEntity.tag as string,
+        website: mockUserEntity.website as string,
+      },
+    });
     const userModel = await prisma.user.create({
       data: {
         businessName: mockUserEntity.businessName as string,
         username: nanoid(),
         password: 'test',
-        email: mockUserEntity.email as string,
+        email: faker.internet.email(),
         logoUrl: mockUserEntity.logoUrl as string,
         tag: mockUserEntity.tag as string,
         website: mockUserEntity.website as string,
@@ -35,15 +46,23 @@ describe('[GET] Products', () => {
       data: {
         ...(mockGiggedProductEntity as Product),
         id: undefined,
-        userId: Number(user.id),
-        paymentLinks: undefined,
+        userId: Number(otherUser.id),
         publicUrl: nanoid(),
         published: false,
+        paymentLinks: undefined,
+      },
+    });
+
+    await prisma.paymentLink.create({
+      data: {
+        url: nanoid(),
+        productId: product.id,
+        status: PaymentLinkStatus.Pending,
       },
     });
 
     // Act & Assert
-    expect(async () => await new GetProductByUrl(product.publicUrl).call()).rejects.toThrowError(
+    await expect(new GetProductByUrl(product.publicUrl).call()).rejects.toThrowError(
       /product is not available for purchase/i,
     );
   });
@@ -80,7 +99,7 @@ describe('[GET] Products', () => {
     expect(orderablePaymentLink.publicUrl).toEqual(product.publicUrl);
   });
 
-  it.skip('Returns `ok` & the product when the owner is logged in', async () => {
+  it('Returns `ok` & the product when the owner is logged in', async () => {
     // Arrange
     const userModel = await prisma.user.create({
       data: {
@@ -106,9 +125,10 @@ describe('[GET] Products', () => {
       },
     });
 
-    // Act & Assert
-    expect(async () => await new GetProductByUrl(product.publicUrl, user).call()).rejects.toThrowError(
-      /product is not available for purchase/i,
-    );
+    // Act
+    const productByUrl = await new GetProductByUrl(product.publicUrl, user).call();
+
+    // Assert
+    expect(productByUrl.publicUrl).toEqual(product.publicUrl);
   });
 });

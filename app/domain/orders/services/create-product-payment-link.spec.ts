@@ -49,7 +49,7 @@ describe('[GET] Product', () => {
     const user = new UserEntity(userModel as any);
 
     // Act & Assert
-    expect(async () => new CreateProductPaymentLink({ productId: 'not-found' }, user).call()).rejects.toThrowError(
+    await expect(new CreateProductPaymentLink({ productId: 'not-found' }, user).call()).rejects.toThrowError(
       /^product not found$/i,
     );
   });
@@ -99,7 +99,7 @@ describe('[GET] Product', () => {
     });
 
     // Act & Assert
-    expect(async () =>
+    await expect(
       new CreateProductPaymentLink({ productId: product.publicUrl.toString() }, nonOwnerEntity).call(),
     ).rejects.toThrowError(/^you do not have permission to create a payment link for this product.$/i);
   });
@@ -139,7 +139,7 @@ describe('[GET] Product', () => {
     });
 
     // Act & Assert
-    expect(async () =>
+    await expect(
       new CreateProductPaymentLink({ productId: product.publicUrl.toString() }, OwnerEntity).call(),
     ).rejects.toThrowError(/You cannot create a payment link for this product/i);
   });

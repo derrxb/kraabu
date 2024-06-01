@@ -14,7 +14,7 @@ describe('', () => {
     const invalidId = 'invalid-id';
 
     // Act & Assert
-    expect(async () => await new GetOrderablePaymentLink(invalidId).call());
+    await expect(async () => await new GetOrderablePaymentLink(invalidId).call());
   });
 
   it('Returns `forbidden` when payment link is invalid', async () => {
@@ -59,10 +59,10 @@ describe('', () => {
     });
 
     // Act & Assert
-    expect(async () => await new GetOrderablePaymentLink(expiredPaymentLink.url).call()).rejects.toThrowError(
+    await expect(new GetOrderablePaymentLink(expiredPaymentLink.url).call()).rejects.toThrowError(
       /expired or is already used/i,
     );
-    expect(async () => await new GetOrderablePaymentLink(completedPaymentLink.url).call()).rejects.toThrowError(
+    await expect(new GetOrderablePaymentLink(completedPaymentLink.url).call()).rejects.toThrowError(
       /expired or is already used/i,
     );
   });

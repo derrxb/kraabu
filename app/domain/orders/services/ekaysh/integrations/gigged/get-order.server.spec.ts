@@ -16,8 +16,8 @@ describe('GetOrder', () => {
     const missingInvoice = new Request('http://localhost:3000?paykey=test-invoice', { method: 'GET' });
 
     // Act & Assert
-    expect(async () => await new GetOrder(missingInvoice).call()).rejects.toThrowError(/invoiceNo/i);
-    expect(async () => await new GetOrder(missingPayKey).call()).rejects.toThrowError(/paymentKey/i);
+    await expect(new GetOrder(missingInvoice).call()).rejects.toThrowError(/invoiceNo/i);
+    await expect(new GetOrder(missingPayKey).call()).rejects.toThrowError(/paymentKey/i);
   });
 
   it('Ensures an error is thrown when no order matching the given invoice exists', async () => {
@@ -25,9 +25,7 @@ describe('GetOrder', () => {
     const request = new Request('http://localhost:3000?invoiceno=invalid&paykey=paykey');
 
     // Act & Assert
-    expect(async () => await new GetOrder(request).call()).rejects.toThrowError(
-      /no order with the provided `invoiceNo` exists/i,
-    );
+    await expect(new GetOrder(request).call()).rejects.toThrowError(/no order with the provided `invoiceNo` exists/i);
   });
 
   it("Ensures that an order's details is loaded correctly", async () => {

@@ -6,6 +6,7 @@ import { EKyashRoutes, getEKyashApiBase } from '~/domain/orders/library/ekyash-a
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import { mockEKyashTransactionEntity, mockGiggedOrderEntity } from './fixtures';
 import { getOneLinkApiBase, NewPaymentData, OneLinkRoutes } from '~/domain/orders/library/onelink-api';
+import { NO_BALANCE_CREDIT_CARD } from 'test/credit-card';
 
 export const handlers = [
   // Mock EKyash Authorization
@@ -84,13 +85,13 @@ export const handlers = [
   }),
   http.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`, async ({ request }) => {
     const body: NewPaymentData = (await request.json()) as any;
-    if (body.cardNumber === '4343 4343 4343 4343') {
+    if (body.cardNumber === NO_BALANCE_CREDIT_CARD) {
       return HttpResponse.json(
         {
           msg: '51: INSUFF FUNDS',
         },
         {
-          status: 401,
+          status: 400,
         },
       );
     }

@@ -24,9 +24,9 @@ describe('GET Supplier Products', () => {
     const invalidUsername = 'invalid-username';
 
     // Act & Assert
-    expect(
-      async () => await new GetSupplierProducts(invalidUsername, user, new URLSearchParams()).call(),
-    ).rejects.toThrowError("User with username 'invalid-username' not found");
+    await expect(new GetSupplierProducts(invalidUsername, user, new URLSearchParams()).call()).rejects.toThrowError(
+      "User with username 'invalid-username' not found",
+    );
   });
 
   it.skip('Returns only `published` products when the current user is not the owner', async () => {

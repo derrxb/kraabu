@@ -27,7 +27,7 @@ export class GetProductByUrl {
       throw new Failure('not_found', 'Product not found');
     }
 
-    if (!product.isPublished() && this.user?.isProductOwner(product)) {
+    if (!product.isPublished() && !this.user?.isProductOwner(product)) {
       throw new Failure('forbidden', 'The product is not available for purchase');
     }
 

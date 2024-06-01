@@ -150,7 +150,7 @@ describe('MakePayment to OneLink', async () => {
     );
 
     // Act & Assert
-    expect(new MakePayment(requestWithInvalidInvoiceNo, user!).call()).rejects.toThrowError(
+    await expect(new MakePayment(requestWithInvalidInvoiceNo, user!).call()).rejects.toThrowError(
       /no order with the provided `invoiceNo` exists/i,
     );
   });
@@ -205,7 +205,7 @@ describe('MakePayment to OneLink', async () => {
     );
 
     // Act & Assert
-    expect(new MakePayment(requestPayingCompletedOrder, user!).call()).rejects.toThrowError(
+    await expect(new MakePayment(requestPayingCompletedOrder, user!).call()).rejects.toThrowError(
       /you cannot pay an order that has already been completed\./i,
     );
   });
@@ -256,7 +256,7 @@ describe('MakePayment to OneLink', async () => {
     });
 
     // Act & Assert
-    expect(
+    await expect(
       new MakePayment(requestPayingPendingOrder, (await UserRepository.rebuildEntity(user)!) ?? null).call(),
     ).rejects.toThrowError(/OneLink payment has not been enabled for this seller\./i);
   });
@@ -314,9 +314,9 @@ describe('MakePayment to OneLink', async () => {
     });
 
     // Act & Assert
-    expect(
+    await expect(
       new MakePayment(requestPayingPendingOrder, (await UserRepository.rebuildEntity(user)!) ?? null).call(),
-    ).rejects.toThrowError(/failed to make payment\. pe try again\./i);
+    ).rejects.toThrowError(/51: INSUFF FUNDS/i);
   });
 
   it.skip('Ensures that orders are mark as paid once the one-link payment is accepted');
