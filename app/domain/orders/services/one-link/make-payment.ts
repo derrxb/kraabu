@@ -1,7 +1,11 @@
 import { makeOneLinkPaymentSchema } from '~/presentation/requests/make-one-link-payment';
 import { OrderEntity } from '../../entities/order';
 import OrderRepository from '../../repositories/order-repository';
+import { OneLinkRepository } from '../../repositories/onelink-repository';
 import Failure from '~/lib/failure';
+import { OrderStatus } from '@prisma/client';
+import { OneLinkMapper } from '../../mappers/onelink-mapper';
+import { UserEntity } from '../../entities/user';
 
 type MakePaymentRequiredData = {
   invoiceno: string;
@@ -17,10 +21,13 @@ export class MakePayment {
   private request: Request;
   private order: OrderEntity | null;
   private details: MakePaymentRequiredData | null;
+  private user: UserEntity | null;
 
-  constructor(request: Request) {
+  constructor(request: Request, user: UserEntity | null) {
     this.request = request;
     this.order = null;
+    this.details = null;
+    this.user = user;
   }
 
   async verifyParams() {
@@ -55,11 +62,24 @@ export class MakePayment {
       throw new Failure('not_found', 'No order with the provided `invoiceNo` exists.');
     }
 
+    if (order.status !== OrderStatus.Pending) {
+      throw new Failure('bad_request', 'You cannot pay an order that has already been completed.');
+    }
+
     return order;
+  }
+
+  async makePayment() {
+    const oneLink = await OneLinkRepository.getByUserId(this.user?.id!);
+
+    if (!oneLink) {
+      throw new Failure('bad_request', 'OneLink payment has not been enabled for this seller.');
+    }
   }
 
   async call() {
     await this.verifyParams();
     await this.getPendingOrder();
+    await this.makePayment();
   }
 }

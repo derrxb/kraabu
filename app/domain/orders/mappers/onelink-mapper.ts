@@ -3,9 +3,9 @@ import { OrderEntity } from '../entities/order';
 import { NewPaymentData, createNewInvoice } from '../library/onelink-api';
 
 export class OneLinkMapper {
-  private oneLink: OneLinkEntity;
+  private oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>;
 
-  constructor(oneLink: OneLinkEntity) {
+  constructor(oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>) {
     this.oneLink = oneLink;
   }
 

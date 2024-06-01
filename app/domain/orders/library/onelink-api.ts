@@ -18,7 +18,7 @@ export const getOneLinkApiBase = () => {
  * Returns the credentials
  * @returns
  */
-const getCredentials = async (oneLink: OneLinkEntity) => {
+const getCredentials = async (oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>) => {
   return {
     accessToken: oneLink.accessToken,
     salt: oneLink.salt,
@@ -71,7 +71,7 @@ export type NewPaymentResponse = {
  */
 export const createNewInvoice = async (
   data: Omit<NewPaymentData, 'token' | 'salt'>,
-  oneLink: OneLinkEntity,
+  oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>,
 ): Promise<NewPaymentResponse> => {
   const credentials = await getCredentials(oneLink);
 
