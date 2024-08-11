@@ -6,7 +6,7 @@ import { EKyashRoutes, getEKyashApiBase } from '~/domain/orders/library/ekyash-a
 import { GiggedRoutes } from '~/domain/orders/library/gigged-api';
 import { mockEKyashTransactionEntity, mockGiggedOrderEntity } from './fixtures';
 import { getOneLinkApiBase, NewPaymentData, OneLinkRoutes } from '~/domain/orders/library/onelink-api';
-import { NO_BALANCE_CREDIT_CARD } from 'test/credit-card';
+import { NO_BALANCE_CREDIT_CARD, VALID_CREDIT_CARD } from 'test/credit-card';
 
 export const handlers = [
   // Mock EKyash Authorization
@@ -85,6 +85,7 @@ export const handlers = [
   }),
   http.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`, async ({ request }) => {
     const body: NewPaymentData = (await request.json()) as any;
+
     if (body.cardNumber === NO_BALANCE_CREDIT_CARD) {
       return HttpResponse.json(
         {
@@ -93,6 +94,15 @@ export const handlers = [
         {
           status: 400,
         },
+      );
+    }
+
+    if (body.cardNumber === VALID_CREDIT_CARD) {
+      return HttpResponse.json(
+        {
+          msg: 'Success',
+        },
+        { status: 200 },
       );
     }
   }),

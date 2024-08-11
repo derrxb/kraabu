@@ -1,13 +1,15 @@
 import type { OrderItem } from '@prisma/client';
-import { EKyashStatus } from '@prisma/client';
+import { EKyashStatus, OneLinkStatus } from '@prisma/client';
 import prisma from '~/infrastructure/database/index.server';
 import type { EKyashTransactionEntity } from '../entities/ekyash-transaction';
 import { OrderEntity, OrderStatus } from '../entities/order';
 import type { UserEntity } from '../entities/user';
-import type { NewInvoiceResponse } from '../library/ekyash-api';
+import { TransactionStatus, type NewInvoiceResponse } from '../library/ekyash-api';
 import { EKyashTransactionRepository } from './e-kyash-transaction-repository';
+import { OneLinkTransactionRepository } from './one-link-transaction-repository';
 import OrderItemRepository from './order-item-repository';
 import { UserRepository } from './user-repository';
+import { nanoid } from 'nanoid';
 
 export default class OrderRepository {
   static async rebuildEntity(data: any) {
@@ -19,6 +21,7 @@ export default class OrderRepository {
     const orderItems =
       data.orderItems?.map((orderItem: OrderItem) => OrderItemRepository.rebuildEntity(orderItem)) || [];
     const ekyashTransaction = await EKyashTransactionRepository.rebuildData(data.ekyashTransaction);
+    const oneLinkTransaction = await OneLinkTransactionRepository.rebuildData(data?.oneLinkTransaction);
 
     return new OrderEntity({
       user,
@@ -35,6 +38,7 @@ export default class OrderRepository {
       updatedAt: data.updatedAt,
       userId: data.userId,
       productId: data.productId,
+      oneLinkTransaction,
     });
   }
 
@@ -146,6 +150,50 @@ export default class OrderRepository {
         },
       },
       where: { id: order.id },
+    });
+
+    return this.rebuildEntity(result);
+  }
+
+  static async markOneLinkPaymentAsRejected(order: OrderEntity) {
+    const result = await prisma.order.update({
+      data: {
+        status: OrderStatus.Failed,
+        oneLinkTransaction: {
+          create: {
+            transactionId: nanoid(),
+            status: OneLinkStatus.Canceled,
+          },
+        },
+      },
+      where: {
+        id: order.id,
+      },
+      include: {
+        oneLinkTransaction: true,
+      },
+    });
+
+    return this.rebuildEntity(result);
+  }
+
+  static async markOneLinkPaymentAsCompleted(order: OrderEntity) {
+    const result = await prisma.order.update({
+      data: {
+        status: OrderStatus.Completed,
+        oneLinkTransaction: {
+          update: {
+            transactionId: nanoid(),
+            status: OneLinkStatus.Success,
+          },
+        },
+      },
+      where: {
+        id: order.id,
+      },
+      include: {
+        oneLinkTransaction: true,
+      },
     });
 
     return this.rebuildEntity(result);

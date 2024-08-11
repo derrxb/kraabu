@@ -6,6 +6,7 @@ import Failure from '~/lib/failure';
 import { OrderStatus } from '@prisma/client';
 import { OneLinkMapper } from '../../mappers/onelink-mapper';
 import { UserEntity } from '../../entities/user';
+import { OneLinkEntity } from '../../entities/onelink';
 
 type MakePaymentRequiredData = {
   invoiceno: string;
@@ -22,12 +23,14 @@ export class MakePayment {
   private order: OrderEntity | null;
   private details: MakePaymentRequiredData | null;
   private user: UserEntity | null;
+  private oneLink: OneLinkEntity | null;
 
   constructor(request: Request, user: UserEntity | null) {
     this.request = request;
     this.order = null;
     this.details = null;
     this.user = user;
+    this.oneLink = null;
   }
 
   async verifyParams() {
@@ -69,25 +72,39 @@ export class MakePayment {
     this.order = order;
   }
 
-  async makePayment() {
+  async setOneLink() {
     const oneLink = await OneLinkRepository.getByUserId(this.user?.id!);
 
     if (!oneLink) {
       throw new Failure('bad_request', 'OneLink payment has not been enabled for this seller.');
     }
 
-    const result = await new OneLinkMapper(oneLink).createRequest(this.order!, {
+    this.oneLink = oneLink;
+  }
+
+  async makePayment() {
+    const result = await new OneLinkMapper(this.oneLink!).createRequest(this.order!, {
       cardNumber: this.details?.cardNumber!,
       ccv: this.details?.cvc!,
       expirationDate: this.details?.expiryDate!,
       nameOnCard: this.details?.cardholderName!,
     });
-    console.log(result);
+
+    return result;
   }
 
   async call() {
     await this.verifyParams();
     await this.getPendingOrder();
-    await this.makePayment();
+    await this.setOneLink();
+
+    try {
+      const result = await this.makePayment();
+      const order = await OrderRepository.markOneLinkPaymentAsCompleted(this.order!);
+      return order;
+    } catch (error) {
+      await OrderRepository.markOneLinkPaymentAsRejected(this.order!);
+      throw error;
+    }
   }
 }

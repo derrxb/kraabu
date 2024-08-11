@@ -8,7 +8,8 @@ import prisma, { OrderStatus } from '~/infrastructure/database/index.server';
 import { GIGGED_USERNAME } from '../ekaysh/integrations/gigged';
 import { nanoid } from 'nanoid';
 import { UserRepository } from '../../repositories/user-repository';
-import { NO_BALANCE_CREDIT_CARD } from '../../../../../test/credit-card';
+import { NO_BALANCE_CREDIT_CARD, VALID_CREDIT_CARD } from '../../../../../test/credit-card';
+import { OneLinkStatus } from '@prisma/client';
 
 beforeEach(truncateDB);
 
@@ -248,6 +249,9 @@ describe('MakePayment to OneLink', async () => {
       cvc: faker.finance.creditCardCVV(),
       invoiceno: order.invoice,
       paymentKey: (order.additionalData as any)?.paymentKey,
+      oneLinkTransaction: {
+        create: {},
+      },
     };
 
     const requestPayingPendingOrder = new Request('http://localhost:3000/orders/ekyash/integrations/gigged/one-link', {
@@ -306,6 +310,9 @@ describe('MakePayment to OneLink', async () => {
       cvc: faker.finance.creditCardCVV(),
       invoiceno: order.invoice,
       paymentKey: (order.additionalData as any)?.paymentKey,
+      oneLinkTransaction: {
+        create: {},
+      },
     };
 
     const requestPayingPendingOrder = new Request('http://localhost:3000/orders/ekyash/integrations/gigged/one-link', {
@@ -319,5 +326,69 @@ describe('MakePayment to OneLink', async () => {
     ).rejects.toThrowError(/51: INSUFF FUNDS/i);
   });
 
-  it.skip('Ensures that orders are mark as paid once the one-link payment is accepted');
+  it('Ensures that orders are mark as paid once the one-link payment is accepted', async () => {
+    // Arrange
+    // create pending order
+    const user = await prisma.user.create({
+      data: {
+        businessName: mockUserEntity.businessName as string,
+        username: GIGGED_USERNAME,
+        password: 'test',
+        email: mockUserEntity.email as string,
+        logoUrl: mockUserEntity.logoUrl as string,
+        tag: mockUserEntity.tag as string,
+        website: mockUserEntity.website as string,
+        oneLink: {
+          create: {
+            accessToken: nanoid(),
+            phone: faker.phone.number(),
+            salt: nanoid(),
+          },
+        },
+      },
+    });
+
+    const order = await prisma.order.create({
+      data: {
+        additionalData: {
+          gateway: nanoid(),
+          hashkey: nanoid(),
+          paymentKey: nanoid(),
+        },
+        amount: Number(faker.finance.amount({ min: 10000, max: 100000, dec: 0 })) * 100,
+        description: faker.lorem.lines(2),
+        invoice: nanoid(),
+        status: OrderStatus.Pending,
+        userId: user.id,
+        oneLinkTransaction: {
+          create: {},
+        },
+      },
+    });
+
+    const testRequestData = {
+      email: faker.internet.email(),
+      cardholderName: faker.person.firstName(),
+      cardNumber: VALID_CREDIT_CARD,
+      expiryDate: '10/26',
+      cvc: faker.finance.creditCardCVV(),
+      invoiceno: order.invoice,
+      paymentKey: (order.additionalData as any)?.paymentKey,
+    };
+
+    const requestPayingPendingOrder = new Request('http://localhost:3000/orders/ekyash/integrations/gigged/one-link', {
+      method: 'POST',
+      body: JSON.stringify(testRequestData),
+    });
+
+    // Act
+    const updatedOrder = await new MakePayment(
+      requestPayingPendingOrder,
+      (await UserRepository.rebuildEntity(user)!) ?? null,
+    ).call();
+
+    // Assert
+    expect(updatedOrder?.status).toEqual(OrderStatus.Completed);
+    expect(updatedOrder?.oneLinkTransaction?.status).toEqual(OneLinkStatus.Success);
+  });
 });
