@@ -10,6 +10,7 @@ import { OneLinkTransactionRepository } from './one-link-transaction-repository'
 import OrderItemRepository from './order-item-repository';
 import { UserRepository } from './user-repository';
 import { nanoid } from 'nanoid';
+import { PaymentMethod } from '../services/ekaysh/integrations/gigged';
 
 export default class OrderRepository {
   static async rebuildEntity(data: any) {
@@ -76,7 +77,12 @@ export default class OrderRepository {
     return await this.rebuildEntity(result);
   }
 
-  static async setOrderDetailsAndPaymentCode(order: OrderEntity, invoice?: NewInvoiceResponse, orderDetails?: any) {
+  static async setOrderDetailsAndPaymentCode(
+    order: OrderEntity,
+    method: PaymentMethod,
+    invoice?: NewInvoiceResponse,
+    orderDetails?: any,
+  ) {
     const result = await prisma.order.update({
       data: {
         amount: orderDetails?.amount,
@@ -85,14 +91,29 @@ export default class OrderRepository {
           ...order.additionalData,
           payer: orderDetails?.payer,
         },
-        ekyashTransaction: {
-          create: {
-            deepLinkUrl: String(invoice?.paymentLink),
-            invoiceId: String(invoice?.invoiceId),
-            qrCodeUrl: String(invoice?.qrUrl),
-            status: EKyashStatus.Pending,
-          },
-        },
+        ...(method === PaymentMethod.EKyash
+          ? {
+              ekyashTransaction: {
+                create: {
+                  deepLinkUrl: String(invoice?.paymentLink),
+                  invoiceId: String(invoice?.invoiceId),
+                  qrCodeUrl: String(invoice?.qrUrl),
+                  status: EKyashStatus.Pending,
+                },
+              },
+            }
+          : method === PaymentMethod.OneLink
+            ? {
+                oneLinkTransaction: {
+                  create: {
+                    deepLinkUrl: String(invoice?.paymentLink),
+                    invoiceId: String(invoice?.invoiceId),
+                    qrCodeUrl: String(invoice?.qrUrl),
+                    status: OneLinkStatus.Pending,
+                  },
+                },
+              }
+            : {}),
         orderItems: orderDetails?.orderItems
           ? {
               createMany: {
@@ -109,7 +130,12 @@ export default class OrderRepository {
           : undefined,
       },
       where: { id: order.id },
-      include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
+      include: {
+        ekyashTransaction: true,
+        oneLinkTransaction: true,
+        orderItems: true,
+        user: { include: { ekyash: true, oneLink: true } },
+      },
     });
 
     return this.rebuildEntity(result);

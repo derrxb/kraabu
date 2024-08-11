@@ -3,6 +3,7 @@ import { installGlobals } from '@remix-run/node';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { vercelPreset } from '@vercel/remix/vite';
+import path, { resolve } from 'path';
 
 installGlobals();
 
@@ -19,4 +20,9 @@ export default defineConfig({
     noExternal: /^\@radix-ui/,
   },
   plugins: [remix({ presets: [vercelPreset()] }), tsconfigPaths()],
+  resolve: {
+    alias: {
+      'msw/native': resolve(resolve(__dirname, './node_modules/msw/lib/native/index.mjs')),
+    },
+  },
 });

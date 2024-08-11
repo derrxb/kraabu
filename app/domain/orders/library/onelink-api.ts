@@ -15,7 +15,7 @@ export const getOneLinkApiBase = () => {
     return process.env.ONE_LINK_ENDPOINT;
   }
 
-  throw new Error('ONE_LINK_ENDPOINT environment variable is not set');
+  // throw new Error('ONE_LINK_ENDPOINT environment variable is not set');
 };
 
 /**

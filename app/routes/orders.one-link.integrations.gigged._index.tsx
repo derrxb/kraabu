@@ -5,6 +5,8 @@ import { getFormattedFailureResponse } from '~/presentation/representers/http-re
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PaymentMethod, PendingPayment } from '~/ui/organisms/pending-payment';
 import { typedjson, useTypedLoaderData } from 'remix-typedjson';
+import GetOneLinkOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-one-link-order.server';
+import { MakePayment } from '~/domain/orders/services/one-link/make-payment';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) {
@@ -32,7 +34,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const order = await new GetOrder(request).call();
+    const order = await new GetOneLinkOrder(request).call();
 
     return typedjson({ order: order?.json() }, HTTP_CODE.ok);
   } catch (e) {
@@ -42,7 +44,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  return json(200);
+  try {
+    const order = await new MakePayment(request, null).call();
+    return typedjson({ order: order?.json() }, HTTP_CODE.ok);
+  } catch (error) {
+    throw getFormattedFailureResponse(error, request);
+  }
 };
 
 export default function Index() {

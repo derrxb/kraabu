@@ -22,7 +22,7 @@ export const getEKyashApiBase = () => {
     return process.env.EKYASH_BASE_ENDPOINT;
   }
 
-  throw new Error('EKYASH_BASE_ENDPOINT environment variable is not set');
+  // throw new Error('EKYASH_BASE_ENDPOINT environment variable is not set');
 };
 
 /**

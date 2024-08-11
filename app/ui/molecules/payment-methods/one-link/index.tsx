@@ -1,4 +1,4 @@
-import { Form } from '@remix-run/react';
+import { Form, useFetcher } from '@remix-run/react';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Input } from '~/ui/atoms/input-field';
 import { Label } from '~/ui/atoms/label';
@@ -10,10 +10,14 @@ import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
 export const OneLinkProps = {};
 
 export const OneLinkForm = () => {
-  const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
+  const fetcher = useFetcher();
+  const { getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
 
   return (
-    <Form className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32 space-y-4">
+    <fetcher.Form
+      action="/orders/one-link/integrations/gigged"
+      className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32 space-y-4"
+    >
       <img src={oneLinkLogo} alt="one-link" className="w-24 h-10 mx-auto" />
 
       <Heading
@@ -78,6 +82,6 @@ export const OneLinkForm = () => {
       <div className="mt-auto ml-auto">
         <KrabuuTag />
       </div>
-    </Form>
+    </fetcher.Form>
   );
 };

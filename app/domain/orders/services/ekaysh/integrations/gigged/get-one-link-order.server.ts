@@ -8,8 +8,9 @@ import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 import { PaymentMethod } from '.';
+import { nanoid } from 'nanoid';
 
-export default class GetOrder {
+export default class GetOneLinkOrder {
   private request: Request;
   private user?: UserEntity;
 
@@ -56,18 +57,6 @@ export default class GetOrder {
     ).getOrderPaymentDetails({ invoiceNo: order.invoice, paykey: order.additionalData?.paymentKey as string });
   }
 
-  async getPaymentQrCode(payment: OrderEntity) {
-    if (payment.hasQrCode()) {
-      return undefined;
-    }
-
-    const ekyashMapper = new EKyashMapper(this.user?.ekyash as EKyashEntity);
-
-    await ekyashMapper.initialize();
-
-    return await ekyashMapper.createInvoice(payment);
-  }
-
   async call() {
     let order: OrderEntity | null = null;
     const params = await this.verifyParams();
@@ -83,12 +72,21 @@ export default class GetOrder {
 
     await this.getOrderUser(order);
 
-    const invoice = await this.getPaymentQrCode(order);
-
     const orderDetails = await this.getPaymentOrderDetails(order);
 
-    if (!!invoice || !!orderDetails) {
-      return await OrderRepository.setOrderDetailsAndPaymentCode(order, PaymentMethod.EKyash, invoice, orderDetails);
+    if (!!orderDetails) {
+      return await OrderRepository.setOrderDetailsAndPaymentCode(
+        order,
+        PaymentMethod.OneLink,
+        {
+          invoiceId: nanoid() as any, // should be a number
+          receiptUrl: '',
+          qrData: '',
+          qrUrl: '',
+          paymentLink: nanoid(),
+        },
+        orderDetails,
+      );
     }
 
     throw new Failure(
