@@ -80,20 +80,24 @@ export const createNewInvoice = async (
   try {
     const credentials = await getCredentials(oneLink);
 
-    const response = await superagent.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`).send({
+    const response = await superagent.post(`${getOneLinkApiBase()}${OneLinkRoutes.Payment}`).send({
       ...data,
       ...credentials,
     });
 
-    return JSON.parse(response.text) as NewPaymentResponse;
-  } catch (error) {
-    if (get(error as any, 'status')) {
-      throw new Failure(
-        HTTP_CODE_TO_STATUS[(error as any).status]!,
-        JSON.parse(get(error as any, 'response').text)?.msg,
-      );
-    } else {
-      throw new Failure('internal_error', 'Something unexpected happened. Please try again.');
+    // UGH, OneLink returns `200` for all requests. You need to look at `msg` and ensure
+    // its status for the successful requests. So annoying!
+    const formattedResponse = JSON.parse(response?.text) as NewPaymentResponse;
+    if (formattedResponse.msg.toLowerCase() !== 'success') {
+      throw new Failure('bad_request', `Error processing payment: ${formattedResponse.msg}`);
     }
+
+    return formattedResponse;
+  } catch (error) {
+    if (error instanceof Failure) {
+      throw error;
+    }
+
+    throw new Failure('internal_error', 'Something unexpected happened. Please try again.');
   }
 };

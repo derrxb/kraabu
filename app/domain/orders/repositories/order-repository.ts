@@ -181,13 +181,19 @@ export default class OrderRepository {
   }
 
   static async markOneLinkPaymentAsRejected(order: OrderEntity) {
+    console.log({ order });
     const result = await prisma.order.update({
       data: {
         status: OrderStatus.Failed,
         oneLinkTransaction: {
-          create: {
-            transactionId: nanoid(),
-            status: OneLinkStatus.Canceled,
+          connectOrCreate: {
+            create: {
+              transactionId: nanoid(),
+              status: OneLinkStatus.Canceled,
+            },
+            where: {
+              orderId: order.id,
+            },
           },
         },
       },
@@ -207,9 +213,14 @@ export default class OrderRepository {
       data: {
         status: OrderStatus.Completed,
         oneLinkTransaction: {
-          update: {
-            transactionId: nanoid(),
-            status: OneLinkStatus.Success,
+          connectOrCreate: {
+            create: {
+              transactionId: nanoid(),
+              status: OneLinkStatus.Success,
+            },
+            where: {
+              orderId: order.id,
+            },
           },
         },
       },

@@ -83,13 +83,16 @@ export const handlers = [
 
     return HttpResponse.json(data);
   }),
-  http.post(`${getOneLinkApiBase()}/${OneLinkRoutes.Payment}`, async ({ request }) => {
+  // http.post(`${getOneLinkApiBase()}${OneLinkRoutes.Payment}`, async ({ request }) => {
+  http.post(`https://api.onelink.bz/payment`, async ({ request }) => {
     const body: NewPaymentData = (await request.json()) as any;
 
     if (body.cardNumber === NO_BALANCE_CREDIT_CARD) {
       return HttpResponse.json(
         {
           msg: '51: INSUFF FUNDS',
+          refnumber: nanoid(),
+          code: '30',
         },
         {
           status: 400,
@@ -100,7 +103,7 @@ export const handlers = [
     if (body.cardNumber === VALID_CREDIT_CARD) {
       return HttpResponse.json(
         {
-          msg: 'Success',
+          msg: 'success',
         },
         { status: 200 },
       );

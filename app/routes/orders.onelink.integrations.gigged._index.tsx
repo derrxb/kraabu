@@ -5,6 +5,11 @@ import { PaymentMethod, PendingPayment } from '~/ui/organisms/pending-payment';
 import { typedjson, useTypedLoaderData } from 'remix-typedjson';
 import GetOneLinkOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-one-link-order.server';
 import { MakePayment } from '~/domain/orders/services/one-link/make-payment';
+import { useNavigate } from '@remix-run/react';
+import { useEffect } from 'react';
+import { setIntervalAsync } from '~/domain/orders/library/async-internval';
+import { OrderStatus } from '@prisma/client';
+import axios from 'axios';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) {
@@ -53,6 +58,31 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Index() {
   const data = useTypedLoaderData<typeof loader>();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const timer: NodeJS.Timeout | null = null;
+
+    setIntervalAsync(
+      timer,
+      async () => {
+        const result = await axios.get(`/orders/ekyash/${data.order?.invoice}/status`);
+
+        if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
+          navigate(`/orders/ekyash/integrations/gigged/${data.order?.invoice}`, {
+            replace: true,
+          });
+        }
+      },
+      1500,
+    );
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [data.order?.invoice, navigate]);
 
   return <PendingPayment order={data?.order!} hasOrderItemsDisplayed paymentMethod={PaymentMethod.OneLink} />;
 }
