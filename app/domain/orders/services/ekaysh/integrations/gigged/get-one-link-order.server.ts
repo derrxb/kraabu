@@ -47,10 +47,6 @@ export default class GetOneLinkOrder {
   }
 
   async getPaymentOrderDetails(order: OrderEntity) {
-    if (order.hasOrderDetails()) {
-      return undefined;
-    }
-
     return await new GiggedMapper(
       order.additionalData.gateway as string,
       order.additionalData.hashkey as string,
@@ -71,6 +67,10 @@ export default class GetOneLinkOrder {
     }
 
     await this.getOrderUser(order);
+
+    if (order.hasOrderDetails()) {
+      return order;
+    }
 
     const orderDetails = await this.getPaymentOrderDetails(order);
 

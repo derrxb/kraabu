@@ -1,6 +1,4 @@
-import { json } from '@remix-run/node';
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
-import GetOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PaymentMethod, PendingPayment } from '~/ui/organisms/pending-payment';

@@ -106,9 +106,8 @@ export default class OrderRepository {
             ? {
                 oneLinkTransaction: {
                   create: {
-                    deepLinkUrl: String(invoice?.paymentLink),
+                    invoiceUrl: String(invoice?.paymentLink),
                     invoiceId: String(invoice?.invoiceId),
-                    qrCodeUrl: String(invoice?.qrUrl),
                     status: OneLinkStatus.Pending,
                   },
                 },

@@ -2,11 +2,6 @@ import '~/assets/styles/app.css';
 import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { TooltipProvider } from './ui/atoms/tooltip';
-import { mswServer } from './mocks/server';
-
-if (process.env.NODE_ENV === 'development') {
-  mswServer.listen({ onUnhandledRequest: 'warn' });
-}
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Krabuu | Accept Payments in Belize Online' }];
