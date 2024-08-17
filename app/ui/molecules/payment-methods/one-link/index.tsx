@@ -1,4 +1,4 @@
-import { Form, useFetcher } from '@remix-run/react';
+import { Form, useFetcher, useSearchParams } from '@remix-run/react';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Input } from '~/ui/atoms/input-field';
 import { Label } from '~/ui/atoms/label';
@@ -11,11 +11,13 @@ export const OneLinkProps = {};
 
 export const OneLinkForm = () => {
   const fetcher = useFetcher();
+  const [params] = useSearchParams();
   const { getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
 
   return (
     <fetcher.Form
-      action="/orders/one-link/integrations/gigged"
+      method="POST"
+      action="/orders/onelink/integrations/gigged"
       className="my-auto flex min-h-[55vh] w-full flex-col px-8 py-4 leading-relaxed sm:h-full md:px-16 md:py-12 xl:px-32 xl:pt-32 space-y-4"
     >
       <img src={oneLinkLogo} alt="one-link" className="w-24 h-10 mx-auto" />
@@ -32,14 +34,17 @@ export const OneLinkForm = () => {
         Fill out the form below to complete your payment with OneLink
       </span>
 
+      <input hidden name="invoiceno" value={String(params.get('invoiceno'))} />
+      <input hidden name="paymentKey" value={String(params.get('paykey'))} />
+
       <div>
         <Label id="email">Email</Label>
-        <Input name="email" required type="email" />
+        <Input disabled={fetcher.state === 'submitting'} name="email" required type="email" />
       </div>
 
       <div>
-        <Label id="nameOnCard">Cardholder name</Label>
-        <Input name="nameOnCard" required type="text" />
+        <Label id="cardholderName">Cardholder name</Label>
+        <Input disabled={fetcher.state === 'submitting'} name="cardholderName" required type="text" />
       </div>
 
       <div className="w-full grid grid-cols-2">
@@ -50,6 +55,7 @@ export const OneLinkForm = () => {
           <Input
             required
             {...getCardNumberProps()}
+            disabled={fetcher.state === 'submitting'}
             className="rounded-bl-none rounded-br-none focus-visible:!ring-opacity-5"
           />
         </div>
@@ -59,6 +65,7 @@ export const OneLinkForm = () => {
           <Input
             required
             {...getExpiryDateProps()}
+            disabled={fetcher.state === 'submitting'}
             className="rounded-tl-none rounded-r-none border-t-transparent focus-visible:z-10"
           />
         </div>
@@ -68,13 +75,14 @@ export const OneLinkForm = () => {
           <Input
             required
             {...getCVCProps()}
+            disabled={fetcher.state === 'submitting'}
             className="border-t-transparent border-l-transborder-t-transparent rounded-l-none rounded-tr-none focus-visible:z-10"
           />
         </div>
       </div>
 
       <div>
-        <Button type="submit" className="w-full" size="lg">
+        <Button type="submit" className="w-full" size="lg" disabled={fetcher.state === 'submitting'}>
           Make Payment
         </Button>
       </div>

@@ -23,6 +23,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'msw/native': resolve(resolve(__dirname, './node_modules/msw/lib/native/index.mjs')),
+      'msw/browser': resolve(resolve(__dirname, './node_modules/msw/lib/browser/index.mjs')),
     },
   },
 });

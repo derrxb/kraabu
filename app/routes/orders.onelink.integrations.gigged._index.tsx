@@ -48,7 +48,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const order = await new MakePayment(request, null).call();
     return typedjson({ order: order?.json() }, HTTP_CODE.ok);
   } catch (error) {
-    throw getFormattedFailureResponse(error, request);
+    console.log({ error });
+    return getFormattedFailureResponse(error, request);
   }
 };
 

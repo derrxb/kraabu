@@ -34,17 +34,17 @@ export class MakePayment {
   }
 
   async verifyParams() {
-    const body = await this.request.json();
+    const body = await this.request.formData();
 
     const { invoiceno, paymentKey, email, cardholderName, cardNumber, expiryDate, cvc } =
       await makeOneLinkPaymentSchema.validateAsync({
-        invoiceno: body['invoiceno'],
-        paymentKey: body['paymentKey'],
-        email: body['email'],
-        cardholderName: body['cardholderName'],
-        cardNumber: body['cardNumber'],
-        expiryDate: body['expiryDate'],
-        cvc: body['cvc'],
+        invoiceno: body.get('invoiceno'),
+        paymentKey: body.get('paymentKey'),
+        email: body.get('email'),
+        cardholderName: body.get('cardholderName'),
+        cardNumber: body.get('cardNumber'),
+        expiryDate: body.get('expiryDate'),
+        cvc: body.get('cvc'),
       });
 
     this.details = {

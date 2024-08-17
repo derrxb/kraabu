@@ -1,4 +1,3 @@
-// src/mocks/server.js
 import { setupWorker } from 'msw/browser';
 import { handlers } from '~/mocks/handlers';
 

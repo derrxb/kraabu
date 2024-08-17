@@ -10,7 +10,7 @@ import { NO_BALANCE_CREDIT_CARD, VALID_CREDIT_CARD } from 'test/credit-card';
 
 export const handlers = [
   // Mock EKyash Authorization
-  http.post(`${getEKyashApiBase()}/${EKyashRoutes.Authorization}`, ({ request }) => {
+  http.post(`${getEKyashApiBase()}/${EKyashRoutes.Authorization}`, ({}) => {
     return HttpResponse.json({
       session: 'a-random-authorization-code',
       firstName: 'Test',
@@ -20,7 +20,7 @@ export const handlers = [
     } as AuthorizationResponse);
   }),
   // Mock create invoice
-  http.post(`${getEKyashApiBase()}/${EKyashRoutes.CreateInvoice}`, ({ request }) => {
+  http.post(`${getEKyashApiBase()}/${EKyashRoutes.CreateInvoice}`, ({}) => {
     return HttpResponse.json({
       invoiceId: 1234567890, // TODO: This might be a string. Double check.
       paymentLink: mockEKyashTransactionEntity.deepLinkUrl,
@@ -29,7 +29,7 @@ export const handlers = [
     } as NewInvoiceResponse);
   }),
   // Mocks the transaction update
-  http.post(GiggedRoutes.TransactionStatus, ({ request }) => {
+  http.post(GiggedRoutes.TransactionStatus, ({}) => {
     return HttpResponse.json({ success: true });
   }),
   // Mocks the order details
