@@ -87,16 +87,6 @@ export default class GetOrder {
 
     const orderDetails = await this.getPaymentOrderDetails(order);
 
-    if (!!invoice || !!orderDetails) {
-      return await OrderRepository.setOrderDetailsAndPaymentCode(order, PaymentMethod.EKyash, invoice, orderDetails);
-    }
-
-    throw new Failure(
-      'bad_request',
-      `
-        Unexpected state reached: The order has valid order details and a valid payment QR code URL.
-        This is more than likely a development error.
-      `,
-    );
+    return await OrderRepository.setOrderDetailsAndPaymentCode(order, PaymentMethod.EKyash, invoice, orderDetails);
   }
 }

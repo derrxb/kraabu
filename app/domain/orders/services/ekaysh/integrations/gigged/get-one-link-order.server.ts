@@ -77,8 +77,6 @@ export default class GetOneLinkOrder {
 
     const orderDetails = await this.getPaymentOrderDetails(order);
 
-    logger.info(orderDetails);
-
     if (!!orderDetails) {
       return await OrderRepository.setOrderDetailsAndPaymentCode(
         order,

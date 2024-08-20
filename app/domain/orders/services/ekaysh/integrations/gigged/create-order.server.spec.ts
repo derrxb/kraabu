@@ -5,7 +5,7 @@ import type { GiggedOrderHandshake } from '~/domain/orders/library/gigged-api';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import prisma from '~/infrastructure/database/index.server';
 import { mockGiggedOrderHandshake, mockUserEntity } from '~/mocks/fixtures';
-import { GIGGED_USERNAME } from '.';
+import { GIGGED_USERNAME, PaymentMethod } from '.';
 import CreateOrder from './create-order.server';
 import { logger } from '~/infrastructure/logging/next.server';
 
@@ -20,7 +20,7 @@ it('Ensures that a gigged order fails to create when the GiggedBZ supplier is mi
   });
 
   // Act & Assert
-  await expect(new CreateOrder(request).call()).rejects.toThrowError(
+  await expect(new CreateOrder(request, PaymentMethod.EKyash).call()).rejects.toThrowError(
     /There is no supplier with the username: giggedbz/i,
   );
 });
@@ -40,11 +40,11 @@ it('Ensures that an order fails to create when at least the required params are 
   const gatewayMissingRequest = getIncompleteRequest('gateway');
 
   // Act & Assert
-  await expect(new CreateOrder(invoiceMissingRequest).call()).rejects.toThrowError(/invoiceno/i);
-  await expect(new CreateOrder(currencyMissingRequest).call()).rejects.toThrowError(/currency/i);
-  await expect(new CreateOrder(gatewayMissingRequest).call()).rejects.toThrowError(/gateway/i);
-  await expect(new CreateOrder(hashkeyMissingRequest).call()).rejects.toThrowError(/hashkey/i);
-  await expect(new CreateOrder(totalMissingRequest).call()).rejects.toThrowError(/total/i);
+  await expect(new CreateOrder(invoiceMissingRequest, PaymentMethod.EKyash).call()).rejects.toThrowError(/invoiceno/i);
+  await expect(new CreateOrder(currencyMissingRequest, PaymentMethod.EKyash).call()).rejects.toThrowError(/currency/i);
+  await expect(new CreateOrder(gatewayMissingRequest, PaymentMethod.EKyash).call()).rejects.toThrowError(/gateway/i);
+  await expect(new CreateOrder(hashkeyMissingRequest, PaymentMethod.EKyash).call()).rejects.toThrowError(/hashkey/i);
+  await expect(new CreateOrder(totalMissingRequest, PaymentMethod.EKyash).call()).rejects.toThrowError(/total/i);
 });
 
 it('Ensures that the amount value is calculated correctly', async () => {
@@ -73,7 +73,7 @@ it('Ensures that the amount value is calculated correctly', async () => {
   });
 
   // Act
-  const order = await new CreateOrder(request).call();
+  const order = await new CreateOrder(request, PaymentMethod.EKyash).call();
 
   // Assert
   expect(order.amount).toEqual(EXPECTED_AMOUNT_IN_CENTS);
@@ -100,7 +100,7 @@ it('Ensures that a order is created with a pending status', async () => {
   });
 
   // Act
-  const order = await new CreateOrder(request).call();
+  const order = await new CreateOrder(request, PaymentMethod.EKyash).call();
 
   // Assert
   expect(order.status).toEqual(OrderStatus.Pending);
