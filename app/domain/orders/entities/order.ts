@@ -94,7 +94,7 @@ export class OrderEntity {
   }
 
   hasOrderDetails() {
-    return this.orderItems && this.orderItems.length > 0;
+    return this.orderItems?.length > 0;
   }
 
   isValidPaymentKey(paymentKey: string) {
