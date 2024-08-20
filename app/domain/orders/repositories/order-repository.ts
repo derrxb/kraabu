@@ -90,6 +90,9 @@ export default class OrderRepository {
         ...(method === PaymentMethod.EKyash
           ? {
               ekyashTransaction: {
+                connect: {
+                  id: order.ekyashTransaction?.id,
+                },
                 create: {
                   deepLinkUrl: String(invoice?.paymentLink),
                   invoiceId: String(invoice?.invoiceId),
@@ -101,6 +104,9 @@ export default class OrderRepository {
           : method === PaymentMethod.OneLink
             ? {
                 oneLinkTransaction: {
+                  connect: {
+                    id: order.oneLinkTransaction?.id,
+                  },
                   create: {
                     invoiceUrl: String(invoice?.paymentLink),
                     invoiceId: String(invoice?.invoiceId),
