@@ -9,6 +9,7 @@ import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
 import createdPendingGiggedPaymentSchema from '~/presentation/requests/create-pending-gigged-payment';
 import { GIGGED_USERNAME } from '.';
 import { getErrorMessage } from '~/lib/error-messages';
+import { logger } from '~/infrastructure/logging/next.server';
 
 /**
  * Creates a bare order record in the database with no order details nor order url.
@@ -24,8 +25,11 @@ export default class CreateOrder {
     const body = await this.request.json();
 
     if (!body.total) {
+      logger.error(body, 'total is required');
       throw new Failure('bad_request', '`total` is required.');
     }
+
+    logger.info(body, 'Creating order with details');
 
     return await createdPendingGiggedPaymentSchema.validateAsync({
       ...body,
@@ -48,12 +52,13 @@ export default class CreateOrder {
       logLongTasks(startTime, endTime, LONG_TASKS_THRESHOLD, 'CreatePendingOrder');
 
       if (!order) {
+        logger.error({ order: order }, 'order is missing');
         throw new Failure('cannot_process', 'Something unexpected occurred while creating pending order.');
       }
 
       return order;
     } catch (e) {
-      console.log(e);
+      logger.error(e, 'Failed to create pending order');
       throw new Failure(
         'internal_error',
         'Something unexpected occurred while creating pending order. ' + getErrorMessage(e),
@@ -67,6 +72,8 @@ export default class CreateOrder {
       const supplier = await UserRepository.findUserByUsername(GIGGED_USERNAME);
 
       if (!supplier) {
+        logger.error({ order }, 'Supplier is missing');
+
         throw new Failure('not_found', `There is no supplier with the username: ` + GIGGED_USERNAME);
       }
 
