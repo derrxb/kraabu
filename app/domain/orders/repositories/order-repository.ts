@@ -52,11 +52,7 @@ export default class OrderRepository {
         description: data.description,
         invoice: data.invoice,
         status: data.status,
-        user: {
-          connect: {
-            id: user.id,
-          },
-        },
+        userId: user?.id,
       },
     });
 
