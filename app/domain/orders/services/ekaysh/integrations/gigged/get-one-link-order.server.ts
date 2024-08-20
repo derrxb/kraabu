@@ -9,6 +9,7 @@ import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 import { PaymentMethod } from '.';
 import { nanoid } from 'nanoid';
+import { logger } from '~/infrastructure/logging/next.server';
 
 export default class GetOneLinkOrder {
   private request: Request;
@@ -68,11 +69,15 @@ export default class GetOneLinkOrder {
 
     await this.getOrderUser(order);
 
+    logger.info(order);
+
     if (order.hasOrderDetails()) {
       return order;
     }
 
     const orderDetails = await this.getPaymentOrderDetails(order);
+
+    logger.info(orderDetails);
 
     if (!!orderDetails) {
       return await OrderRepository.setOrderDetailsAndPaymentCode(
