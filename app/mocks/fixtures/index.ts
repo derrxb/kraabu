@@ -64,6 +64,50 @@ export const mockUserEntity = new UserEntity({
   ekyash: mockEkyashEntity,
 });
 
+// {
+//   "PayeeInfos": [
+//     {
+//       "InternalUserId": 315583,
+//       "Total": 17.6,
+//       "Currency": "BZD",
+//       "OrderId": "132841",
+//       "Items": [
+//         {
+//           "Id": "132841 - 557343",
+//           "ItemId": "557343",
+//           "Sku": null,
+//           "Name": "TEST-do-not-order",
+//           "Description": "TEST-do-not-order",
+//           "Currency": "BZD",
+//           "Price": 0.1,
+//           "Quantity": 2
+//         },
+//         {
+//           "Id": "Admin Fee - Order 132841",
+//           "ItemId": "",
+//           "Sku": "",
+//           "Name": "Fee (Deducted)",
+//           "Description": "Admin Fee",
+//           "Currency": "BZD",
+//           "Price": 4.4,
+//           "Quantity": 1
+//         }
+//       ],
+//       "Reference": "GIGGEDB1724164032CTYO/132841",
+//       "Id": "820f36a2-f68d-469c-8789-ab27a83b84d3",
+//       "Name": "Derrick",
+//       "Email": "derrickbol33@gmail.com",
+//       "OrderUUID": "a8f153a2-4b96-4b4e-9244-8d0be6e8c7cd"
+//     }
+//   ],
+//   "InvoiceNo": "GIGGEDB1724164032CTYO",
+//   "Payer": {
+//     "Id": "3aa42f99-4253-46a7-a9bf-632ef3bb9e22",
+//     "Name": "John Snow",
+//     "Email": "derrickbol33@gmail.com"
+//   }
+// }
+
 /**
  * A base fake order-item entity that does not yet exist in the database.
  */
@@ -72,7 +116,7 @@ export const mockOrderItemEntity = new OrderItemEntity({
   description: faker.lorem.lines(2),
   name: 'Kawasaki Ninja 400 deep cleaning session',
   // convert to cents
-  price: Number(faker.commerce.price({ min: 200, max: 250, dec: 2})) * 100,
+  price: Number(faker.commerce.price({ min: 200, max: 250, dec: 2 })) * 100,
   quantity: 1,
   id: 1,
   orderId: 1,

@@ -85,8 +85,10 @@ class GiggedMapper {
 
     // Get all the totals from PayeesInfo and adds them up.
     const payees = order?.PayeeInfos?.[0];
-    const total = order?.PayeeInfos?.map((item) => item.Total).reduce((prev, curr) => {
-      return Number(prev) + Number(curr);
+    const total = order?.PayeeInfos?.reduce((prev, curr) => {
+      // Total Per Item is the `Total` + the `Items`'s Admin Fee
+      const adminFee = curr.Items.find((c) => c.Id?.includes('Admin Fee'));
+      return Number(prev) + Number(curr.Total) + (adminFee?.Price ?? 0);
     }, 0);
 
     const currency: keyof typeof Currency = payees.Currency as keyof typeof Currency;
