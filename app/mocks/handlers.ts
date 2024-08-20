@@ -95,7 +95,7 @@ export const handlers = [
           code: '30',
         },
         {
-          status: 400,
+          status: 200,
         },
       );
     }

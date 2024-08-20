@@ -1,9 +1,6 @@
 import superagent from 'superagent';
-import { OneLinkEntity } from '../entities/onelink';
 import Failure from '~/lib/failure';
-import axios from 'axios';
-import { HTTP_CODE, HTTP_CODE_TO_STATUS } from '~/presentation/representers/http-response-representer';
-import get from 'lodash/get';
+import { OneLinkEntity } from '../entities/onelink';
 
 export enum OneLinkRoutes {
   Payment = '/payment',
@@ -70,6 +67,8 @@ export type NewPaymentResponse = {
   msg: string;
 };
 
+export class OneLinkPaymentError extends Error {}
+
 /**
  * Creates an invoice for users with a specified amount in Belize Dollars.
  */
@@ -89,12 +88,12 @@ export const createNewInvoice = async (
     // its status for the successful requests. So annoying!
     const formattedResponse = JSON.parse(response?.text) as NewPaymentResponse;
     if (formattedResponse.msg.toLowerCase() !== 'success') {
-      throw new Failure('bad_request', `Error processing payment: ${formattedResponse.msg}`);
+      throw new OneLinkPaymentError(`Error processing payment: ${formattedResponse.msg}`);
     }
 
     return formattedResponse;
   } catch (error) {
-    if (error instanceof Failure) {
+    if (error instanceof OneLinkPaymentError) {
       throw error;
     }
 
