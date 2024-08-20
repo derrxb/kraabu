@@ -17,8 +17,7 @@ export default defineConfig({
     setupFiles: ['./test/setup.ts'],
   },
   ssr: {
-    noExternal: /^\@radix-ui/,
-    external: ['pino', 'pino-pretty', '@logtail/pino'],
+    noExternal: [/^\@radix-ui/, 'pino', 'pino-pretty', '@logtail/pino'],
   },
   plugins: [remix({ presets: [vercelPreset()] }), tsconfigPaths()],
   resolve: {
