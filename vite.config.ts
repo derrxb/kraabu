@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { vercelPreset } from '@vercel/remix/vite';
 import path, { resolve } from 'path';
+import { cjsInterop } from 'vite-plugin-cjs-interop';
 
 installGlobals();
 
@@ -19,7 +20,13 @@ export default defineConfig({
   ssr: {
     noExternal: [/^\@radix-ui/, 'pino', 'pino-pretty', '@logtail/pino'],
   },
-  plugins: [remix({ presets: [vercelPreset()] }), tsconfigPaths()],
+  plugins: [
+    cjsInterop({
+      dependencies: ['@radix-ui', 'pino', 'pino-pretty', '@logtail/pino'],
+    }),
+    remix({ presets: [vercelPreset()] }),
+    tsconfigPaths(),
+  ],
   resolve: {
     alias: {
       'msw/native': resolve(resolve(__dirname, './node_modules/msw/lib/native/index.mjs')),
