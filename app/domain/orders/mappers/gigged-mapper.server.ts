@@ -81,7 +81,7 @@ class GiggedMapper {
     const response = await superagent.get(`${url.toString()}?${query.toString()}`);
     const order = JSON.parse(response.text) as OrderDetails;
 
-    logger.info('GIGGED', { order });
+    logger.info('GIGGED', { order: JSON.stringify(order) });
 
     // Get all the totals from PayeesInfo and adds them up.
     const payees = order?.PayeeInfos?.[0];
@@ -90,6 +90,26 @@ class GiggedMapper {
     }, 0);
 
     const currency: keyof typeof Currency = payees.Currency as keyof typeof Currency;
+
+    logger.info(
+      'TOTAL: ',
+      JSON.stringify({
+        amount: parseInt((Number(total) * 100).toString(), 10),
+        currency: Currency[currency],
+        payer: {
+          name: order.PayeeInfos[0].Name,
+          email: order.PayeeInfos[0].Email,
+        },
+        // Note: Admin Fee is used to omit the admin fee from the items.
+        orderItems: order.PayeeInfos[0].Items.filter((item) => !item.Id.includes('Admin Fee')).map((item) => ({
+          name: item.Name,
+          description: item.Description,
+          price: parseInt((item.Price * 100).toString(), 10) * item.Quantity,
+          quantity: item.Quantity,
+          currency: Currency.BZD,
+        })),
+      }),
+    );
 
     return {
       amount: parseInt((Number(total) * 100).toString(), 10),
