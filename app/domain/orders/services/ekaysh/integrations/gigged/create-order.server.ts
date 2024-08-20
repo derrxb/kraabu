@@ -7,7 +7,7 @@ import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
 import createdPendingGiggedPaymentSchema from '~/presentation/requests/create-pending-gigged-payment';
-import { GIGGED_USERNAME } from '.';
+import { GIGGED_USERNAME, PaymentMethod } from '.';
 import { getErrorMessage } from '~/lib/error-messages';
 import { logger } from '~/infrastructure/logging/next.server';
 
@@ -16,9 +16,11 @@ import { logger } from '~/infrastructure/logging/next.server';
  */
 export default class CreateOrder {
   private request: Request;
+  private paymentMethod: PaymentMethod;
 
-  constructor(request: Request) {
+  constructor(request: Request, paymentMethod: PaymentMethod) {
     this.request = request;
+    this.paymentMethod = paymentMethod;
   }
 
   async verifyParams(): Promise<GiggedOrderHandshake> {
@@ -44,6 +46,7 @@ export default class CreateOrder {
         new GiggedMapper(orderHandshake.gateway, orderHandshake.hashkey).getOrderFromHandshake(
           orderHandshake,
           supplier,
+          this.paymentMethod,
         ),
         supplier,
       );

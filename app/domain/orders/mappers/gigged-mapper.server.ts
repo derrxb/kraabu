@@ -11,6 +11,7 @@ import { isCallbackRequestValid } from '../library/ekyash-api';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
 import { GiggedRoutes } from '../library/gigged-api';
 import { logger } from '~/infrastructure/logging/next.server';
+import { PaymentMethod } from '../services/ekaysh/integrations/gigged';
 
 type OrderItem = {
   Id: string;
@@ -52,14 +53,14 @@ class GiggedMapper {
     this.hashkey = hashkey;
   }
 
-  getOrderFromHandshake(data: GiggedOrderHandshake, user: UserEntity): OrderEntity {
+  getOrderFromHandshake(data: GiggedOrderHandshake, user: UserEntity, paymentMethod: PaymentMethod): OrderEntity {
     const order = new OrderEntity({
       productId: null,
       userId: null,
       status: OrderStatus?.Pending,
       amount: Number(data.total) * 100,
       currency: data.currency === 'BZD' ? Currency.BZD : Currency.USD,
-      description: 'A GiggedBZ Order via EKyash',
+      description: `A GiggedBZ Order via ${paymentMethod}`,
       invoice: data.invoiceno,
       additionalData: {
         gateway: data.gateway,
@@ -92,26 +93,6 @@ class GiggedMapper {
     }, 0);
 
     const currency: keyof typeof Currency = payees.Currency as keyof typeof Currency;
-
-    logger.info(
-      'TOTAL: ',
-      JSON.stringify({
-        amount: parseInt((Number(total) * 100).toString(), 10),
-        currency: Currency[currency],
-        payer: {
-          name: order.PayeeInfos[0].Name,
-          email: order.PayeeInfos[0].Email,
-        },
-        // Note: Admin Fee is used to omit the admin fee from the items.
-        orderItems: order.PayeeInfos[0].Items.filter((item) => !item.Id.includes('Admin Fee')).map((item) => ({
-          name: item.Name,
-          description: item.Description,
-          price: parseInt((item.Price * 100).toString(), 10) * item.Quantity,
-          quantity: item.Quantity,
-          currency: Currency.BZD,
-        })),
-      }),
-    );
 
     return {
       amount: parseInt((Number(total) * 100).toString(), 10),

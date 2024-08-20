@@ -10,9 +10,6 @@ import CreateOrder from './create-order.server';
 import { logger } from '~/infrastructure/logging/next.server';
 
 beforeEach(truncateDB);
-afterEach(() => {
-  logger.flush();
-});
 
 it('Ensures that a gigged order fails to create when the GiggedBZ supplier is missing', async () => {
   // Arrange
