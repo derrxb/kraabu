@@ -90,15 +90,19 @@ export default class OrderRepository {
         ...(method === PaymentMethod.EKyash
           ? {
               ekyashTransaction: {
-                connectOrCreate: {
+                upsert: {
                   create: {
                     deepLinkUrl: String(invoice?.paymentLink),
                     invoiceId: String(invoice?.invoiceId),
                     qrCodeUrl: String(invoice?.qrUrl),
                     status: EKyashStatus.Pending,
                   },
-                  where: {
+                  update: {
                     id: order.ekyashTransaction?.id!,
+                    deepLinkUrl: String(invoice?.paymentLink),
+                    invoiceId: String(invoice?.invoiceId),
+                    qrCodeUrl: String(invoice?.qrUrl),
+                    status: EKyashStatus.Pending,
                   },
                 },
               },
@@ -106,14 +110,17 @@ export default class OrderRepository {
           : method === PaymentMethod.OneLink
             ? {
                 oneLinkTransaction: {
-                  connectOrCreate: {
+                  upsert: {
                     create: {
                       invoiceUrl: String(invoice?.paymentLink),
                       invoiceId: String(invoice?.invoiceId),
                       status: OneLinkStatus.Pending,
                     },
-                    where: {
+                    update: {
                       id: order.oneLinkTransaction?.id,
+                      invoiceUrl: String(invoice?.paymentLink),
+                      invoiceId: String(invoice?.invoiceId),
+                      status: OneLinkStatus.Pending,
                     },
                   },
                 },

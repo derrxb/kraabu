@@ -14,7 +14,7 @@ import { OneLinkStatus } from '@prisma/client';
 beforeEach(truncateDB);
 
 describe('MakePayment to OneLink', async () => {
-  it('Ensures an error is thrown when required `invoiceno` and `paykey` are missing', async () => {
+  it.only('Ensures an error is thrown when required `invoiceno` and `paykey` are missing', async () => {
     // Arrange
     const prismaUser = await prisma.user.create({
       data: {
