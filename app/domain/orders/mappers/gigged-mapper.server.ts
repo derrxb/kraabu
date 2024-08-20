@@ -10,6 +10,7 @@ import type { CompletedPaymentCallbackData } from '../library/ekyash-api';
 import { isCallbackRequestValid } from '../library/ekyash-api';
 import type { GiggedOrderHandshake } from '../library/gigged-api';
 import { GiggedRoutes } from '../library/gigged-api';
+import { logger } from '~/infrastructure/logging/next.server';
 
 type OrderItem = {
   Id: string;
@@ -79,6 +80,8 @@ class GiggedMapper {
     const query = new URLSearchParams({ ...options, gateway: this.gateway, hashkey: this.hashkey });
     const response = await superagent.get(`${url.toString()}?${query.toString()}`);
     const order = JSON.parse(response.text) as OrderDetails;
+
+    logger.info('GIGGED', { order });
 
     // Get all the totals from PayeesInfo and adds them up.
     const payees = order?.PayeeInfos?.[0];
