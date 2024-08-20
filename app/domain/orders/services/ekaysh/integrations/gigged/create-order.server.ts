@@ -8,6 +8,7 @@ import Failure from '~/lib/failure';
 import { logLongTasks, LONG_TASKS_THRESHOLD } from '~/lib/long-tasks-logging';
 import createdPendingGiggedPaymentSchema from '~/presentation/requests/create-pending-gigged-payment';
 import { GIGGED_USERNAME } from '.';
+import { getErrorMessage } from '~/lib/error-messages';
 
 /**
  * Creates a bare order record in the database with no order details nor order url.
@@ -52,7 +53,11 @@ export default class CreateOrder {
 
       return order;
     } catch (e) {
-      throw new Failure('internal_error', 'Something unexpected occurred while creating pending order.');
+      console.log(e);
+      throw new Failure(
+        'internal_error',
+        'Something unexpected occurred while creating pending order. ' + getErrorMessage(e),
+      );
     }
   }
 
