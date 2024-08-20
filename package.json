@@ -145,7 +145,7 @@
     "vitest": "^0.27.2"
   },
   "engines": {
-    "node": ">=14"
+    "node": "20.x"
   },
   "version": "1.0.0",
   "main": ".eslintrc.js",
