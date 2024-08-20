@@ -17,7 +17,16 @@ export default defineConfig({
     setupFiles: ['./test/setup.ts'],
   },
   ssr: {
-    noExternal: [/^\@radix-ui/, 'pino', 'pino-pretty', '@logtail/pino', /^pino$/, /^pino\-pretty$/, /^@logtail\/pino$/],
+    noExternal: [
+      /^\@radix-ui/,
+      'pino',
+      'pino-pretty',
+      '@logtail/pino',
+      /^pino$/,
+      /^pino\-pretty$/,
+      /^@logtail\/pino$/,
+      'colorette',
+    ],
   },
   plugins: [remix({ presets: [vercelPreset()] }), tsconfigPaths()],
   resolve: {
@@ -25,6 +34,9 @@ export default defineConfig({
       'msw/native': resolve(resolve(__dirname, './node_modules/msw/lib/native/index.mjs')),
       'msw/browser': resolve(resolve(__dirname, './node_modules/msw/lib/browser/index.mjs')),
     },
+  },
+  build: {
+    target: 'esnext',
   },
   esbuild: {
     supported: {
