@@ -16,7 +16,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
         );
       case OrderStatus.Completed:
       case OrderStatus.Failed:
-        return redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`);
+        return redirect(`${GiggedRoutes.OrderStatus}?invoiceno=${order.invoice}`);
       default:
         return redirect(
           `/orders/onelink/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,

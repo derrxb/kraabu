@@ -34,7 +34,8 @@ export const handlers = [
   }),
   // Mocks the order details
   http.get(GiggedRoutes.OrderDetails, ({ request }) => {
-    const invoiceNo = new URL(request.url).searchParams.get('invoiceNo');
+    const invoiceNo =
+      new URL(request.url).searchParams.get('invoiceNo') ?? new URL(request.url).searchParams.get('invoiceno');
     const total = mockGiggedOrderEntity.amount / 100; // convert to dollars
 
     const orderId = nanoid();

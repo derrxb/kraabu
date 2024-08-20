@@ -93,6 +93,7 @@ export const createNewInvoice = async (
 
     return formattedResponse;
   } catch (error) {
+    console.warn('ERROR', error);
     if (error instanceof OneLinkPaymentError) {
       throw error;
     }
