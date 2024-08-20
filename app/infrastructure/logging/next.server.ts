@@ -1,11 +1,14 @@
-import pinoConstructor from 'pino';
+import pino from 'pino';
+import pinoPretty from 'pino-pretty';
+import logtail from '@logtail/pino';
 
 const token = process.env.BETTER_STACK_LOGS;
-const transport = pinoConstructor.transport({
-  target: process.env.NODE_ENV !== 'production' ? 'pino-pretty' : '@logtail/pino',
-  options: {
-    sourceToken: token,
-  },
-});
+let logTail;
+if (process.env.NODE_ENV === 'production') {
+  logTail = await logtail({ sourceToken: token!, options: {} });
+}
 
-export const logger = pinoConstructor(transport);
+export const logger = pino(
+  { base: null },
+  process.env.NODE_ENV === 'production' ? logTail : pinoPretty({ sync: true }),
+);
