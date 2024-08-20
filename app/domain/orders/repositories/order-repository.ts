@@ -67,7 +67,12 @@ export default class OrderRepository {
   static async getByInvoice(invoice: string) {
     const result = await prisma.order.findFirst({
       where: { invoice: invoice },
-      include: { ekyashTransaction: true, orderItems: true, user: { include: { ekyash: true } } },
+      include: {
+        ekyashTransaction: true,
+        oneLinkTransaction: true,
+        orderItems: true,
+        user: { include: { ekyash: true } },
+      },
     });
 
     return await this.rebuildEntity(result);

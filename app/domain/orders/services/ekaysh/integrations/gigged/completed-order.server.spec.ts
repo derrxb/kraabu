@@ -8,7 +8,7 @@ import {
   mockGiggedOrderHandshake,
   mockUserEntity,
 } from '~/mocks/fixtures';
-import { GIGGED_USERNAME } from '.';
+import { GIGGED_USERNAME, PaymentMethod } from '.';
 import CompleteOrder from './complete-order.server';
 import CreateOrder from './create-order.server';
 import GetOrder from './get-order.server';
@@ -46,6 +46,7 @@ it('Ensures that cancelled orders are correctly marked as cancelled', async () =
       method: 'POST',
       body: JSON.stringify(mockGiggedOrderHandshake),
     }),
+    PaymentMethod.EKyash,
   ).call();
 
   await new GetOrder(

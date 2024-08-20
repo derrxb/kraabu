@@ -69,8 +69,6 @@ export default class GetOneLinkOrder {
 
     await this.getOrderUser(order);
 
-    logger.info(order);
-
     if (order.hasOrderDetails()) {
       return order;
     }

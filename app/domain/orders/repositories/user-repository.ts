@@ -28,7 +28,7 @@ export class UserRepository {
   static async findByUserId(userId: number) {
     const result = await prisma.user.findFirst({
       where: { id: userId },
-      include: { ekyash: true },
+      include: { ekyash: true, oneLink: true },
     });
 
     return await this.rebuildEntity(result);
