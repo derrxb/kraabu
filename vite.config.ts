@@ -26,4 +26,9 @@ export default defineConfig({
       'msw/browser': resolve(resolve(__dirname, './node_modules/msw/lib/browser/index.mjs')),
     },
   },
+  esbuild: {
+    supported: {
+      'top-level-await': true, //browsers can handle top-level-await features
+    },
+  },
 });
