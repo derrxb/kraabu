@@ -6,23 +6,23 @@ import GetOrder from '~/domain/orders/services/ekaysh/get-order';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  let redirectTo: string = '';
+
   try {
     const order = await new GetOrder(params).call();
 
     switch (order.status) {
       case OrderStatus.Pending:
-        throw redirect(
-          `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
-        );
+        redirectTo = `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`;
       case OrderStatus.Completed:
       case OrderStatus.Failed:
-        throw redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`);
+        redirectTo = `${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`;
       default:
-        throw redirect(
-          `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
-        );
+        redirectTo = `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`;
     }
   } catch (e) {
     throw getFormattedFailureResponse(e, request);
   }
+
+  throw redirect(redirectTo);
 };

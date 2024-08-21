@@ -23,6 +23,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  let redirectTo = '';
   try {
     const order = await new GetOrder(params).call();
 
@@ -30,16 +31,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       case OrderStatus.Completed:
         return typedjson({ order: order.json() });
       case OrderStatus.Pending:
-        throw redirect(
-          `/orders/ekyash/integrations/gigged?invoiceNo=${order.invoice}&paykey=${order.additionalData.paymentKey}`,
-        );
+        redirectTo = `/orders/ekyash/integrations/gigged?invoiceNo=${order.invoice}&paykey=${order.additionalData.paymentKey}`;
       case OrderStatus.Failed:
       default:
-        throw redirect(`/orders/ekyash/${order.invoice}/failed`);
+        redirectTo = `/ekyash/${order.invoice}/failed`;
     }
   } catch (e) {
     throw getFormattedFailureResponse(e, request);
   }
+
+  throw redirect(redirectTo);
 };
 
 export default function Completed() {

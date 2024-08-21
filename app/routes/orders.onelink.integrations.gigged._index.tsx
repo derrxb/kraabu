@@ -44,14 +44,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  let order;
   try {
-    const order = await new MakePayment(request, (await UserRepository.findUserByUsername(GIGGED_USERNAME))!).call();
-    // We know it's a change in status. Which one? Idk, let's go here to find out
-    throw redirect(`/orders/onelink/integrations/gigged/${order?.invoice}`);
+    order = await new MakePayment(request, (await UserRepository.findUserByUsername(GIGGED_USERNAME))!).call();
   } catch (error) {
     console.log({ error });
     return getFormattedFailureResponse(error, request);
   }
+
+  // We know it's a change in status. Which one? Idk, let's go here to find out
+  return redirect(`/orders/onelink/integrations/gigged/${order?.invoice}`, 302);
 };
 
 export default function Index() {

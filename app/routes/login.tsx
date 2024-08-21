@@ -37,6 +37,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  let headers;
   try {
     const user = await authenticator.authenticate('user-pass', request, {
       throwOnError: true,
@@ -48,9 +49,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     session.set(authenticator.sessionKey, user);
 
     // commit the session
-    const headers = new Headers({ 'Set-Cookie': await commitSession(session) });
-
-    throw redirect('/dashboard', { headers });
+    headers = new Headers({ 'Set-Cookie': await commitSession(session) });
   } catch (error) {
     // Because redirects work by throwing a Response, you need to check if the
     // caught error is a response and return it or throw it again
@@ -82,6 +81,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     });
   }
+
+  throw redirect('/dashboard', { headers });
 };
 
 const Login = () => {
