@@ -1,15 +1,12 @@
-import type { EKyashEntity } from '~/domain/orders/entities/ekyash';
+import { nanoid } from 'nanoid';
 import type { OrderEntity } from '~/domain/orders/entities/order';
 import type { UserEntity } from '~/domain/orders/entities/user';
-import { EKyashMapper } from '~/domain/orders/mappers/ekyash-mapper';
 import GiggedMapper from '~/domain/orders/mappers/gigged-mapper.server';
 import OrderRepository from '~/domain/orders/repositories/order-repository';
 import { UserRepository } from '~/domain/orders/repositories/user-repository';
 import Failure from '~/lib/failure';
 import getGiggedBzPaymentSchema from '~/presentation/requests/get-gigged-bz-payment';
 import { PaymentMethod } from '.';
-import { nanoid } from 'nanoid';
-import { logger } from '~/infrastructure/logging/next.server';
 
 export default class GetOneLinkOrder {
   private request: Request;
@@ -21,7 +18,6 @@ export default class GetOneLinkOrder {
 
   async verifyParams() {
     const params = new URL(this.request.url).searchParams;
-
     const { invoiceNo, paymentKey } = await getGiggedBzPaymentSchema.validateAsync({
       invoiceNo: params.get('invoiceno'),
       paymentKey: params.get('paykey'),
@@ -56,10 +52,10 @@ export default class GetOneLinkOrder {
 
   async call() {
     let order: OrderEntity | null = null;
-    const params = await this.verifyParams();
-    order = await this.getPendingOrder(params.invoiceNo);
+    const { invoiceNo, paymentKey } = await this.verifyParams();
+    order = await this.getPendingOrder(invoiceNo);
 
-    if (!order.isValidPaymentKey(params.paymentKey)) {
+    if (!order.isValidPaymentKey(paymentKey)) {
       throw new Failure('forbidden', "The payment key provided does not match this payment's records");
     }
 

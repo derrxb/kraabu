@@ -73,5 +73,5 @@ export default function Index() {
     };
   }, [data.order?.invoice, navigate]);
 
-  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed paymentMethod={PaymentMethod.EKyash} />;
+  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed={false} paymentMethod={PaymentMethod.EKyash} />;
 }

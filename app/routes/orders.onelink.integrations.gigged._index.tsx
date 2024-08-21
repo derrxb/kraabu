@@ -86,5 +86,5 @@ export default function Index() {
     };
   }, [data.order?.invoice, navigate]);
 
-  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed paymentMethod={PaymentMethod.OneLink} />;
+  return <PendingPayment order={data?.order!} hasOrderItemsDisplayed={false} paymentMethod={PaymentMethod.OneLink} />;
 }
