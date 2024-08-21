@@ -3,6 +3,7 @@ import { Currency, OrderStatus } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { EKyashEntity } from '~/domain/orders/entities/ekyash';
 import { EKyashTransactionEntity } from '~/domain/orders/entities/ekyash-transaction';
+import { OneLinkEntity } from '~/domain/orders/entities/onelink';
 import type { GiggedOrderDetails } from '~/domain/orders/entities/order';
 import { OrderEntity } from '~/domain/orders/entities/order';
 import { OrderItemEntity } from '~/domain/orders/entities/order-item';
@@ -43,6 +44,19 @@ export const mockEkyashEntity = new EKyashEntity({
   pinHash: mockPinHash,
   sid: mockSid,
   userId: 1,
+});
+
+/**
+ * A base fake ekyash entity that does not yet exist in the database.
+ */
+export const mockOneLinkEntity = new OneLinkEntity({
+  id: 1,
+  phone: mockEKyashPhoneNumber,
+  userId: 1,
+  accessToken: nanoid(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  salt: nanoid(),
 });
 
 /**

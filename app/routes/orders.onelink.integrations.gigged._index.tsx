@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import { OrderStatus } from '@prisma/client';
 import axios from 'axios';
+import { UserRepository } from '~/domain/orders/repositories/user-repository';
+import { GIGGED_USERNAME } from '~/domain/orders/services/ekaysh/integrations/gigged';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) {
@@ -48,7 +50,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
-    const order = await new MakePayment(request, null).call();
+    const order = await new MakePayment(request, (await UserRepository.findUserByUsername(GIGGED_USERNAME))!).call();
     return typedjson({ order: order?.json() }, HTTP_CODE.ok);
   } catch (error) {
     console.log({ error });
@@ -69,7 +71,7 @@ export default function Index() {
         const result = await axios.get(`/orders/ekyash/${data.order?.invoice}/status`);
 
         if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
-          navigate(`/orders/ekyash/integrations/gigged/${data.order?.invoice}`, {
+          navigate(`/orders/onelink/integrations/gigged/${data.order?.invoice}`, {
             replace: true,
           });
         }

@@ -65,6 +65,10 @@ export type NewPaymentResponse = {
    * response message
    */
   msg: string;
+  /**
+   * amount charged in cents
+   */
+  amount: number;
 };
 
 export class OneLinkPaymentError extends Error {}

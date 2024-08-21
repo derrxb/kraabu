@@ -1,6 +1,7 @@
 import { OneLinkEntity } from '../entities/onelink';
 import { OrderEntity } from '../entities/order';
 import { NewPaymentData, createNewInvoice } from '../library/onelink-api';
+import { OneLinkAmountValue } from '../values/onelink-amount';
 
 export class OneLinkMapper {
   private oneLink: Pick<OneLinkEntity, 'accessToken' | 'salt'>;
@@ -15,7 +16,7 @@ export class OneLinkMapper {
   ) {
     const invoice = await createNewInvoice(
       {
-        amount: order.amount.toString(),
+        amount: new OneLinkAmountValue(order.amount, order.currency).toJSON().toString(),
         cardNumber: card.cardNumber,
         ccv: card.ccv,
         expirationDate: card.expirationDate,
