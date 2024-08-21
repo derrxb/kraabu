@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { truncateDB } from '~/infrastructure/database/dev-test-clear-db';
 import { MakePayment } from './make-payment';
 import omit from 'lodash/omit';
-import { beforeEach, describe, it, expect } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { mockUserEntity } from '~/mocks/fixtures';
 import prisma, { OrderStatus } from '~/infrastructure/database/index.server';
 import { GIGGED_USERNAME } from '../ekaysh/integrations/gigged';
@@ -10,6 +10,7 @@ import { nanoid } from 'nanoid';
 import { UserRepository } from '../../repositories/user-repository';
 import { NO_BALANCE_CREDIT_CARD, VALID_CREDIT_CARD } from '../../../../../test/credit-card';
 import { OneLinkStatus } from '@prisma/client';
+import GiggedMapper from '../../mappers/gigged-mapper.server';
 
 function objectToFormData(obj: any) {
   const formData = new FormData();

@@ -8,6 +8,7 @@ import { OneLinkMapper } from '../../mappers/onelink-mapper';
 import { UserEntity } from '../../entities/user';
 import { OneLinkEntity } from '../../entities/onelink';
 import { OneLinkPaymentError } from '../../library/onelink-api';
+import GiggedMapper from '../../mappers/gigged-mapper.server';
 
 type MakePaymentRequiredData = {
   invoiceno: string;
@@ -100,8 +101,11 @@ export class MakePayment {
     await this.setOneLink();
 
     try {
-      const result = await this.makePayment();
+      await this.makePayment();
+
       const order = await OrderRepository.markOneLinkPaymentAsCompleted(this.order!);
+
+      await new GiggedMapper(order?.additionalData.gateway!, order?.additionalData.hashkey!).updateOrderStatus(order!);
 
       return order;
     } catch (error) {

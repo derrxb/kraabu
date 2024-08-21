@@ -44,7 +44,7 @@ type OrderDetails = {
   Payer: Payer;
 };
 
-class GiggedMapper {
+export class GiggedMapper {
   private gateway: string;
   private hashkey: string;
 
