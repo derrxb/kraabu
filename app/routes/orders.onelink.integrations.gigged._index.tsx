@@ -1,17 +1,17 @@
+import { useNavigate } from '@remix-run/react';
 import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { typedjson, useTypedLoaderData } from 'remix-typedjson';
+import { OrderDTO, OrderStatus } from '~/domain/orders/entities/order';
+import { setIntervalAsync } from '~/domain/orders/library/async-internval';
+import { UserRepository } from '~/domain/orders/repositories/user-repository';
+import { GIGGED_USERNAME } from '~/domain/orders/services/ekaysh/integrations/gigged';
+import GetOneLinkOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-one-link-order.server';
+import { MakePayment } from '~/domain/orders/services/one-link/make-payment';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
 import { HTTP_CODE } from '~/presentation/representers/http-response-representer';
 import { PaymentMethod, PendingPayment } from '~/ui/organisms/pending-payment';
-import { typedjson, useTypedLoaderData } from 'remix-typedjson';
-import GetOneLinkOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-one-link-order.server';
-import { MakePayment } from '~/domain/orders/services/one-link/make-payment';
-import { useNavigate } from '@remix-run/react';
-import { useEffect } from 'react';
-import { setIntervalAsync } from '~/domain/orders/library/async-internval';
-import { OrderStatus } from '@prisma/client';
-import axios from 'axios';
-import { UserRepository } from '~/domain/orders/repositories/user-repository';
-import { GIGGED_USERNAME } from '~/domain/orders/services/ekaysh/integrations/gigged';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) {
@@ -68,10 +68,11 @@ export default function Index() {
     setIntervalAsync(
       timer,
       async () => {
-        const result = await axios.get(`/orders/ekyash/${data.order?.invoice}/status`);
+        const result = await axios.get(`/orders/onelink/${data.order?.invoice}/status`);
+        const resultData = result.data as OrderDTO;
 
-        if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
-          navigate(`/orders/onelink/integrations/gigged/${data.order?.invoice}`, {
+        if (resultData?.status === OrderStatus.Completed || resultData?.status === OrderStatus.Failed) {
+          navigate(`/orders/onelink/integrations/gigged/${resultData.invoice}`, {
             replace: true,
           });
         }

@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from '@vercel/remix';
 import { useNavigate } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { OrderStatus } from '~/domain/orders/entities/order';
+import { OrderDTO, OrderStatus } from '~/domain/orders/entities/order';
 import { setIntervalAsync } from '~/domain/orders/library/async-internval';
 import GetOrder from '~/domain/orders/services/ekaysh/integrations/gigged/get-order.server';
 import { getFormattedFailureResponse } from '~/presentation/representers/http-response-failure';
@@ -56,9 +56,10 @@ export default function Index() {
       timer,
       async () => {
         const result = await axios.get(`/orders/ekyash/${data.order?.invoice}/status`);
+        const resultData = result.data as OrderDTO;
 
-        if (result.data?.status === OrderStatus.Completed || result.data?.status === OrderStatus.Failed) {
-          navigate(`/orders/ekyash/integrations/gigged/${data.order?.invoice}`, {
+        if (resultData?.status === OrderStatus.Completed || resultData?.status === OrderStatus.Failed) {
+          navigate(`/orders/ekyash/integrations/gigged/${resultData?.invoice}`, {
             replace: true,
           });
         }
