@@ -1,16 +1,17 @@
-import { Form, useFetcher, useSearchParams } from '@remix-run/react';
+import { useSearchParams } from '@remix-run/react';
+import oneLinkLogo from 'public/images/onelink.webp';
+import { usePaymentInputs } from 'react-payment-inputs';
+import { useTypedFetcher } from 'remix-typedjson';
+import { Button } from '~/ui/atoms/button';
 import { Heading, HeadingAppearance, HeadingVariant } from '~/ui/atoms/heading';
 import { Input } from '~/ui/atoms/input-field';
-import { Label } from '~/ui/atoms/label';
-import { usePaymentInputs } from 'react-payment-inputs';
-import { Button } from '~/ui/atoms/button';
-import oneLinkLogo from 'public/images/onelink.webp';
 import { KrabuuTag } from '~/ui/atoms/krabuu-tag';
+import { Label } from '~/ui/atoms/label';
 
 export const OneLinkProps = {};
 
 export const OneLinkForm = () => {
-  const fetcher = useFetcher();
+  const fetcher = useTypedFetcher();
   const [params] = useSearchParams();
   const { getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs();
 
@@ -82,7 +83,12 @@ export const OneLinkForm = () => {
       </div>
 
       <div>
-        <Button type="submit" className="w-full" size="lg" disabled={fetcher.state === 'submitting'}>
+        <Button
+          type="submit"
+          className="w-full"
+          size="lg"
+          disabled={fetcher.state === 'submitting' || fetcher.state === 'loading'}
+        >
           Make Payment
         </Button>
       </div>
