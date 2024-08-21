@@ -11,14 +11,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
     switch (order.status) {
       case OrderStatus.Pending:
-        return redirect(
+        throw redirect(
           `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
         );
       case OrderStatus.Completed:
       case OrderStatus.Failed:
-        return redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`);
+        throw redirect(`${GiggedRoutes.OrderStatus}?invoiceNo=${order.invoice}`);
       default:
-        return redirect(
+        throw redirect(
           `/orders/ekyash/integrations/gigged?invoiceno=${order.invoice}&paykey=${order.additionalData?.paymentKey}`,
         );
     }
