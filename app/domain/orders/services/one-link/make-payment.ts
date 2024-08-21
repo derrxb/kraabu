@@ -110,7 +110,13 @@ export class MakePayment {
       return order;
     } catch (error) {
       if (error instanceof OneLinkPaymentError) {
-        return await OrderRepository.markOneLinkPaymentAsRejected(this.order!);
+        const order = await OrderRepository.markOneLinkPaymentAsRejected(this.order!);
+
+        await new GiggedMapper(order?.additionalData.gateway!, order?.additionalData.hashkey!).updateOrderStatus(
+          order!,
+        );
+
+        return order;
       }
 
       throw error;
