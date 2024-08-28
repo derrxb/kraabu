@@ -21,6 +21,7 @@ export class OneLinkMapper {
         ccv: card.ccv,
         expirationDate: card.expirationDate,
         nameOnCard: card.nameOnCard,
+        reason: order.invoice,
       },
       this.oneLink,
     );

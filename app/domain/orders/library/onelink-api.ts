@@ -58,6 +58,10 @@ export type NewPaymentData = {
    * @example 1
    */
   amount: string;
+  /**
+   * Invoice number
+   */
+  reason: string;
 };
 
 export type NewPaymentResponse = {
